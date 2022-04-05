@@ -71,21 +71,6 @@
             :formatter="formatReplyTime"
             min-width="130"
           />
-          <!-- <el-table-column
-            label="标签"
-            align="center"
-            :show-overflow-tooltip="true"
-            :formatter="(r, c, v) => v || '-'"
-            min-width="100"
-          >
-            <template slot-scope="scope">
-              <div v-for="item in labelList" :key="item.id">
-                <span v-if="scope.row.labelId == item.id">{{
-                  item.label
-                }}</span>
-              </div>
-            </template></el-table-column
-          > -->
           <el-table-column
             prop="state"
             label="状态"
