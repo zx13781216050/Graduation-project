@@ -30,13 +30,25 @@ export default {
         username: this.model.username,
         password: this.model.password,
       });
-      await this.$http.post("login", data);
-      //localStorage.token = res.data.token;
-      this.$router.push("/");
-      this.$message({
-        typr: "success",
-        message: "登录成功",
-      });
+      const res = await this.$http.post("login", data);
+      localStorage.token = res.data.token;
+
+      if (res.data.status == 0) {
+        this.$router.push("/");
+        this.$store.commit("setusername", res.data.username);
+        console.log(this.$store.state.username);
+        this.$notify({
+          title: "提示",
+          type: "success",
+          message: "登录成功",
+        });
+      } else {
+        this.$notify.error({
+          title: "提示",
+          message: "账号或密码错误",
+          duration: 1500,
+        });
+      }
     },
   },
 };

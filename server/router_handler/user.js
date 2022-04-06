@@ -48,6 +48,8 @@ exports.login = async (req, res) => {
         if (err) return res.cc(err)
         if (results.length !== 1) return res.cc('登录失败')
         const compareResult = bcrypt.compareSync(userinfo.password, results[0].password)
+        console.log(results[0].password)
+        console.log(userinfo.password)
         if (!compareResult) return res.cc('登录失败')
 
         //const user = { ...results[0], password: '', user_pic: '' }
@@ -56,6 +58,7 @@ exports.login = async (req, res) => {
         res.send({
             status: 0,
             message: '登陆成功',
+            username: userinfo.username,
             token: 'Bearer' + tokenStr
         })
     })

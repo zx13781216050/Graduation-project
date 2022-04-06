@@ -19,7 +19,6 @@
     <el-row :gutter="10" type="flex">
       <el-col :span="24">
         <el-table
-          v-loading="listLoading"
           :data="list"
           ref="table"
           @selection-change="(s) => (listSelection = s)"
@@ -31,49 +30,48 @@
           "
         >
           <el-table-column
-            prop="id"
-            label="编号"
+            prop="Customer_id"
+            label="客户ID"
             align="center"
             :show-overflow-tooltip="true"
             :formatter="(r, c, v) => v || '-'"
             min-width="100"
           />
           <el-table-column
-            prop="title"
-            label="主题"
+            prop="Customer_name"
+            label="姓名"
             align="center"
             :show-overflow-tooltip="true"
             :formatter="(r, c, v) => v || '-'"
             min-width="140"
           />
           <el-table-column
-            prop="ownerName"
-            label="咨询人"
+            prop="Customer_sex"
+            label="性别"
             align="center"
             :show-overflow-tooltip="true"
             :formatter="(r, c, v) => v || '-'"
             min-width="100"
           />
           <el-table-column
-            prop="consulttime"
-            label="咨询时间"
+            prop="Customer_birthday"
+            label="出生日期"
             align="center"
             :show-overflow-tooltip="true"
-            :formatter="formatConsultTime"
+            :formatter="formatBirthdayTime"
             min-width="130"
           />
 
           <el-table-column
-            prop="replyTime"
-            label="回复时间"
+            prop="Customer_stage"
+            label="留学阶段"
             align="center"
             :show-overflow-tooltip="true"
-            :formatter="formatReplyTime"
             min-width="130"
           />
           <el-table-column
-            prop="state"
-            label="状态"
+            prop="Target_area"
+            label="目标地区"
             align="center"
             :show-overflow-tooltip="true"
             min-width="100"
@@ -84,6 +82,34 @@
             </template>
           </el-table-column>
           <el-table-column
+            prop="Target_institut"
+            label="目标院校"
+            align="center"
+            :show-overflow-tooltip="true"
+            min-width="130"
+          />
+          <el-table-column
+            prop="Target_specialty"
+            label="目标专业"
+            align="center"
+            :show-overflow-tooltip="true"
+            min-width="130"
+          />
+          <el-table-column
+            prop="Telephone"
+            label="联系方式"
+            align="center"
+            :show-overflow-tooltip="true"
+            min-width="130"
+          />
+          <el-table-column
+            prop="Education"
+            label="当前学历"
+            align="center"
+            :show-overflow-tooltip="true"
+            min-width="130"
+          />
+          <el-table-column
             label="操作"
             align="center"
             class-name="small-padding fixed-width"
@@ -92,22 +118,6 @@
           >
             <template slot-scope="scope">
               <el-button
-                v-if="scope.row.state && !scope.row.recommend"
-                size="mini"
-                type="text"
-                icon="el-icon-star-off"
-                @click.stop="recommendHandle(scope.row)"
-                >精选
-              </el-button>
-              <el-button
-                v-else-if="scope.row.state && scope.row.recommend"
-                size="mini"
-                type="text"
-                icon="el-icon-star-on"
-                @click.stop="recommendHandle(scope.row)"
-                >取消精选
-              </el-button>
-              <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-document"
@@ -115,12 +125,11 @@
                 >详情
               </el-button>
               <el-button
-                v-if="!scope.row.recommend"
                 size="mini"
                 type="text"
                 icon="el-icon-edit"
                 @click.stop="rebackHandle(scope.row)"
-                >回复
+                >编辑
               </el-button>
               <el-button
                 size="mini"
@@ -143,12 +152,27 @@ export default {
   mixins: [mixin],
   data() {
     return {
+      entityName: "customer",
+      list: "",
       listQuery: {
         search: {
           id: null,
         },
       },
     };
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    formatBirthdayTime(row) {
+      if (!row.Customer_birthday) {
+        return "-";
+      } else {
+        var datetime = row.Customer_birthday;
+        return this.formatTime(datetime);
+      }
+    },
   },
 };
 </script>

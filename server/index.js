@@ -32,9 +32,13 @@ app.use((err, req, res, next) => {
     res.cc(err)
 })
 
-// 导入并注册用户路由模块 
+// 导入登录用户路由模块 
 const userRouter = require('./router/user')
-app.use('/api', userRouter)
+app.use('/api/admin', userRouter)
+
+//导入获取客户数据路由模块
+const CustomerRouter = require('./router/Customer')
+app.use('/api/admin/customer', CustomerRouter)
 
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')

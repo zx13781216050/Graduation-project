@@ -19,7 +19,7 @@ const router = new VueRouter({
       path: '/',
       name: 'mainview',
       component: MainView,
-      redirect: '/index_view',
+
       children: [
         { path: '/index_view', component: IndexView },
         { path: '/customer/customer_man', component: CustomerMan },
@@ -35,5 +35,10 @@ const router = new VueRouter({
   ]
 })
 
-
+router.beforeEach((to, from, next) => {
+  if (!to.meta.isPublic && !localStorage.token) {
+    return next('/login_view')
+  }
+  next()
+})
 export default router
