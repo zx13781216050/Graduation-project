@@ -11,3 +11,25 @@ exports.getList = (req, res) => {
         })
     })
 }
+
+exports.editForm = async (req, res) => {
+    console.log(req.body.Customer_id)
+    if (req.body.Customer_id) {
+        console.log('1')
+        const sql = 'update customer_item set ? where Customer_id =?'
+        db.query(sql, [req.body, req.body.Customer_id], (err, results) => {
+            if (err) return res.cc(err)
+            if (results.affectedRows !== 1) return res.cc('更新客户信息失败')
+            res.cc('更新成功', 0)
+        })
+    } else {
+        delete req.body.Customer_id;
+        const sql = 'insert into customer_item set ?'
+        db.query(sql, req.body, (err, results) => {
+            if (err) return res.cc(err)
+            if (results.affectedRows !== 1) return res.cc('添加客户信息失败')
+            res.cc('添加成功', 0)
+        })
+    }
+
+}

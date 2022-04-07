@@ -42,7 +42,6 @@ exports.regUser = (req, res) => {
 //登录的处理函数
 exports.login = async (req, res) => {
     const userinfo = req.body
-    console.log(req.body)
     const sql = 'select * from User_item where username=?'
     db.query(sql, userinfo.username, (err, results) => {
         if (err) return res.cc(err)

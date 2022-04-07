@@ -1,3 +1,4 @@
+
 const mixin = {
     data() {
         return {
@@ -26,6 +27,52 @@ const mixin = {
                     duration: 1500,
                 });
             }
+        },
+        //列表详情
+        detailsHandle(row) {
+            this.formDialog = true;
+            Object.keys(this.form).forEach((key) => {
+                this.form[key] = row[key];
+            });
+        },
+        //编辑列表
+        editHandle(row) {
+            this.editFormDialog = true;
+            Object.keys(this.form).forEach((key) => {
+                this.form[key] = row[key];
+            });
+        },
+        //新增列表
+        addHandle() {
+            this.resetForm();
+            this.editFormDialog = true;
+        },
+        //重置列表
+        resetForm() {
+            Object.keys(this.form).forEach((key) => {
+                this.form[key] = null;
+            });
+        },
+        //提交列表
+        async submitHandle() {
+            let data = this.$qs.stringify(this.form);
+            const res = await this.$http.put(`${this.entityName}/edit_form`, data);
+
+            if (res.data.status == 0) {
+                this.editFormDialog = false;
+                this.$notify({
+                    title: "提示",
+                    type: "success",
+                    message: res.data.message,
+                });
+            } else {
+                this.$notify.error({
+                    title: "提示",
+                    message: res.data.message,
+                    duration: 1500,
+                });
+            }
+            this.getList();
         },
         /**
    * 格式化时间

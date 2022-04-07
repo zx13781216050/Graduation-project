@@ -2,13 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import './plugins/element.js'
-
+import qs from 'qs'
 import store from './store/index';
+import http from './http'
 
 Vue.config.productionTip = false
-
-import http from './http'
 Vue.prototype.$http = http
+Vue.prototype.$qs = qs
 
 new Vue({
   router,

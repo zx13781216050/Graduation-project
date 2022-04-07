@@ -17,7 +17,6 @@
 </template>
 
 <script>
-var qs = require("qs");
 export default {
   data() {
     return {
@@ -26,10 +25,7 @@ export default {
   },
   methods: {
     async login() {
-      let data = qs.stringify({
-        username: this.model.username,
-        password: this.model.password,
-      });
+      let data = this.$qs.stringify(this.model);
       const res = await this.$http.post("login", data);
       localStorage.token = res.data.token;
 
