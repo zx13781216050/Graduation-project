@@ -40,6 +40,18 @@ app.use('/api/admin', userRouter)
 const CustomerRouter = require('./router/Customer')
 app.use('/api/admin/customer', CustomerRouter)
 
+//导入获取地区数据路由模块
+const NationRouter = require('./router/Nation')
+app.use('/api/admin/nation', NationRouter)
+
+//导入获取学院数据路由模块
+const InstitutRouter = require('./router/Institut')
+app.use('/api/admin/institut', InstitutRouter)
+
+//导入获取专业数据路由模块
+const SpecialtyRouter = require('./router/Specialty')
+app.use('/api/admin/specialty', SpecialtyRouter)
+
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')
 })

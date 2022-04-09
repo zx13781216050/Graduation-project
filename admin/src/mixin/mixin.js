@@ -41,6 +41,7 @@ const mixin = {
             Object.keys(this.form).forEach((key) => {
                 this.form[key] = row[key];
             });
+            console.log(this.form)
         },
         //新增列表
         addHandle() {

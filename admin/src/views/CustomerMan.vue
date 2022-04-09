@@ -56,14 +56,18 @@
             :formatter="(r, c, v) => v || '-'"
             min-width="140"
           />
+
           <el-table-column
-            prop="Customer_sex"
             label="性别"
             align="center"
             :show-overflow-tooltip="true"
-            :formatter="(r, c, v) => v || '-'"
             min-width="100"
-          />
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.Customer_sex">男</span>
+              <span v-else>女</span>
+            </template>
+          </el-table-column>
           <el-table-column
             prop="Customer_birthday"
             label="出生日期"
@@ -74,24 +78,13 @@
           />
 
           <el-table-column
-            prop="Customer_stage"
-            label="留学阶段"
-            align="center"
-            :show-overflow-tooltip="true"
-            min-width="130"
-          />
-          <el-table-column
             prop="Target_area"
             label="目标地区"
             align="center"
             :show-overflow-tooltip="true"
             min-width="100"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.state">已回复</span>
-              <span v-else>未回复</span>
-            </template>
-          </el-table-column>
+          />
+
           <el-table-column
             prop="Target_institut"
             label="目标院校"
@@ -154,16 +147,10 @@
         </el-table>
       </el-col>
     </el-row>
-    <el-dialog
-      v-el-drag-dialog
-      title="详情"
-      width="800px"
-      :visible.sync="formDialog"
-    >
+    <el-dialog title="详情" width="800px" :visible.sync="formDialog">
       <el-form
         ref="form"
         :model="form"
-        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -193,18 +180,60 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="留学阶段:" prop="Customer_stage">
-              <el-input v-model="form.Customer_stage" />
+            <el-form-item label="留学阶段:">
+              <el-select
+                v-model="form.Customer_stage"
+                placeholder="请选择"
+                @change="areaChange"
+                clearable
+              >
+                <el-option
+                  v-for="item in stageOptions"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="目标区域:" prop="Target_area">
-              <el-input v-model="form.Target_area" />
+            <el-form-item label="目标区域:">
+              <el-select
+                v-model="form.Target_area"
+                placeholder="请选择"
+                @visible-change="getAreaList"
+                @change="areaChange"
+                clearable
+              >
+                <el-option
+                  v-for="item in areaOptions"
+                  :key="item.Nation_id"
+                  :label="item.Nation_name"
+                  :value="item.Nation_id"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="目标学院:" prop="Target_institut">
-              <el-input v-model="form.Target_institut" />
+            <el-form-item label="目标学院:">
+              <el-select
+                v-model="form.Target_institut"
+                placeholder="请选择"
+                @visible-change="getInstitutList"
+                @change="getInstitutList"
+                :no-data-text="form.Target_area ? '无学院' : '请先选择目标区域'"
+                clearable
+              >
+                <el-option
+                  v-for="item in institutOptions"
+                  :key="item.Institut_id"
+                  :label="item.Institut_name"
+                  :value="item.Institut_id"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
@@ -225,18 +254,12 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button
-          type="primary"
-          :loading="editSubmitting"
-          @click="formDialog = false"
-          size="mini"
-        >
+        <el-button type="primary" @click="formDialog = false" size="mini">
           关闭</el-button
         >
       </span>
     </el-dialog>
     <el-dialog
-      v-el-drag-dialog
       :title="form.Customer_id ? '编辑' : '新建'"
       width="800px"
       :visible.sync="editFormDialog"
@@ -244,7 +267,6 @@
       <el-form
         ref="form"
         :model="form"
-        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -252,17 +274,28 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="姓名:" prop="Customer_name">
+            <el-form-item label="姓名:">
               <el-input v-model="form.Customer_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性别:" prop="Customer_sex">
-              <el-input v-model="form.Customer_sex" />
+            <el-form-item label="性别:">
+              <el-select
+                v-model="form.Customer_sex"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in sexOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="出生时间:" prop="Customer_birthday">
+            <el-form-item label="出生时间:">
               <el-date-picker
                 v-model="form.Customer_birthday"
                 type="datetime"
@@ -273,32 +306,101 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="留学阶段:" prop="Customer_stage">
-              <el-input v-model="form.Customer_stage" />
+            <el-form-item label="留学阶段:">
+              <el-select
+                v-model="form.Customer_stage"
+                placeholder="请选择"
+                @change="areaChange"
+                clearable
+              >
+                <el-option
+                  v-for="item in stageOptions"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12" style="">
+            <el-form-item label="目标区域:">
+              <el-select
+                v-model="form.Target_area"
+                placeholder="请选择"
+                @visible-change="getAreaList"
+                @change="areaChange"
+                clearable
+              >
+                <el-option
+                  v-for="item in areaOptions"
+                  :key="item.Nation_id"
+                  :label="item.Nation_name"
+                  :value="item.Nation_id"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="目标区域:" prop="Target_area">
-              <el-input v-model="form.Target_area" />
+            <el-form-item label="目标学院:">
+              <el-select
+                v-model="form.Target_institut"
+                placeholder="请选择"
+                @visible-change="getInstitutList"
+                :no-data-text="form.Target_area ? '无学院' : '请先选择目标区域'"
+                clearable
+              >
+                <el-option
+                  v-for="item in institutOptions"
+                  :key="item.Institut_id"
+                  :label="item.Institut_name"
+                  :value="item.Institut_id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12" style="" v-show="form.Customer_stage == 4">
+            <el-form-item label="目标专业:">
+              <el-select
+                v-model="form.Target_specialty"
+                placeholder="请选择"
+                @visible-change="getSpecialtyList"
+                :no-data-text="form.Target_area ? '无专业' : '请先选择目标学院'"
+                clearable
+              >
+                <el-option
+                  v-for="item in specialtyOptions"
+                  :key="item.Specialty_id"
+                  :label="item.Specialty_name"
+                  :value="item.Specialty_id"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="目标学院:" prop="Target_institut">
-              <el-input v-model="form.Target_institut" />
+            <el-form-item label="当前学历:">
+              <el-select
+                v-model="form.Education"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in stageOptions"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="目标专业:" prop="Target_specialty">
-              <el-input v-model="form.Target_specialty"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" style="">
-            <el-form-item label="学历:" prop="Education">
-              <el-input v-model="form.Education"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" style="">
-            <el-form-item label="联系方式:" prop="Telephone">
+            <el-form-item label="联系方式:">
               <el-input v-model="form.Telephone"></el-input>
             </el-form-item>
           </el-col>
@@ -307,7 +409,6 @@
       <span slot="footer" class="dialog-footer">
         <el-button
           type="primary"
-          :loading="editSubmitting"
           @click="submitHandle"
           size="mini"
           v-if="form.Customer_id"
@@ -316,7 +417,6 @@
         >
         <el-button
           type="primary"
-          :loading="editSubmitting"
           @click="submitHandle"
           size="mini"
           v-if="!form.Customer_id"
@@ -351,6 +451,20 @@ export default {
         Telephone: null,
         Education: null,
       },
+      stageOptions: [
+        { id: 1, value: "小学" },
+        { id: 2, value: "中学" },
+        { id: 3, value: "高中" },
+        { id: 4, value: "大学" },
+      ],
+      areaOptions: [],
+      institutOptions: [],
+      sexOptions: [
+        { value: 1, label: "男" },
+        { value: 2, label: "女" },
+      ],
+      specialtyOptions: [],
+      Nation_id: "",
       listQuery: {
         search: {
           id: null,
@@ -360,8 +474,13 @@ export default {
   },
   created() {
     this.getList();
+    this.getAreaList();
+    this.getInstitutList();
+    this.getSpecialtyList();
   },
+  watch: {},
   methods: {
+    //格式化出生日期
     formatBirthdayTime(row) {
       if (!row.Customer_birthday) {
         return "-";
@@ -370,6 +489,7 @@ export default {
         return this.formatTime(datetime);
       }
     },
+    //提交表单
     async submitHandle() {
       this.form.Customer_birthday = this.formatTime(
         this.form.Customer_birthday
@@ -392,6 +512,71 @@ export default {
         });
       }
       this.getList();
+    },
+    //获取区域列表
+    async getAreaList() {
+      if (!this.areaOptions.length) {
+        const res = await this.$http.get(`nation/get_list`);
+        if (res.data.status == 0) {
+          this.areaOptions = res.data.data;
+          console.log(this.areaOptions);
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取地区数据失败",
+            duration: 1500,
+          });
+        }
+      }
+    },
+    areaChange() {
+      this.form.Target_institut = "";
+      this.form.Target_specialty = "";
+      this.getInstitutList();
+    },
+    //获取学院列表
+    async getInstitutList() {
+      let res;
+      if (this.form.Target_area && this.form.Customer_stage) {
+        res = await this.$http.get(
+          `institut/get_list/${this.form.Target_area}/${this.form.Customer_stage}`
+        );
+      } else {
+        res = await this.$http.get(`institut/get_list`);
+      }
+
+      if (res.data.status == 0) {
+        this.institutOptions = res.data.data;
+        console.log(this.areaOptions);
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取学院数据失败",
+          duration: 1500,
+        });
+      }
+    },
+    //获取专业列表
+    async getSpecialtyList() {
+      let res;
+      if (this.form.Target_area && this.form.Customer_stage) {
+        res = await this.$http.get(
+          `specialty/get_list/${this.form.Target_institut}`
+        );
+      } else {
+        res = await this.$http.get(`specialty/get_list`);
+      }
+
+      if (res.data.status == 0) {
+        this.specialtyOptions = res.data.data;
+        console.log(this.areaOptions);
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取专业数据失败",
+          duration: 1500,
+        });
+      }
     },
   },
 };
