@@ -64,7 +64,7 @@
             min-width="100"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.Customer_sex">男</span>
+              <span v-if="scope.row.Customer_sex == 1">男</span>
               <span v-else>女</span>
             </template>
           </el-table-column>
@@ -76,39 +76,9 @@
             :formatter="formatBirthdayTime"
             min-width="130"
           />
-
-          <el-table-column
-            prop="Target_area"
-            label="目标地区"
-            align="center"
-            :show-overflow-tooltip="true"
-            min-width="100"
-          />
-
-          <el-table-column
-            prop="Target_institut"
-            label="目标院校"
-            align="center"
-            :show-overflow-tooltip="true"
-            min-width="130"
-          />
-          <el-table-column
-            prop="Target_specialty"
-            label="目标专业"
-            align="center"
-            :show-overflow-tooltip="true"
-            min-width="130"
-          />
           <el-table-column
             prop="Telephone"
             label="联系方式"
-            align="center"
-            :show-overflow-tooltip="true"
-            min-width="130"
-          />
-          <el-table-column
-            prop="Education"
-            label="当前学历"
             align="center"
             :show-overflow-tooltip="true"
             min-width="130"
@@ -139,7 +109,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
-                @click.stop="handleDelete(scope.row)"
+                @click.stop="deleteHandle(scope.row.Customer_id)"
                 >删除
               </el-button>
             </template>
@@ -159,17 +129,28 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="姓名:" prop="Customer_name">
+            <el-form-item label="姓名:">
               <el-input v-model="form.Customer_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性别:" prop="Customer_sex">
-              <el-input v-model="form.Customer_sex" />
+            <el-form-item label="性别:">
+              <el-select
+                v-model="form.Customer_sex"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in sexOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="出生时间:" prop="Customer_birthday">
+            <el-form-item label="出生时间:">
               <el-date-picker
                 v-model="form.Customer_birthday"
                 type="datetime"
@@ -197,6 +178,7 @@
               </el-select>
             </el-form-item>
           </el-col>
+
           <el-col :span="12" style="">
             <el-form-item label="目标区域:">
               <el-select
@@ -222,7 +204,6 @@
                 v-model="form.Target_institut"
                 placeholder="请选择"
                 @visible-change="getInstitutList"
-                @change="getInstitutList"
                 :no-data-text="form.Target_area ? '无学院' : '请先选择目标区域'"
                 clearable
               >
@@ -236,18 +217,45 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12" style="">
-            <el-form-item label="目标专业:" prop="Target_specialty">
-              <el-input v-model="form.Target_specialty"></el-input>
+
+          <el-col :span="12" style="" v-show="form.Customer_stage == 4">
+            <el-form-item label="目标专业:">
+              <el-select
+                v-model="form.Target_specialty"
+                placeholder="请选择"
+                @visible-change="getSpecialtyList"
+                :no-data-text="form.Target_area ? '无专业' : '请先选择目标学院'"
+                clearable
+              >
+                <el-option
+                  v-for="item in specialtyOptions"
+                  :key="item.Specialty_id"
+                  :label="item.Specialty_name"
+                  :value="item.Specialty_id"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="学历:" prop="Education">
-              <el-input v-model="form.Education"></el-input>
+            <el-form-item label="当前学历:">
+              <el-select
+                v-model="form.Education"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in educateOptions"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="联系方式:" prop="Telephone">
+            <el-form-item label="联系方式:">
               <el-input v-model="form.Telephone"></el-input>
             </el-form-item>
           </el-col>
@@ -390,10 +398,10 @@
                 clearable
               >
                 <el-option
-                  v-for="item in stageOptions"
-                  :key="item.value"
+                  v-for="item in educateOptions"
+                  :key="item.id"
                   :label="item.value"
-                  :value="item.value"
+                  :value="item.id"
                 >
                 </el-option>
               </el-select>
@@ -456,6 +464,13 @@ export default {
         { id: 2, value: "中学" },
         { id: 3, value: "高中" },
         { id: 4, value: "大学" },
+      ],
+      educateOptions: [
+        { id: 1, value: "小学" },
+        { id: 2, value: "中学" },
+        { id: 3, value: "高中" },
+        { id: 4, value: "本科" },
+        { id: 5, value: "硕士" },
       ],
       areaOptions: [],
       institutOptions: [],

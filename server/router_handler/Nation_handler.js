@@ -1,7 +1,7 @@
 const db = require('../db/index')
 
 exports.getList = (req, res) => {
-    const sql = 'select * from nation_item'
+    const sql = 'select * from nation_item where Deleted = 0'
     db.query(sql, (err, results) => {
         if (err) return res.cc(err)
         res.send({

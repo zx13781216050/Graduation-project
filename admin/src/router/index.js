@@ -4,7 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import MainView from '../views/MainView.vue'
 import IndexView from '../views/IndexView.vue'
 import CustomerMan from '../views/CustomerMan.vue'
-import OverseasMan from '../views/OverseasMan.vue'
+import ProjectMan from '../views/ProjectMan.vue'
 import TrainMan from '../views/TrainMan.vue'
 import QuestMan from '../views/QuestMan.vue'
 import JournalMan from '../views/JournalMan.vue'
@@ -23,7 +23,7 @@ const router = new VueRouter({
       children: [
         { path: '/index_view', component: IndexView },
         { path: '/customer/customer_man', component: CustomerMan },
-        { path: '/overseas/overseas_man', component: OverseasMan },
+        { path: '/project/project_man', component: ProjectMan },
         { path: '/train/train_man', component: TrainMan },
         { path: '/quest/quest_man', component: QuestMan },
         { path: '/journal/journal_man', component: JournalMan },

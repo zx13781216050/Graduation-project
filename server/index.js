@@ -52,6 +52,22 @@ app.use('/api/admin/institut', InstitutRouter)
 const SpecialtyRouter = require('./router/Specialty')
 app.use('/api/admin/specialty', SpecialtyRouter)
 
+//导入获取方案数据路由模块
+const ProjectRouter = require('./router/Project')
+app.use('/api/admin/project', ProjectRouter)
+
+//导入获取方案数据路由模块
+const TrainRouter = require('./router/Train')
+app.use('/api/admin/train', TrainRouter)
+
+//导入获取方案数据路由模块
+const QuestionRouter = require('./router/Question')
+app.use('/api/admin/question', QuestionRouter)
+
+//导入获取方案数据路由模块
+const NewsRouter = require('./router/News')
+app.use('/api/admin/news', NewsRouter)
+
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')
 })

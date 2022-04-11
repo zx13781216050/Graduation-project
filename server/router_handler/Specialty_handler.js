@@ -4,7 +4,7 @@ exports.getList = (req, res) => {
     let sql
     if (!req.params.institut_id) {
 
-        sql = 'select * from specialty_item '
+        sql = 'select * from specialty_item where Deleted = 0'
         db.query(sql, (err, results) => {
             if (err) return res.cc(err)
             res.send({

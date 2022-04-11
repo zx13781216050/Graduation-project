@@ -3,7 +3,7 @@ const db = require('../db/index')
 exports.getList = (req, res) => {
     let sql
     if (!req.params.Nation_id) {
-        sql = 'select * from institut_item'
+        sql = 'select * from institut_item where Deleted = 0'
         db.query(sql, (err, results) => {
             if (err) return res.cc(err)
             res.send({

@@ -41,31 +41,29 @@
           "
         >
           <el-table-column
-            prop="Question_id"
-            label="问题ID"
+            prop="Project_id"
+            label="ID"
             align="center"
             :show-overflow-tooltip="true"
             :formatter="(r, c, v) => v || '-'"
             min-width="100"
           />
           <el-table-column
-            prop="Question_describe"
-            label="问题描述"
+            prop="Project_name"
+            label="方案名称"
+            align="center"
+            :show-overflow-tooltip="true"
+            :formatter="(r, c, v) => v || '-'"
+            min-width="140"
+          />
+
+          <el-table-column
+            prop="Project_describe"
+            label="方案描述"
             align="center"
             :show-overflow-tooltip="true"
             min-width="260"
           />
-          <el-table-column
-            label="状态"
-            align="center"
-            :show-overflow-tooltip="true"
-            min-width="100"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.Question_status == 0">未反馈</span>
-              <span v-else>已反馈</span>
-            </template>
-          </el-table-column>
           <el-table-column
             label="操作"
             align="center"
@@ -92,7 +90,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
-                @click.stop="deleteHandle(scope.row.Question_id)"
+                @click.stop="deleteHandle(scope.row.Project_id)"
                 >删除
               </el-button>
             </template>
@@ -111,20 +109,16 @@
         :disabled="true"
       >
         <el-row :gutter="10">
-          <el-col :span="24">
-            <el-form-item label="问题描述:">
-              <el-input v-model="form.Question_describe" />
+          <el-col :span="12">
+            <el-form-item label="方案名称:">
+              <el-input v-model="form.Project_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="对应阶段:">
-              <el-select
-                v-model="form.Question_status"
-                placeholder="请选择"
-                clearable
-              >
+              <el-select v-model="form.Stage_id" placeholder="请选择" clearable>
                 <el-option
-                  v-for="item in statusOptions"
+                  v-for="item in educateOptions"
                   :key="item.id"
                   :label="item.value"
                   :value="item.id"
@@ -133,8 +127,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="问题反馈:">
-              <el-input type="textarea" v-model="form.Feedback" />
+            <el-form-item label="方案描述:">
+              <el-input v-model="form.Project_describe" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="方案内容:">
+              <el-input type="textarea" v-model="form.Project_content" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -159,20 +158,16 @@
         size="mini"
       >
         <el-row :gutter="10">
-          <el-col :span="24">
-            <el-form-item label="问题描述:">
-              <el-input v-model="form.Question_describe" />
+          <el-col :span="12">
+            <el-form-item label="方案名称:">
+              <el-input v-model="form.Project_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="对应阶段:">
-              <el-select
-                v-model="form.Question_status"
-                placeholder="请选择"
-                clearable
-              >
+              <el-select v-model="form.Stage_id" placeholder="请选择" clearable>
                 <el-option
-                  v-for="item in statusOptions"
+                  v-for="item in educateOptions"
                   :key="item.id"
                   :label="item.value"
                   :value="item.id"
@@ -181,8 +176,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="问题反馈:">
-              <el-input type="textarea" v-model="form.Feedback" />
+            <el-form-item label="方案描述:">
+              <el-input v-model="form.Project_describe" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="方案内容:">
+              <el-input type="textarea" v-model="form.Project_content" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -192,7 +192,7 @@
           type="primary"
           @click="submitHandle"
           size="mini"
-          v-if="form.Question_id"
+          v-if="form.Project_id"
         >
           修改</el-button
         >
@@ -200,7 +200,7 @@
           type="primary"
           @click="submitHandle"
           size="mini"
-          v-if="!form.Question_id"
+          v-if="!form.Project_id"
         >
           保存</el-button
         >
@@ -216,19 +216,23 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      entityName: "Question",
+      entityName: "Project",
       list: "",
       form: {
-        Question_id: null,
-        Question_status: null,
-        Question_describe: null,
-        Feedback: null,
+        Project_id: null,
+        Project_name: null,
+        Project_describe: null,
+        Project_content: null,
+        Stage_id: null,
       },
       formDialog: false,
       editFormDialog: false,
-      statusOptions: [
-        { id: 0, value: "未反馈" },
-        { id: 1, value: "已反馈" },
+      educateOptions: [
+        { id: 1, value: "小学" },
+        { id: 2, value: "中学" },
+        { id: 3, value: "高中" },
+        { id: 4, value: "本科" },
+        { id: 5, value: "硕士" },
       ],
       listQuery: {
         search: {

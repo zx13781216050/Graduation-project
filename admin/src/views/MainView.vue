@@ -18,7 +18,7 @@
             ><i class="el-icon-message"></i>留学方案</template
           >
           <el-menu-item-group>
-            <el-menu-item index="/overseas/overseas_man"
+            <el-menu-item index="/project/project_man"
               >留学方案管理</el-menu-item
             >
           </el-menu-item-group>
@@ -77,7 +77,7 @@
             <el-dropdown-item>删除</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span>{{ this.$store.state.username }}</span>
+        <span>{{ username }}</span>
       </el-header>
 
       <el-main>
@@ -90,7 +90,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      username: localStorage.username,
+    };
   },
 };
 </script>

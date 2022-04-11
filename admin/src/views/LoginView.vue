@@ -31,8 +31,9 @@ export default {
 
       if (res.data.status == 0) {
         this.$router.push("/");
-        this.$store.commit("setusername", res.data.username);
-        console.log(this.$store.state.username);
+
+        localStorage.username = res.data.username;
+
         this.$notify({
           title: "提示",
           type: "success",
