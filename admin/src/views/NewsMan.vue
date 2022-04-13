@@ -166,7 +166,10 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="新闻内容:">
-              <quill-editor v-model="form.News_content" />
+              <quill-editor
+                :content="form.News_content"
+                @getContent="getGoodContent"
+              ></quill-editor>
             </el-form-item>
           </el-col>
         </el-row>
@@ -195,7 +198,6 @@
 
 <script>
 import { mixin } from "@/mixin/mixin";
-
 import QuillEditor from "../components/quillEditor.vue";
 export default {
   mixins: [mixin],
@@ -238,6 +240,9 @@ export default {
 
   watch: {},
   methods: {
+    getGoodContent(e) {
+      this.form.News_content = e;
+    },
     //格式化日期
     formatNewTime(row) {
       if (!row.News_time) {
@@ -250,12 +255,11 @@ export default {
     //提交表单
     async submitHandle() {
       this.form.News_time = this.formatTime2(this.form.News_time);
-      this.form.News_content = this.$qs.stringify(this.form.News_content);
       let data = this.$qs.stringify(this.form, { arrayFormat: "indices" });
       const res = await this.$http.put(`${this.entityName}/edit_form`, data);
-
       if (res.data.status == 0) {
         this.editFormDialog = false;
+        this.form.News_content = "";
         this.$notify({
           title: "提示",
           type: "success",

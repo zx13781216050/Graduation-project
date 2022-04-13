@@ -5,10 +5,10 @@ import './plugins/element.js'
 import qs from 'qs'
 import store from './store/index';
 import http from './http'
-import VueQuillEditor from 'vue-quill-editor'
+// import VueQuillEditor from 'vue-quill-editor'
 
 
-Vue.use(VueQuillEditor)
+// Vue.use(VueQuillEditor)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = http

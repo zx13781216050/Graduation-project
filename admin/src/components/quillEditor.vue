@@ -2,13 +2,14 @@
   <div>
     <quill-editor
       class="ql-editor"
-      v-model="value"
       ref="myQuillEditor"
+      :value="contentLocal"
       :options="editorOption"
       @blur="onEditorBlur($event)"
       @focus="onEditorFocus($event)"
       @change="onEditorChange($event)"
     >
+      {{ content }}
     </quill-editor>
   </div>
 </template>
@@ -19,17 +20,18 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 export default {
+  props: {
+    content: {
+      type: String,
+      default: "",
+    },
+  },
   components: {
     quillEditor,
   },
   data() {
     return {
-      props: {
-        value: {
-          // vue2是value,vue3是modelValue
-          type: Buffer,
-        },
-      },
+      contentLocal: "",
       editorOption: {
         modules: {
           toolbar: [
@@ -52,9 +54,23 @@ export default {
       },
     };
   },
+  computed: {
+    //当前富文本实例
+    editor() {
+      return this.$refs.myQuillEditor.quill;
+    },
+  },
+  created() {
+    this.test();
+  },
   methods: {
+    test() {
+      console.log(this.content);
+      this.contentLocal = this.content;
+    },
     onEditorChange(e) {
-      this.$emit("update:value", e);
+      console.log(e);
+      this.$emit("getContent", e.html);
     },
   },
 };
