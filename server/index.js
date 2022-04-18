@@ -72,6 +72,22 @@ app.use('/api/admin/news', NewsRouter)
 const NoticeRouter = require('./router/Notice')
 app.use('/api/admin/notice', NoticeRouter)
 
+//导入前台用户提交数据路由模块
+const WebPersonRouter = require('./router/WebPerson')
+app.use('/api/web/webperson', WebPersonRouter)
+
+//导入前台获取地区数据路由模块
+const WebNationRouter = require('./router/WebNation')
+app.use('/api/web/webnation', WebNationRouter)
+
+//导入前台获取学院数据路由模块
+const WebInstitutRouter = require('./router/WebInstitut')
+app.use('/api/web/webinstitut', WebInstitutRouter)
+
+//导入前台获取专业数据路由模块
+const WebSpecialtyRouter = require('./router/WebSpecialty')
+app.use('/api/web/webspecialty', WebSpecialtyRouter)
+
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')
 })

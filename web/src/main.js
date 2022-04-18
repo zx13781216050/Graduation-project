@@ -13,6 +13,7 @@ import http from './http'
 Vue.config.productionTip = false
 Vue.prototype.$http = http
 Vue.prototype.$qs = qs
+Vue.prototype.$eventBus = new Vue();
 
 new Vue({
   router,

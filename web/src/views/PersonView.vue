@@ -2,16 +2,10 @@
   <el-container style="height: 100vh">
     <el-header style="height: 100px"><header-title /></el-header>
     <el-main style="padding: 0">
-      <div>
-        <carousel />
-      </div>
-      <div>
-        <swiper />
-        <hr style="border: 1px solid #d81e06" />
-        <news />
+      <div class="content">
+        <div>个人资料</div>
       </div>
     </el-main>
-    <dialog-form />
   </el-container>
 </template>
 
@@ -19,23 +13,12 @@
 import HeaderTitle from "../components/HeaderTitle.vue";
 import Carousel from "../components/Carousel.vue";
 import Swiper from "../components/Swiper.vue";
-import DialogForm from "../components/Person.vue";
-import News from "../components/News.vue";
 export default {
   components: {
     HeaderTitle,
     Carousel,
     Swiper,
-    DialogForm,
-    News,
   },
-  data() {
-    return {
-      showDialog: false,
-    };
-  },
-  mounted() {},
-  methods: {},
 };
 </script>
 

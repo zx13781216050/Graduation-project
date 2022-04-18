@@ -13,9 +13,10 @@ exports.getList = (req, res) => {
 }
 
 exports.editForm = async (req, res) => {
-
     if (req.body.Customer_id) {
-        console.log('1')
+        if (!req.body.Target_specialty) {
+            delete req.body.Target_specialty;
+        }
         const sql = 'update customer_item set ? where Customer_id =?'
         db.query(sql, [req.body, req.body.Customer_id], (err, results) => {
             if (err) return res.cc(err)
@@ -24,6 +25,9 @@ exports.editForm = async (req, res) => {
         })
     } else {
         delete req.body.Customer_id;
+        if (!req.body.Target_specialty) {
+            delete req.body.Target_specialty;
+        }
         const sql = 'insert into customer_item set ?'
         db.query(sql, req.body, (err, results) => {
             if (err) return res.cc(err)
