@@ -9,6 +9,22 @@
       <div @click="FormDialog">我要申请</div>
       <div>公司介绍</div>
       <div style="color: #d81e06; font-size: 2rem">xxx-xxxx-xxx</div>
+      <div class="login">
+        <div v-if="username">
+          <el-dropdown>
+            <i class="el-icon-setting" style="margin-right: 15px"></i>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>查看</el-dropdown-item>
+              <el-dropdown-item>新增</el-dropdown-item>
+              <el-dropdown-item>删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <span> {{ username }} </span>
+        </div>
+        <div v-else>
+          <span @click="FormDialog2"> 登录 </span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -16,15 +32,22 @@
 <script>
 export default {
   data() {
-    return {};
+    return { username: localStorage.username };
   },
   methods: {
     ToPerson() {
       this.$router.push({ path: "/person" });
     },
+    FormDialog2() {
+      this.$eventBus.$emit("dialog2", true);
+    },
     FormDialog() {
       this.$eventBus.$emit("dialog", true);
     },
+  },
+  beforeDestory() {
+    this.$eventBus.$off("dialog");
+    this.$eventBus.$off("dialog2");
   },
 };
 </script>
@@ -50,6 +73,9 @@ export default {
   }
   div:hover {
     color: red;
+  }
+  .login {
+    float: right;
   }
 }
 </style>

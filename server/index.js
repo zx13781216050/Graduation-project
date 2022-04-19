@@ -88,6 +88,10 @@ app.use('/api/web/webinstitut', WebInstitutRouter)
 const WebSpecialtyRouter = require('./router/WebSpecialty')
 app.use('/api/web/webspecialty', WebSpecialtyRouter)
 
+//导入前台用户登录数据路由模块
+const WebUserRouter = require('./router/WebUser')
+app.use('/api/web/webuser', WebUserRouter)
+
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')
 })

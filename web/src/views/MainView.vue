@@ -12,6 +12,7 @@
       </div>
     </el-main>
     <dialog-form />
+    <login-form />
   </el-container>
 </template>
 
@@ -20,6 +21,7 @@ import HeaderTitle from "../components/HeaderTitle.vue";
 import Carousel from "../components/Carousel.vue";
 import Swiper from "../components/Swiper.vue";
 import DialogForm from "../components/Person.vue";
+import LoginForm from "../components/Login.vue";
 import News from "../components/News.vue";
 export default {
   components: {
@@ -27,12 +29,11 @@ export default {
     Carousel,
     Swiper,
     DialogForm,
+    LoginForm,
     News,
   },
   data() {
-    return {
-      showDialog: false,
-    };
+    return {};
   },
   mounted() {},
   methods: {},

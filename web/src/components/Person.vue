@@ -192,6 +192,7 @@ export default {
   mounted() {
     this.$eventBus.$on("dialog", (showDialog) => {
       this.showDialog = showDialog;
+      console.log(showDialog);
     });
   },
   methods: {
