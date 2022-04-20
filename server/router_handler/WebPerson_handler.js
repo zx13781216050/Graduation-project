@@ -1,6 +1,23 @@
 const db = require('../db/index')
 
 
+exports.getDetail = async (req, res) => {
+    console.log(req.body)
+    const sql = "select User_id from web_user_item where username = ?"
+    db.query(sql, req.body.username, (err, results) => {
+        if (err) return res.cc(err)
+        if (!results[0].User_id) return res.cc('未查询到用户ID')
+        //res.cc('获取用户ID成功', 0)
+
+        const sql = 'select * from customer_item where User_id = ?'
+        db.query(sql, results[0].User_id, (err, results) => {
+            if (err) return res.cc(err)
+            if (!results[0].Customer_id) return res.cc('获取客户信息失败')
+            res.send({ status: 0, message: '注册成功', data: results[0] })
+        })
+    })
+}
+
 exports.editForm = async (req, res) => {
 
     delete req.body.Customer_id;

@@ -2,11 +2,12 @@
   <div class="body">
     <div class="title">雷诺</div>
     <div class="content">
-      <div>首页</div>
+      <div @click="ToHome">首页</div>
       <div>院校专业</div>
       <div>课程培训</div>
       <div>留学方案</div>
       <div @click="FormDialog">我要申请</div>
+      <div @click="ToPerson">个人资料</div>
       <div>公司介绍</div>
       <div style="color: #d81e06; font-size: 2rem">xxx-xxxx-xxx</div>
       <div class="login">
@@ -37,6 +38,9 @@ export default {
   methods: {
     ToPerson() {
       this.$router.push({ path: "/person" });
+    },
+    ToHome() {
+      this.$router.push({ path: "/" });
     },
     FormDialog2() {
       this.$eventBus.$emit("dialog2", true);

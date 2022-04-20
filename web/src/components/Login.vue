@@ -100,7 +100,9 @@ export default {
           this.showDialog = true;
           this.regShowDialog = false;
         }
-
+        localStorage.token = res.data.token;
+        localStorage.username = res.data.username;
+        this.$router.go(0);
         this.$notify({
           title: "提示",
           type: "success",

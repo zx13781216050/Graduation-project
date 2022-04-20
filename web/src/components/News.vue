@@ -68,16 +68,16 @@ export default {};
 .title {
   position: absolute;
   font-size: 1.5rem;
-  left: 17vw;
+  left: 17%;
 }
 .img {
   position: absolute;
-  left: 17vw;
+  left: 17%;
   top: 5vh;
 }
 .content {
   position: absolute;
-  left: 20vw;
+  left: 20%;
   top: 15vh;
   ul {
     li {
