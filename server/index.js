@@ -92,6 +92,10 @@ app.use('/api/web/webspecialty', WebSpecialtyRouter)
 const WebUserRouter = require('./router/WebUser')
 app.use('/api/web/webuser', WebUserRouter)
 
+//导入前台获取新闻数据路由模块
+const WebNewsRouter = require('./router/WebNews')
+app.use('/api/web/webnews', WebNewsRouter)
+
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')
 })

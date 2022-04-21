@@ -8,6 +8,7 @@
       <div>留学方案</div>
       <div @click="FormDialog">我要申请</div>
       <div @click="ToPerson">个人资料</div>
+      <div @click="ToNews">新闻资讯</div>
       <div>公司介绍</div>
       <div style="color: #d81e06; font-size: 2rem">xxx-xxxx-xxx</div>
       <div class="login">
@@ -41,6 +42,9 @@ export default {
     },
     ToHome() {
       this.$router.push({ path: "/" });
+    },
+    ToNews() {
+      this.$router.push({ path: "/news" });
     },
     FormDialog2() {
       this.$eventBus.$emit("dialog2", true);

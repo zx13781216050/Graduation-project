@@ -2,11 +2,11 @@
 <template>
   <div class="swiper-container">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" v-for="data in 5" :key="data">
+      <div class="swiper-slide" v-for="data in imgOptions" :key="data.name">
         <div class="background">
-          <img src="../assets/ma.webp" alt="" />
+          <img :src="data.url" alt="" />
         </div>
-        <div class="name">麻省理工学院</div>
+        <div class="name">{{ data.name }}</div>
       </div>
     </div>
   </div>
@@ -22,7 +22,15 @@ import "swiper/swiper-bundle.css";
 export default {
   name: "index",
   data() {
-    return {};
+    return {
+      imgOptions: [
+        { url: require("../assets/ma.webp"), name: "麻省理工学院" },
+        { url: require("../assets/ha.jpeg"), name: "哈佛大学" },
+        { url: require("../assets/jian.jpeg"), name: "剑桥大学" },
+        { url: require("../assets/niu.jpeg"), name: "牛津大学" },
+        { url: require("../assets/si.jpeg"), name: "斯坦福大学" },
+      ],
+    };
   },
   created() {},
   mounted() {

@@ -324,7 +324,10 @@
 <script>
 import HeaderTitle from "../components/HeaderTitle.vue";
 
+import { mixin } from "@/mixin/mixin";
+
 export default {
+  mixins: [mixin],
   components: {
     HeaderTitle,
   },
@@ -389,6 +392,7 @@ export default {
     },
     //提交表单
     async submitHandle() {
+      console.log("11");
       this.form.Customer_birthday = this.formatTime(
         this.form.Customer_birthday
       );
@@ -409,7 +413,7 @@ export default {
           duration: 1500,
         });
       }
-      this.getList();
+      this.getDetail();
     },
     //获取区域列表
     async getAreaList() {
@@ -489,7 +493,7 @@ export default {
 }
 
 .el-main {
-  background-color: #ffffff;
+  background-color: #f6f6f6;
   color: #333;
   text-align: center;
   line-height: 160px;
@@ -507,6 +511,9 @@ export default {
     top: 5vh;
   }
   .form {
+    box-shadow: 0px 2px 18px 2px #c0c0c0;
+    background-color: #fff;
+    padding-top: 5vh;
     position: absolute;
     width: 40%;
     left: 30%;
