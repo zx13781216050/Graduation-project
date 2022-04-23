@@ -3,7 +3,7 @@
     <div class="title">雷诺</div>
     <div class="content">
       <div @click="ToHome">首页</div>
-      <div>院校专业</div>
+      <div @click="ToInstitute">院校专业</div>
       <div>课程培训</div>
       <div>留学方案</div>
       <div @click="FormDialog">我要申请</div>
@@ -40,6 +40,9 @@ export default {
     ToPerson() {
       this.$router.push({ path: "/person" });
     },
+    ToInstitute() {
+      this.$router.push({ path: "/institute" });
+    },
     ToHome() {
       this.$router.push({ path: "/" });
     },
@@ -64,6 +67,7 @@ export default {
 .body {
   position: relative;
 }
+
 .title {
   color: #fff;
   font-size: 3rem;

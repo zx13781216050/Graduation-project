@@ -19,7 +19,6 @@ const router = new VueRouter({
       path: '/',
       name: 'mainview',
       component: MainView,
-
       children: [
         { path: '/index_view', component: IndexView },
         { path: '/customer/customer_man', component: CustomerMan },

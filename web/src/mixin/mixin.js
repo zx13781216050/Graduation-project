@@ -11,10 +11,10 @@ const mixin = {
             const res = await this.$http.get(`${this.entityName}/get_list`);
             if (res.data.status == 0) {
                 this.list = res.data.data;
-                this.$message({
-                    type: "success",
-                    message: "获取数据成功",
-                });
+                // this.$message({
+                //     type: "success",
+                //     message: "获取数据成功",
+                // });
             } else {
                 this.$message({
                     type: "error",
