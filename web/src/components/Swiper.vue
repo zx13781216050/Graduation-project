@@ -55,6 +55,7 @@ export default {
   position: relative;
   margin-top: 2rem;
   margin-bottom: 2rem;
+  min-width: 1400px;
   width: 70%;
   height: 400px;
 }

@@ -4,19 +4,19 @@
     <el-main style="padding: 0">
       <div class="content">
         <div class="content">
-          <div class="title">院校专业</div>
+          <div class="title">课程选择</div>
           <div class="img"><img src="../assets/l-x.png" alt="" /></div>
-          <div class="Institut">
-            <ul v-for="data in list" :key="data.Institute_id">
+          <div class="Train">
+            <ul v-for="data in list" :key="data.Traine_id">
               <li>
-                <div class="Institut_name" style="width: 300px">
-                  {{ data.Institut_name }}
+                <div class="Train_name" style="width: 300px">
+                  {{ data.Train_name }}
                 </div>
                 <el-button
                   class="button"
                   type="danger"
                   plain
-                  @click="toinstitutedetail(data.Institute_id)"
+                  @click="totrainedetail(data.Traine_id)"
                 >
                   详情
                 </el-button>
@@ -40,7 +40,7 @@ export default {
   },
   data() {
     return {
-      entityName: "webinstitut",
+      entityName: "webtrain",
       form: {},
       list: [],
     };
@@ -49,11 +49,11 @@ export default {
     this.getList();
   },
   methods: {
-    toinstitutedetail(id) {
+    totrainedetail(id) {
       this.$router.push({
-        path: "/institutedetail",
+        path: "/traindetail",
         query: {
-          Institute_id: id,
+          Traine_id: id,
         },
       });
     },
@@ -87,7 +87,7 @@ export default {
     left: 30%;
     top: 5vh;
   }
-  .Institut {
+  .Train {
     position: absolute;
     left: 30%;
     top: 15vh;

@@ -6,6 +6,11 @@ import PersonView from '../views/PersonView.vue'
 import NewsView from '../views/NewsView.vue'
 import NewsDetailView from '../views/NewsDetailView.vue'
 import InstituteView from '../views/InstituteView.vue'
+import InstituteDetailView from '../views/InstituteDetailView'
+import TrainView from '../views/TrainView'
+import ProjectView from '../views/ProjectView'
+import TrainDetailView from '../views/TrainDetailView'
+import ProjectDetailView from '../views/ProjectDetailView'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -35,6 +40,31 @@ const router = new VueRouter({
             path: '/institute',
             name: 'InstituteView',
             component: InstituteView,
+        },
+        {
+            path: '/institutedetail',
+            name: 'InstituteDetailView',
+            component: InstituteDetailView,
+        },
+        {
+            path: '/train',
+            name: 'TrainView',
+            component: TrainView,
+        },
+        {
+            path: '/project',
+            name: 'ProjectView',
+            component: ProjectView,
+        },
+        {
+            path: '/traindetail',
+            name: 'TrainDetailView',
+            component: TrainDetailView,
+        },
+        {
+            path: '/projectdetail',
+            name: 'ProjectDetailView',
+            component: ProjectDetailView,
         },
 
     ]

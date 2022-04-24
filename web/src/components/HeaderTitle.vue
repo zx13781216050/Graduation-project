@@ -4,9 +4,9 @@
     <div class="content">
       <div @click="ToHome">首页</div>
       <div @click="ToInstitute">院校专业</div>
-      <div>课程培训</div>
-      <div>留学方案</div>
-      <div @click="FormDialog">我要申请</div>
+      <div @click="ToTrain">课程培训</div>
+      <div @click="ToProject">留学方案</div>
+      <!-- <div @click="FormDialog">我要申请</div> -->
       <div @click="ToPerson">个人资料</div>
       <div @click="ToNews">新闻资讯</div>
       <div>公司介绍</div>
@@ -48,6 +48,12 @@ export default {
     },
     ToNews() {
       this.$router.push({ path: "/news" });
+    },
+    ToTrain() {
+      this.$router.push({ path: "/train" });
+    },
+    ToProject() {
+      this.$router.push({ path: "/project" });
     },
     FormDialog2() {
       this.$eventBus.$emit("dialog2", true);

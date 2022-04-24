@@ -18,10 +18,8 @@
 
 <script>
 import HeaderTitle from "../components/HeaderTitle.vue";
-import { mixin } from "@/mixin/mixin";
 
 export default {
-  mixins: [mixin],
   components: {
     HeaderTitle,
   },

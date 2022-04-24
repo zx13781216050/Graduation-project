@@ -96,6 +96,14 @@ app.use('/api/web/webuser', WebUserRouter)
 const WebNewsRouter = require('./router/WebNews')
 app.use('/api/web/webnews', WebNewsRouter)
 
+//导入前台获取课程数据路由模块
+const WebTrainRouter = require('./router/WebTrain')
+app.use('/api/web/webtrain', WebTrainRouter)
+
+//导入前台获取留学方案数据路由模块
+const WebProjectRouter = require('./router/WebProject')
+app.use('/api/web/webproject', WebProjectRouter)
+
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')
 })

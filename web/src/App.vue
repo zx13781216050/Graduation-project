@@ -16,7 +16,7 @@ body {
   top: 0px;
   bottom: 0px;
   width: 100%;
-  min-width: 1230px;
+  min-width: 1400px;
   max-width: 1960px;
 }
 </style>
