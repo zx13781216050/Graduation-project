@@ -31,14 +31,9 @@
       <el-col :span="24">
         <el-table
           :data="list"
-          ref="table"
-          @selection-change="(s) => (listSelection = s)"
           size="small"
-          height="calc(100vh - 272px)"
-          @row-click="
-            (row) =>
-              $refs.table.toggleRowSelection(row, !listSelection.includes(row))
-          "
+          height="calc(100vh - 250px)"
+          :row-style="{ height: 'calc(10vh - 30px)' }"
         >
           <el-table-column
             prop="Notice_id"
@@ -104,6 +99,13 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          style="float: right"
+          :total="total"
+          :page="listQuery.page"
+          :limit="listQuery.size"
+          @current-change="getList"
+        />
       </el-col>
     </el-row>
     <el-dialog title="详情" width="800px" :visible.sync="formDialog">
@@ -141,7 +143,7 @@
       </span>
     </el-dialog>
     <el-dialog
-      :title="form.Customer_id ? '编辑' : '新建'"
+      :title="form.Notice_id ? '编辑' : '新建'"
       width="1000px"
       :visible.sync="editFormDialog"
     >

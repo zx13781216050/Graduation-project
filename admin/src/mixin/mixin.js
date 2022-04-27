@@ -2,7 +2,13 @@
 const mixin = {
     data() {
         return {
-
+            total: 0,
+            listQuery: {
+                page: 1,
+                size: 10,
+                sorts: null,
+                search: {}
+            },
         }
     },
     methods: {
@@ -12,18 +18,27 @@ const mixin = {
         handleFilter() {
             console.log('22')
         },
-        async getList() {
-            const res = await this.$http.get(`${this.entityName}/get_list`);
+        async getList(currentPage) {
+            if (currentPage) {
+                this.listQuery.page = currentPage
+            }
+            const res = await this.$http.get(`${this.entityName}/get_list`, {
+                params: {
+                    page: this.listQuery.page,
+                    size: this.listQuery.size,
+                },
+            });
             if (res.data.status == 0) {
                 this.list = res.data.data;
+                this.total = res.data.total
                 this.$message({
                     type: "success",
-                    message: "获取客户数据成功",
+                    message: "获取数据成功",
                 });
             } else {
                 this.$message({
                     type: "error",
-                    message: "获取客户数据失败",
+                    message: "获取数据失败",
                     duration: 1500,
                 });
             }
@@ -37,11 +52,12 @@ const mixin = {
         },
         //编辑列表
         editHandle(row) {
+            console.log(this.form)
             this.editFormDialog = true;
             Object.keys(this.form).forEach((key) => {
                 this.form[key] = row[key];
             });
-            console.log(this.form)
+
         },
         //新增列表
         addHandle() {

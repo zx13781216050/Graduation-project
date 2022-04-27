@@ -129,7 +129,7 @@
       </span>
     </el-dialog>
     <el-dialog
-      :title="form.Customer_id ? '编辑' : '新建'"
+      :title="form.Train_id ? '编辑' : '新建'"
       width="800px"
       :visible.sync="editFormDialog"
     >

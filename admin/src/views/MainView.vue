@@ -61,7 +61,16 @@
             ><i class="el-icon-message"></i>权限分配</template
           >
           <el-menu-item-group>
-            <el-menu-item index="/notice/news_man">权限分配</el-menu-item>
+            <el-menu-item index="/power/power_man">权限分配</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="8">
+          <template slot="title"
+            ><i class="el-icon-message"></i>院校专业</template
+          >
+          <el-menu-item-group>
+            <el-menu-item index="/institut/institut_man">院校</el-menu-item>
+            <el-menu-item index="/institut/specialty_man">专业</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
@@ -72,9 +81,9 @@
         <el-dropdown>
           <i class="el-icon-setting" style="margin-right: 15px"></i>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
+            <el-dropdown-item
+              ><div @click="loginout">退出</div></el-dropdown-item
+            >
           </el-dropdown-menu>
         </el-dropdown>
         <span>{{ username }}</span>
@@ -93,6 +102,13 @@ export default {
     return {
       username: localStorage.username,
     };
+  },
+  methods: {
+    loginout() {
+      window.localStorage.removeItem("username");
+      window.localStorage.removeItem("token");
+      this.$router.push({ path: "/login" });
+    },
   },
 };
 </script>

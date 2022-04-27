@@ -10,6 +10,9 @@ import QuestMan from '../views/QuestMan.vue'
 import JournalMan from '../views/JournalMan.vue'
 import NoticeMan from '../views/NoticeMan.vue'
 import NewsMan from '../views/NewsMan.vue'
+import Institut from '../views/InstitutMan.vue'
+import Specialty from '../views/SpecialtyMan.vue'
+import Power from '../views/PowerMan.vue'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -18,6 +21,7 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'mainview',
+      redirect: '/index_view',
       component: MainView,
       children: [
         { path: '/index_view', component: IndexView },
@@ -28,6 +32,9 @@ const router = new VueRouter({
         { path: '/journal/journal_man', component: JournalMan },
         { path: '/notice/notice_man', component: NoticeMan },
         { path: '/notice/news_man', component: NewsMan },
+        { path: '/institut/institut_man', component: Institut },
+        { path: '/institut/specialty_man', component: Specialty },
+        { path: '/power/power_man', component: Power },
       ]
     },
 

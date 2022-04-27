@@ -36,36 +36,45 @@
           :row-style="{ height: 'calc(10vh - 30px)' }"
         >
           <el-table-column
-            prop="News_id"
-            label="ID"
+            prop="User_id"
+            label="用户ID"
             align="center"
             :show-overflow-tooltip="true"
             :formatter="(r, c, v) => v || '-'"
             min-width="100"
           />
           <el-table-column
-            prop="News_title"
-            label="新闻名称"
-            align="center"
-            :show-overflow-tooltip="true"
-            :formatter="(r, c, v) => v || '-'"
-            min-width="140"
-          />
-
-          <el-table-column
-            prop="News_author"
-            label="发布人"
+            prop="Real_name"
+            label="姓名"
             align="center"
             :show-overflow-tooltip="true"
             min-width="260"
           />
           <el-table-column
-            prop="News_time"
-            label="发布时间"
+            label="性别"
             align="center"
             :show-overflow-tooltip="true"
-            :formatter="formatNewTime"
-            min-width="140"
+            min-width="100"
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.User_sex == 1">男</span>
+              <span v-else>女</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="username"
+            label="用户名"
+            align="center"
+            :show-overflow-tooltip="true"
+            min-width="260"
+          />
+          <el-table-column
+            prop="Role_id"
+            label="角色"
+            align="center"
+            :formatter="RoleFormatter"
+            :show-overflow-tooltip="true"
+            min-width="260"
           />
           <el-table-column
             label="操作"
@@ -93,7 +102,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
-                @click.stop="deleteHandle(scope.row.News_id)"
+                @click.stop="deleteHandle(scope.row.User_id)"
                 >删除
               </el-button>
             </template>
@@ -120,18 +129,42 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="新闻标题:">
-              <el-input v-model="form.News_title" />
+            <el-form-item label="姓名:">
+              <el-input v-model="form.Real_name" />
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="发布人:">
-              <el-input v-model="form.News_author" />
+          <el-col :span="12">
+            <el-form-item label="性别:">
+              <el-select v-model="form.User_sex" placeholder="请选择" clearable>
+                <el-option
+                  v-for="item in sexOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="新闻内容:">
-              <el-input type="textarea" v-model="form.News_content" />
+          <el-col :span="12">
+            <el-form-item label="联系方式:">
+              <el-input v-model="form.Telephone" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用户名:">
+              <el-input v-model="form.username" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="角色:">
+              <el-select v-model="form.Role_id" placeholder="请选择" clearable>
+                <el-option
+                  v-for="item in roleOptions"
+                  :key="item.Role_id"
+                  :label="item.Role_name"
+                  :value="item.Role_id"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -143,8 +176,8 @@
       </span>
     </el-dialog>
     <el-dialog
-      :title="form.News_id ? '编辑' : '新建'"
-      width="1000px"
+      :title="form.user_id ? '编辑' : '新建'"
+      width="800px"
       :visible.sync="editFormDialog"
     >
       <el-form
@@ -157,21 +190,47 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="新闻标题:">
-              <el-input v-model="form.News_title" />
+            <el-form-item label="姓名:">
+              <el-input v-model="form.Real_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="发布人:">
-              <el-input v-model="form.News_author" />
+            <el-form-item label="性别:">
+              <el-select v-model="form.User_sex" placeholder="请选择" clearable>
+                <el-option
+                  v-for="item in sexOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="新闻内容:">
-              <quill-editor
-                :content="form.News_content"
-                @getContent="getGoodContent"
-              ></quill-editor>
+          <el-col :span="12">
+            <el-form-item label="联系方式:">
+              <el-input v-model="form.Telephone" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用户名:">
+              <el-input v-model="form.username" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-show="!form.user_id">
+            <el-form-item label="密码:">
+              <el-input v-model="form.password" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="角色:">
+              <el-select v-model="form.Role_id" placeholder="请选择" clearable>
+                <el-option
+                  v-for="item in roleOptions"
+                  :key="item.Role_id"
+                  :label="item.Role_name"
+                  :value="item.Role_id"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -181,7 +240,7 @@
           type="primary"
           @click="submitHandle"
           size="mini"
-          v-if="form.News_id"
+          v-if="form.User_id"
         >
           修改</el-button
         >
@@ -189,7 +248,7 @@
           type="primary"
           @click="submitHandle"
           size="mini"
-          v-if="!form.News_id"
+          v-if="!form.User_id"
         >
           保存</el-button
         >
@@ -200,34 +259,30 @@
 
 <script>
 import { mixin } from "@/mixin/mixin";
-import QuillEditor from "../components/quillEditor.vue";
+
 export default {
   mixins: [mixin],
-  components: {
-    QuillEditor,
-  },
   data() {
     return {
-      content: null,
-
-      entityName: "News",
-      list: "",
+      entityName: "user",
+      list: [],
       form: {
-        News_id: null,
-        News_title: null,
-        News_content: null,
-        News_author: null,
-        News_time: null,
+        User_id: null,
+        Real_name: null,
+        User_sex: null,
+        Telephone: null,
+        username: null,
+        password: null,
+        Role_id: null,
       },
       formDialog: false,
       editFormDialog: false,
-      educateOptions: [
-        { id: 1, value: "小学" },
-        { id: 2, value: "中学" },
-        { id: 3, value: "高中" },
-        { id: 4, value: "本科" },
-        { id: 5, value: "硕士" },
+      roleOptions: [],
+      sexOptions: [
+        { value: 1, label: "男" },
+        { value: 2, label: "女" },
       ],
+      roleOptions: [],
       listQuery: {
         search: {
           id: null,
@@ -237,44 +292,31 @@ export default {
   },
   created() {
     this.getList();
+    this.getRole();
   },
   mounted() {},
-
   watch: {},
   methods: {
-    getGoodContent(e) {
-      this.form.News_content = e;
+    RoleFormatter(row) {
+      let newarr = this.roleOptions.filter((item) => {
+        return item.Role_id == row.Role_id;
+      });
+      return newarr[0].Role_name;
     },
-    //格式化日期
-    formatNewTime(row) {
-      if (!row.News_time) {
-        return "-";
-      } else {
-        var datetime = row.News_time;
-        return this.formatTime2(datetime);
+    //获取区域列表
+    async getRole() {
+      if (!this.roleOptions.length) {
+        const res = await this.$http.get(`role/get_list`);
+        if (res.data.status == 0) {
+          this.roleOptions = res.data.data;
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取数据失败",
+            duration: 1500,
+          });
+        }
       }
-    },
-    //提交表单
-    async submitHandle() {
-      this.form.News_time = this.formatTime2(this.form.News_time);
-      let data = this.$qs.stringify(this.form, { arrayFormat: "indices" });
-      const res = await this.$http.put(`${this.entityName}/edit_form`, data);
-      if (res.data.status == 0) {
-        this.editFormDialog = false;
-        this.form.News_content = "";
-        this.$notify({
-          title: "提示",
-          type: "success",
-          message: res.data.message,
-        });
-      } else {
-        this.$notify.error({
-          title: "提示",
-          message: res.data.message,
-          duration: 1500,
-        });
-      }
-      this.getList();
     },
   },
 };

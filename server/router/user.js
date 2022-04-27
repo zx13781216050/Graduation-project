@@ -11,4 +11,10 @@ router.post('/reguser', expressJoi(reg_login_schema), userHandler.regUser)
 //登录
 router.post('/login', expressJoi(reg_login_schema), userHandler.login)
 
+router.get('/get_list', userHandler.getList)
+
+router.put('/edit_form', userHandler.editForm)
+
+router.delete('/delete_form', userHandler.deleteForm)
+
 module.exports = router

@@ -7,4 +7,8 @@ router.get('/get_list', institut_handler.getList)
 
 router.get('/get_list/:Nation_id/:Customer_stage', institut_handler.getList)
 
+router.put('/edit_form', institut_handler.editForm)
+
+router.delete('/delete_form', institut_handler.deleteForm)
+
 module.exports = router

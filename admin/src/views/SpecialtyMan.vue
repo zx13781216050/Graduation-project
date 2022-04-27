@@ -36,37 +36,29 @@
           :row-style="{ height: 'calc(10vh - 30px)' }"
         >
           <el-table-column
-            prop="News_id"
-            label="ID"
+            prop="Specialty_id"
+            label="专业ID"
             align="center"
             :show-overflow-tooltip="true"
             :formatter="(r, c, v) => v || '-'"
             min-width="100"
           />
           <el-table-column
-            prop="News_title"
-            label="新闻名称"
-            align="center"
-            :show-overflow-tooltip="true"
-            :formatter="(r, c, v) => v || '-'"
-            min-width="140"
-          />
-
-          <el-table-column
-            prop="News_author"
-            label="发布人"
+            prop="Specialty_name"
+            label="专业名称"
             align="center"
             :show-overflow-tooltip="true"
             min-width="260"
           />
           <el-table-column
-            prop="News_time"
-            label="发布时间"
+            prop="Institut_id"
+            label="所属院校"
             align="center"
+            :formatter="InstitutFormatter"
             :show-overflow-tooltip="true"
-            :formatter="formatNewTime"
-            min-width="140"
+            min-width="260"
           />
+
           <el-table-column
             label="操作"
             align="center"
@@ -93,7 +85,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
-                @click.stop="deleteHandle(scope.row.News_id)"
+                @click.stop="deleteHandle(scope.row.Specialty_id)"
                 >删除
               </el-button>
             </template>
@@ -119,19 +111,25 @@
         :disabled="true"
       >
         <el-row :gutter="10">
+          <el-col :span="24">
+            <el-form-item label="专业名称:">
+              <el-input v-model="form.Specialty_name" />
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
-            <el-form-item label="新闻标题:">
-              <el-input v-model="form.News_title" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="发布人:">
-              <el-input v-model="form.News_author" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="新闻内容:">
-              <el-input type="textarea" v-model="form.News_content" />
+            <el-form-item label="学院:">
+              <el-select
+                v-model="form.Institut_id"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in institutOptions"
+                  :key="item.Institut_id"
+                  :label="item.Institut_name"
+                  :value="item.Institut_id"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -143,8 +141,8 @@
       </span>
     </el-dialog>
     <el-dialog
-      :title="form.News_id ? '编辑' : '新建'"
-      width="1000px"
+      :title="form.Specialty_id ? '编辑' : '新建'"
+      width="800px"
       :visible.sync="editFormDialog"
     >
       <el-form
@@ -156,22 +154,25 @@
         size="mini"
       >
         <el-row :gutter="10">
-          <el-col :span="12">
-            <el-form-item label="新闻标题:">
-              <el-input v-model="form.News_title" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="发布人:">
-              <el-input v-model="form.News_author" />
-            </el-form-item>
-          </el-col>
           <el-col :span="24">
-            <el-form-item label="新闻内容:">
-              <quill-editor
-                :content="form.News_content"
-                @getContent="getGoodContent"
-              ></quill-editor>
+            <el-form-item label="专业名称:">
+              <el-input v-model="form.Specialty_name" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="学院:">
+              <el-select
+                v-model="form.Institut_id"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in institutOptions"
+                  :key="item.Institut_id"
+                  :label="item.Institut_name"
+                  :value="item.Institut_id"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -181,7 +182,7 @@
           type="primary"
           @click="submitHandle"
           size="mini"
-          v-if="form.News_id"
+          v-if="form.Specialty_id"
         >
           修改</el-button
         >
@@ -189,7 +190,7 @@
           type="primary"
           @click="submitHandle"
           size="mini"
-          v-if="!form.News_id"
+          v-if="!form.Specialty_id"
         >
           保存</el-button
         >
@@ -200,34 +201,21 @@
 
 <script>
 import { mixin } from "@/mixin/mixin";
-import QuillEditor from "../components/quillEditor.vue";
+
 export default {
   mixins: [mixin],
-  components: {
-    QuillEditor,
-  },
   data() {
     return {
-      content: null,
-
-      entityName: "News",
-      list: "",
+      entityName: "Specialty",
+      list: [],
       form: {
-        News_id: null,
-        News_title: null,
-        News_content: null,
-        News_author: null,
-        News_time: null,
+        Specialty_id: null,
+        Specialty_name: null,
+        Institut_id: null,
       },
       formDialog: false,
       editFormDialog: false,
-      educateOptions: [
-        { id: 1, value: "小学" },
-        { id: 2, value: "中学" },
-        { id: 3, value: "高中" },
-        { id: 4, value: "本科" },
-        { id: 5, value: "硕士" },
-      ],
+      institutOptions: [],
       listQuery: {
         search: {
           id: null,
@@ -237,44 +225,31 @@ export default {
   },
   created() {
     this.getList();
+    this.getInstitutList();
   },
-  mounted() {},
-
   watch: {},
+  methods: {},
   methods: {
-    getGoodContent(e) {
-      this.form.News_content = e;
+    InstitutFormatter: function (row) {
+      let newarr = this.institutOptions.filter((item) => {
+        return item.Institut_id == row.Institut_id;
+      });
+      return newarr[0].Institut_name;
     },
-    //格式化日期
-    formatNewTime(row) {
-      if (!row.News_time) {
-        return "-";
-      } else {
-        var datetime = row.News_time;
-        return this.formatTime2(datetime);
+    //获取区域列表
+    async getInstitutList() {
+      if (!this.institutOptions.length) {
+        const res = await this.$http.get(`institut/get_list`);
+        if (res.data.status == 0) {
+          this.institutOptions = res.data.data;
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取地区数据失败",
+            duration: 1500,
+          });
+        }
       }
-    },
-    //提交表单
-    async submitHandle() {
-      this.form.News_time = this.formatTime2(this.form.News_time);
-      let data = this.$qs.stringify(this.form, { arrayFormat: "indices" });
-      const res = await this.$http.put(`${this.entityName}/edit_form`, data);
-      if (res.data.status == 0) {
-        this.editFormDialog = false;
-        this.form.News_content = "";
-        this.$notify({
-          title: "提示",
-          type: "success",
-          message: res.data.message,
-        });
-      } else {
-        this.$notify.error({
-          title: "提示",
-          message: res.data.message,
-          duration: 1500,
-        });
-      }
-      this.getList();
     },
   },
 };

@@ -1,7 +1,8 @@
 //导入express
 const express = require('express')
 const app = express()
-
+const fs = require('fs')
+const http = require('http')
 // 导入 cors 中间件 
 const cors = require('cors')
 app.use(cors())
@@ -17,6 +18,7 @@ app.use((req, res, next) => {
     }
     next()
 })
+
 
 //配置解析token的中间件
 const expressJWT = require('express-jwt')
@@ -34,7 +36,7 @@ app.use((err, req, res, next) => {
 
 // 导入登录用户路由模块 
 const userRouter = require('./router/user')
-app.use('/api/admin', userRouter)
+app.use('/api/admin/user', userRouter)
 
 //导入获取客户数据路由模块
 const CustomerRouter = require('./router/Customer')
@@ -72,6 +74,14 @@ app.use('/api/admin/news', NewsRouter)
 const NoticeRouter = require('./router/Notice')
 app.use('/api/admin/notice', NoticeRouter)
 
+// 托管静态资源文件
+const DownloadRouter = require('./router/Download')
+app.use('/api/admin', DownloadRouter)
+
+// 托管静态资源文件
+const RoleRouter = require('./router/Role')
+app.use('/api/admin/role', RoleRouter)
+
 //导入前台用户提交数据路由模块
 const WebPersonRouter = require('./router/WebPerson')
 app.use('/api/web/webperson', WebPersonRouter)
@@ -103,6 +113,10 @@ app.use('/api/web/webtrain', WebTrainRouter)
 //导入前台获取留学方案数据路由模块
 const WebProjectRouter = require('./router/WebProject')
 app.use('/api/web/webproject', WebProjectRouter)
+
+// 托管静态资源文件
+app.use('/uploads', express.static('./uploads'))
+
 
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')
