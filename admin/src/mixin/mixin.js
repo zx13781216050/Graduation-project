@@ -7,7 +7,10 @@ const mixin = {
                 page: 1,
                 size: 10,
                 sorts: null,
-                search: {}
+                search: {
+                    id: null,
+                    name: null,
+                }
             },
         }
     },
@@ -16,7 +19,7 @@ const mixin = {
             console.log('111')
         },
         handleFilter() {
-            console.log('22')
+            this.getList()
         },
         async getList(currentPage) {
             if (currentPage) {
@@ -26,6 +29,8 @@ const mixin = {
                 params: {
                     page: this.listQuery.page,
                     size: this.listQuery.size,
+                    id: this.listQuery.search.id,
+                    name: this.listQuery.search.name
                 },
             });
             if (res.data.status == 0) {

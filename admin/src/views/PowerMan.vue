@@ -1,10 +1,18 @@
 <template>
   <div>
     <el-form size="mini" :inline="true">
-      <el-form-item label="客户ID" prop="id">
+      <el-form-item label="用户ID" prop="id">
         <el-input
           v-model="listQuery.search.id"
-          placeholder="客户ID"
+          placeholder="用户ID"
+          clearable
+          @keyup.enter.native="handleFilter"
+        />
+      </el-form-item>
+      <el-form-item label="姓名" prop="name">
+        <el-input
+          v-model="listQuery.search.name"
+          placeholder="姓名"
           clearable
           @keyup.enter.native="handleFilter"
         />

@@ -27,16 +27,19 @@ export default {
     };
   },
   created() {
-    //this.change();
+    this.change();
   },
   watch: {
-    arrroute() {
-      this.setchange();
-    },
+    // arrroute() {
+    //   this.setchange();
+    // },
   },
   methods: {
     change() {
-      this.arrroute.push(this.$route.path);
+      //console.log(this.$route.path.slice(0, this.$route.path.lastIndexOf("/")));
+      this.arrroute.push(
+        this.$route.path.slice(0, this.$route.path.lastIndexOf("/"))
+      );
     },
   },
 };

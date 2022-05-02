@@ -2,37 +2,77 @@ const db = require('../db/index')
 const { StringDecoder } = require('string_decoder');
 const decoder = new StringDecoder('utf8');
 exports.getList = (req, res) => {
-    const sql = 'select * from project_item where Deleted = 0'
-    db.query(sql, (err, results) => {
-        if (err) return res.cc(err)
-        //解析bolb类型为string
-        for (var i = 0; i < results.length; i++) {
-            if (results[i].Project_content) {
-                results[i].Project_content = decoder.write(results[i].Project_content)
+    if (!req.query.id && !req.query.name) {
+        const sql = 'select * from project_item where Deleted = 0'
+        db.query(sql, (err, results) => {
+            if (err) return res.cc(err)
+            //解析bolb类型为string
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].Project_content) {
+                    results[i].Project_content = decoder.write(results[i].Project_content)
+                }
             }
-        }
-        if (req.query.page) {
-            let total = results.length
-            let newarr
-            if (total > req.query.size) {
-                newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+            if (req.query.page) {
+                let total = results.length
+                let newarr
+                if (total > req.query.size) {
+                    newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                } else {
+                    newarr = results
+                }
+                res.send({
+                    status: 0,
+                    message: '获取方案列表数据成功',
+                    data: newarr,
+                    total: total
+                })
             } else {
-                newarr = results
+                res.send({
+                    status: 0,
+                    message: '获取方案列表数据成功',
+                    data: results,
+                })
             }
-            res.send({
-                status: 0,
-                message: '获取方案列表数据成功',
-                data: newarr,
-                total: total
-            })
-        } else {
-            res.send({
-                status: 0,
-                message: '获取方案列表数据成功',
-                data: results,
-            })
+        })
+    } else {
+        if (!req.query.id) {
+            req.query.id = ''
         }
-    })
+        if (!req.query.name) {
+            req.query.name = ''
+        }
+        const sql = 'select * from project_item where Deleted = 0 and Project_id like ' + '"%' + req.query.id + '%" and Project_name like ' + '"%' + req.query.name + '%"'
+        db.query(sql, (err, results) => {
+            if (err) return res.cc(err)
+            //解析bolb类型为string
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].Project_content) {
+                    results[i].Project_content = decoder.write(results[i].Project_content)
+                }
+            }
+            if (req.query.page) {
+                let total = results.length
+                let newarr
+                if (total > req.query.size) {
+                    newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                } else {
+                    newarr = results
+                }
+                res.send({
+                    status: 0,
+                    message: '获取方案列表数据成功',
+                    data: newarr,
+                    total: total
+                })
+            } else {
+                res.send({
+                    status: 0,
+                    message: '获取方案列表数据成功',
+                    data: results,
+                })
+            }
+        })
+    }
 }
 
 exports.editForm = async (req, res) => {

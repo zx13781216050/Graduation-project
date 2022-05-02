@@ -79,7 +79,6 @@ export default {
   mounted() {
     this.$eventBus.$on("dialog2", (showDialog) => {
       this.showDialog = showDialog;
-      console.log(showDialog);
     });
   },
   methods: {
@@ -91,18 +90,19 @@ export default {
       } else {
         res = await this.$http.post(`webuser/reguser`, data);
       }
-      localStorage.token = res.data.token;
       if (res.data.status == 0) {
         if (e) {
           this.showDialog = false;
           this.regShowDialog = false;
+          localStorage.webtoken = res.data.token;
+          localStorage.webusername = res.data.username;
+          localStorage.User_id = res.data.User_id;
+          this.$router.go(0);
         } else {
           this.showDialog = true;
           this.regShowDialog = false;
         }
-        localStorage.token = res.data.token;
-        localStorage.username = res.data.username;
-        this.$router.go(0);
+
         this.$notify({
           title: "提示",
           type: "success",

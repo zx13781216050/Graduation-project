@@ -2,39 +2,81 @@ const db = require('../db/index')
 
 exports.getList = (req, res) => {
     let sql
-    if (!req.params.specialty_id) {
-
-        sql = 'select * from specialty_item where Deleted = 0'
-        db.query(sql, (err, results) => {
-            if (err) return res.cc(err)
-            if (req.query.page) {
-                let total = results.length
-                let newarr
-                if (total > req.query.size) {
-                    newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
-                } else {
-                    newarr = results
+    if (req.params.institut_id == 'undefined') {
+        if (!req.query.id && !req.query.name) {
+            const sql = 'select * from specialty_item where Deleted = 0'
+            db.query(sql, (err, results) => {
+                if (err) return res.cc(err)
+                //解析bolb类型为string
+                for (var i = 0; i < results.length; i++) {
+                    if (results[i].Specialty_content) {
+                        results[i].Specialty_content = decoder.write(results[i].Specialty_content)
+                    }
                 }
-                res.send({
-                    status: 0,
-                    message: '获取专业列表数据成功',
-                    data: newarr,
-                    total: total
-                })
-            } else {
-                res.send({
-                    status: 0,
-                    message: '获取专业列表数据成功',
-                    data: results,
-
-                })
+                if (req.query.page) {
+                    let total = results.length
+                    let newarr
+                    if (total > req.query.size) {
+                        newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                    } else {
+                        newarr = results
+                    }
+                    res.send({
+                        status: 0,
+                        message: '获取方案列表数据成功',
+                        data: newarr,
+                        total: total
+                    })
+                } else {
+                    res.send({
+                        status: 0,
+                        message: '获取方案列表数据成功',
+                        data: results,
+                    })
+                }
+            })
+        } else {
+            if (!req.query.id) {
+                req.query.id = ''
             }
-
-        })
+            if (!req.query.name) {
+                req.query.name = ''
+            }
+            const sql = 'select * from specialty_item where Deleted = 0 and Specialty_id like ' + '"%' + req.query.id + '%" and Specialty_name like ' + '"%' + req.query.name + '%"'
+            db.query(sql, (err, results) => {
+                if (err) return res.cc(err)
+                //解析bolb类型为string
+                for (var i = 0; i < results.length; i++) {
+                    if (results[i].Specialty_content) {
+                        results[i].Specialty_content = decoder.write(results[i].Specialty_content)
+                    }
+                }
+                if (req.query.page) {
+                    let total = results.length
+                    let newarr
+                    if (total > req.query.size) {
+                        newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                    } else {
+                        newarr = results
+                    }
+                    res.send({
+                        status: 0,
+                        message: '获取方案列表数据成功',
+                        data: newarr,
+                        total: total
+                    })
+                } else {
+                    res.send({
+                        status: 0,
+                        message: '获取方案列表数据成功',
+                        data: results,
+                    })
+                }
+            })
+        }
     } else {
-
-        sql = 'select * from specialty_item where specialty_id = ?'
-        db.query(sql, req.params.specialty_id, (err, results) => {
+        sql = 'select * from specialty_item where institut_id = ?'
+        db.query(sql, req.params.institut_id, (err, results) => {
             if (err) return res.cc(err)
             res.send({
                 status: 0,

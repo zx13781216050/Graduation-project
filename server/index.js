@@ -115,6 +115,10 @@ const WebProjectRouter = require('./router/WebProject')
 app.use('/api/web/webproject', WebProjectRouter)
 
 // 托管静态资源文件
+const WebDownloadRouter = require('./router/WebDownload')
+app.use('/api/web', WebDownloadRouter)
+
+// 托管静态资源文件
 app.use('/uploads', express.static('./uploads'))
 
 

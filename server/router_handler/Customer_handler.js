@@ -4,27 +4,76 @@ const decoder = new StringDecoder('utf8');
 // 导入处理路径的核心模块
 const path = require('path')
 exports.getList = (req, res) => {
-    const sql = 'select * from customer_item where Deleted = 0'
-    db.query(sql, (err, results) => {
-        if (err) return res.cc(err)
-
-        //解析bolb类型为string
-        for (var i = 0; i < results.length; i++) {
-            if (results[i].Customer_file) {
-                results[i].Customer_file = results[i].Customer_file.substring(results[i].Customer_file.lastIndexOf('\\') + 1);
+    if (!req.query.id && !req.query.name) {
+        const sql = 'select * from customer_item where Deleted = 0'
+        db.query(sql, (err, results) => {
+            if (err) return res.cc(err)
+            //解析bolb类型为string
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].Customer_file) {
+                    results[i].Customer_file = results[i].Customer_file.substring(results[i].Customer_file.lastIndexOf('\\') + 1);
+                }
             }
-        }
-        //const url = URL.createObjectURL(blob);
-        //console.log(results[2].Customer_file)
-        res.send({
-            status: 0,
-            message: '获取客户列表数据成功',
-            data: results,
+            if (req.query.page) {
+                let total = results.length
+                let newarr
+                if (total > req.query.size) {
+                    newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                } else {
+                    newarr = results
+                }
+                res.send({
+                    status: 0,
+                    message: '获取客户列表数据成功',
+                    data: newarr,
+                    total: total
+                })
+            } else {
+                res.send({
+                    status: 0,
+                    message: '获取客户列表数据成功',
+                    data: results,
+                })
+            }
         })
-    })
+    } else {
+        const sql = 'select * from customer_item where Deleted = 0 and Customer_id like ' + '"%' + req.query.id + '%" and Customer_name like ' + '"%' + req.query.name + '%"'
+        db.query(sql, (err, results) => {
+            if (err) return res.cc(err)
+            //解析bolb类型为string
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].Customer_file) {
+                    results[i].Customer_file = results[i].Customer_file.substring(results[i].Customer_file.lastIndexOf('\\') + 1);
+                }
+            }
+            if (req.query.page) {
+                let total = results.length
+                let newarr
+                if (total > req.query.size) {
+                    newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                } else {
+                    newarr = results
+                }
+                res.send({
+                    status: 0,
+                    message: '获取客户列表数据成功',
+                    data: newarr,
+                    total: total
+                })
+            } else {
+                res.send({
+                    status: 0,
+                    message: '获取客户列表数据成功',
+                    data: results,
+                })
+            }
+        })
+    }
+
 }
 
 exports.editForm = async (req, res) => {
+    console.log(req.body)
     if (req.body.Customer_id != 'null') {
         if (!req.body.Target_specialty) {
             delete req.body.Target_specialty;
@@ -56,7 +105,7 @@ exports.editForm = async (req, res) => {
         if (!req.body.Target_specialty) {
             delete req.body.Target_specialty;
         }
-        
+
         let customerInfo
         if (!req.file) {
             customerInfo = {

@@ -68,29 +68,57 @@ exports.login = async (req, res) => {
 }
 
 exports.getList = (req, res) => {
-    let sql
 
-    sql = 'select * from user_item where Deleted = 0'
-    db.query(sql, (err, results) => {
-        if (err) return res.cc(err)
-        if (req.query.page) {
-            let total = results.length
-            let newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
-            res.send({
-                status: 0,
-                message: '获取学院列表数据成功',
-                data: newarr,
-                total: total
-            })
-        } else {
-            res.send({
-                status: 0,
-                message: '获取学院列表数据成功',
-                data: results,
-            })
+    if (!req.query.id && !req.query.name) {
+        let sql
+        sql = 'select * from user_item where Deleted = 0'
+        db.query(sql, (err, results) => {
+            if (err) return res.cc(err)
+            if (req.query.page) {
+                let total = results.length
+                let newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                res.send({
+                    status: 0,
+                    message: '获取学院列表数据成功',
+                    data: newarr,
+                    total: total
+                })
+            } else {
+                res.send({
+                    status: 0,
+                    message: '获取学院列表数据成功',
+                    data: results,
+                })
+            }
+        })
+    } else {
+        if (!req.query.id) {
+            req.query.id = ''
         }
-    })
-
+        if (!req.query.name) {
+            req.query.name = ''
+        }
+        const sql = 'select * from user_item where Deleted = 0 and User_id like ' + '"%' + req.query.id + '%" and Real_name like ' + '"%' + req.query.name + '%"'
+        db.query(sql, (err, results) => {
+            if (err) return res.cc(err)
+            if (req.query.page) {
+                let total = results.length
+                let newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                res.send({
+                    status: 0,
+                    message: '获取学院列表数据成功',
+                    data: newarr,
+                    total: total
+                })
+            } else {
+                res.send({
+                    status: 0,
+                    message: '获取学院列表数据成功',
+                    data: results,
+                })
+            }
+        })
+    }
 }
 
 exports.editForm = async (req, res) => {

@@ -16,9 +16,9 @@
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px"></i>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
-              <el-dropdown-item>新增</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>
+              <el-dropdown-item
+                ><div @click="loginout">退出</div></el-dropdown-item
+              >
             </el-dropdown-menu>
           </el-dropdown>
           <span> {{ username }} </span>
@@ -34,11 +34,11 @@
 <script>
 export default {
   data() {
-    return { username: localStorage.username };
+    return { username: localStorage.webusername };
   },
   methods: {
     ToPerson() {
-      if (!localStorage.token) {
+      if (!localStorage.webtoken) {
         this.FormDialog2();
       } else {
         this.$router.push({ path: "/person" });
@@ -64,6 +64,11 @@ export default {
     },
     FormDialog() {
       this.$eventBus.$emit("dialog", true);
+    },
+    loginout() {
+      window.localStorage.removeItem("webusername");
+      window.localStorage.removeItem("webtoken");
+      window.history.go(0);
     },
   },
   beforeDestory() {

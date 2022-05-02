@@ -1,10 +1,18 @@
 <template>
   <div>
     <el-form size="mini" :inline="true">
-      <el-form-item label="客户ID" prop="id">
+      <el-form-item label="公告ID" prop="id">
         <el-input
           v-model="listQuery.search.id"
-          placeholder="客户ID"
+          placeholder="公告ID"
+          clearable
+          @keyup.enter.native="handleFilter"
+        />
+      </el-form-item>
+      <el-form-item label="公告标题" prop="name">
+        <el-input
+          v-model="listQuery.search.name"
+          placeholder="公告标题"
           clearable
           @keyup.enter.native="handleFilter"
         />
@@ -45,7 +53,7 @@
           />
           <el-table-column
             prop="Notice_title"
-            label="公告名称"
+            label="公告标题"
             align="center"
             :show-overflow-tooltip="true"
             :formatter="(r, c, v) => v || '-'"

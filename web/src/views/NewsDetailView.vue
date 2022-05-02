@@ -13,15 +13,17 @@
         </el-card>
       </div>
     </el-main>
+    <login-form />
   </el-container>
 </template>
 
 <script>
 import HeaderTitle from "../components/HeaderTitle.vue";
-
+import LoginForm from "../components/Login.vue";
 export default {
   components: {
     HeaderTitle,
+    LoginForm,
   },
   data() {
     return {

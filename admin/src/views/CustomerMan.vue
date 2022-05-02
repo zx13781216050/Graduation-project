@@ -9,6 +9,14 @@
           @keyup.enter.native="handleFilter"
         />
       </el-form-item>
+      <el-form-item label="客户姓名" prop="name">
+        <el-input
+          v-model="listQuery.search.name"
+          placeholder="客户姓名"
+          clearable
+          @keyup.enter.native="handleFilter"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="handleFilter"
           >搜索</el-button
@@ -256,13 +264,10 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12" style="">
-            <el-form-item label="联系方式:">
-              <el-input v-model="form.Telephone"></el-input>
+          <el-col :span="12">
+            <el-form-item label="个人资料:">
+              <el-input :value="filename"></el-input>
             </el-form-item>
-          </el-col>
-          <el-col>
-            <upload />
           </el-col>
         </el-row>
       </el-form>
@@ -413,6 +418,37 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
+            <el-form-item label="已报名方案:">
+              <el-select v-model="form.Project_id" placeholder="无" clearable>
+                <el-option
+                  v-for="item in projectOptions"
+                  :key="item.Project_id"
+                  :label="item.Project_name"
+                  :value="item.Project_id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" style="">
+            <el-form-item label="已报名课程:">
+              <el-select
+                v-model="form.Train_id"
+                multiple
+                placeholder="无"
+                clearable
+              >
+                <el-option
+                  v-for="item in trainOptions"
+                  :key="item.Train_id"
+                  :label="item.Train_name"
+                  :value="item.Train_id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" style="">
             <el-form-item label="联系方式:">
               <el-input v-model="form.Telephone"></el-input>
             </el-form-item>
@@ -434,7 +470,7 @@
                 上传
               </el-button>
               <el-input :value="filename"></el-input>
-              <el-button @click="download">下载</el-button>
+              <el-button @click="download" v-show="filename">下载</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -488,6 +524,8 @@ export default {
         Telephone: null,
         Education: null,
         Customer_file: null,
+        Project_id: null,
+        Train_id: null,
       },
       stageOptions: [
         { id: 1, value: "小学" },
@@ -509,6 +547,8 @@ export default {
         { value: 2, label: "女" },
       ],
       specialtyOptions: [],
+      projectOptions: [],
+      trainOptions: [],
       Nation_id: "",
       filename: "",
       listQuery: {
@@ -523,6 +563,8 @@ export default {
     this.getAreaList();
     this.getInstitutList();
     this.getSpecialtyList();
+    this.getProjectList();
+    this.getTrainList();
   },
   watch: {},
   methods: {
@@ -537,7 +579,13 @@ export default {
       Object.keys(this.form).forEach((key) => {
         this.form[key] = row[key];
       });
-      console.log(this.form.Customer_file);
+      if (this.form.Train_id) {
+        this.form.Train_id = this.form.Train_id.split(",");
+        //转为数字
+        this.form.Train_id = this.form.Train_id.map(function (val, index, arr) {
+          return val - 0;
+        });
+      }
       this.filename = this.form.Customer_file;
     },
     //新增列表
@@ -547,7 +595,6 @@ export default {
       this.editFormDialog = true;
     },
     download() {
-      console.log(typeof this.form.Customer_file);
       if (
         this.form.Customer_file &&
         typeof this.form.Customer_file !== "object"
@@ -608,6 +655,8 @@ export default {
       formFile.append("Target_institut", this.form.Target_institut);
       formFile.append("Target_area", this.form.Target_area);
       formFile.append("Target_specialty", this.form.Target_specialty);
+      formFile.append("Project_id", this.form.Project_id);
+      formFile.append("Train_id", this.form.Train_id);
       formFile.append("Telephone", this.form.Telephone);
       formFile.append("Education", this.form.Education);
       formFile.append("Customer_file", this.form.Customer_file);
@@ -642,7 +691,6 @@ export default {
         const res = await this.$http.get(`nation/get_list`);
         if (res.data.status == 0) {
           this.areaOptions = res.data.data;
-          console.log(this.areaOptions);
         } else {
           this.$message({
             type: "error",
@@ -667,10 +715,8 @@ export default {
       } else {
         res = await this.$http.get(`institut/get_list`);
       }
-
       if (res.data.status == 0) {
         this.institutOptions = res.data.data;
-        console.log(this.areaOptions);
       } else {
         this.$message({
           type: "error",
@@ -692,11 +738,37 @@ export default {
 
       if (res.data.status == 0) {
         this.specialtyOptions = res.data.data;
-        console.log(this.areaOptions);
       } else {
         this.$message({
           type: "error",
           message: "获取专业数据失败",
+          duration: 1500,
+        });
+      }
+    },
+    //获取方案列表
+    async getProjectList() {
+      let res = await this.$http.get(`project/get_list`);
+      if (res.data.status == 0) {
+        this.projectOptions = res.data.data;
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取方案数据失败",
+          duration: 1500,
+        });
+      }
+    },
+    //获取课程列表
+    async getTrainList() {
+      let res = await this.$http.get(`train/get_list`);
+      if (res.data.status == 0) {
+        this.trainOptions = res.data.data;
+        console.log(this.trainOptions);
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取方案数据失败",
           duration: 1500,
         });
       }

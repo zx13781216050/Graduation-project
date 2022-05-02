@@ -3,20 +3,77 @@ const { StringDecoder } = require('string_decoder');
 const decoder = new StringDecoder('utf8');
 
 exports.getList = (req, res) => {
-    const sql = 'select * from notice_item where Deleted = 0'
-    db.query(sql, (err, results) => {
-        if (err) return res.cc(err)
-        console.log(results[0]);
-        //解析bolb类型为string
-        if (results[0].Notice_content) {
-            results[0].Notice_content = decoder.write(results[0].Notice_content)
-        }
-        res.send({
-            status: 0,
-            message: '获取方案列表数据成功',
-            data: results,
+    if (!req.query.id && !req.query.name) {
+        const sql = 'select * from notice_item where Deleted = 0'
+        db.query(sql, (err, results) => {
+            if (err) return res.cc(err)
+            //解析bolb类型为string
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].Notice_content) {
+                    results[i].Notice_content = decoder.write(results[i].Notice_content)
+                }
+            }
+            if (req.query.page) {
+                let total = results.length
+                let newarr
+                if (total > req.query.size) {
+                    newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                } else {
+                    newarr = results
+                }
+                res.send({
+                    status: 0,
+                    message: '获取方案列表数据成功',
+                    data: newarr,
+                    total: total
+                })
+            } else {
+                res.send({
+                    status: 0,
+                    message: '获取方案列表数据成功',
+                    data: results,
+                })
+            }
         })
-    })
+    } else {
+        if (!req.query.id) {
+            req.query.id = ''
+        }
+        if (!req.query.name) {
+            req.query.name = ''
+        }
+        const sql = 'select * from notice_item where Deleted = 0 and Notice_id like ' + '"%' + req.query.id + '%" and Notice_title like ' + '"%' + req.query.name + '%"'
+        db.query(sql, (err, results) => {
+            if (err) return res.cc(err)
+            //解析bolb类型为string
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].Notice_content) {
+                    results[i].Notice_content = decoder.write(results[i].Notice_content)
+                }
+            }
+            if (req.query.page) {
+                let total = results.length
+                let newarr
+                if (total > req.query.size) {
+                    newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                } else {
+                    newarr = results
+                }
+                res.send({
+                    status: 0,
+                    message: '获取方案列表数据成功',
+                    data: newarr,
+                    total: total
+                })
+            } else {
+                res.send({
+                    status: 0,
+                    message: '获取方案列表数据成功',
+                    data: results,
+                })
+            }
+        })
+    }
 }
 
 exports.editForm = async (req, res) => {

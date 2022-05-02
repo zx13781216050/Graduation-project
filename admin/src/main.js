@@ -17,22 +17,22 @@ Vue.prototype.$qs = qs
 //存访问路由
 router.afterEach((to, from) => {
   localStorage.setItem("new", to.path)
-
 })
 router.beforeEach((to, from, next) => {
-  console.log(from.path)
+  console.log(store.state.routes)
+  console.log(to.path)
   if (localStorage.token) { // 判断是否有token
     if (to.path === '/login_view') {
       next({ path: '/home' });
     } else {
-      if (router.options.routes.length < 3) {
+      if (router.options.routes.length < 3 || !store.state.routes.length) {
         store.dispatch('getInfo').then(() => {
           store.dispatch('generateRoutes', router.options.asyncRoutes).then((res) => {
             res.forEach(item => {
               router.addRoute(item)
               router.options.routes.push(item);
             })
-            next()
+            next({ ...to, replace: true })
           })
         })
       } else {

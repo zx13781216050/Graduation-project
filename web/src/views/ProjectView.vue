@@ -26,17 +26,20 @@
         </div>
       </div>
     </el-main>
+    <login-form />
   </el-container>
 </template>
 
 <script>
 import HeaderTitle from "../components/HeaderTitle.vue";
+import LoginForm from "../components/Login.vue";
 import { mixin } from "@/mixin/mixin";
 
 export default {
   mixins: [mixin],
   components: {
     HeaderTitle,
+    LoginForm,
   },
   data() {
     return {

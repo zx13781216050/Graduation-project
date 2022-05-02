@@ -43,13 +43,13 @@ exports.regUser = (req, res) => {
 //登录的处理函数
 exports.login = async (req, res) => {
     const userinfo = req.body
+
     const sql = 'select * from Web_user_item where username=?'
     db.query(sql, userinfo.username, (err, results) => {
         if (err) return res.cc(err)
         if (results.length !== 1) return res.cc('登录失败')
         const compareResult = bcrypt.compareSync(userinfo.password, results[0].password)
         if (!compareResult) return res.cc('登录失败')
-
         //const user = { ...results[0], password: '', user_pic: '' }
         const user = { ...results[0], password: '' }
         const tokenStr = jwt.sign(user, config.jwtSecretKey, { expiresIn: config.expiresIn })
@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
             status: 0,
             message: '登陆成功',
             username: userinfo.username,
-
+            User_id: results[0].User_id,
             token: 'Bearer' + tokenStr
         })
     })
