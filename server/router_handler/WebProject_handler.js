@@ -1,5 +1,6 @@
 const db = require('../db/index')
-
+const { StringDecoder } = require('string_decoder');
+const decoder = new StringDecoder('utf8');
 exports.getList = (req, res) => {
     const sql = 'select * from project_item where Deleted = 0'
     db.query(sql, (err, results) => {
@@ -42,6 +43,23 @@ exports.deleteForm = async (req, res) => {
             status: 0,
             message: '删除方案数据成功',
             data: results,
+        })
+    })
+}
+
+exports.getDetail = async (req, res) => {
+    console.log(req.query.Project_id)
+    const sql = 'select * from project_item where Project_id = ?'
+    db.query(sql, req.query.Project_id, (err, results) => {
+        if (err) return res.cc(err)
+        //解析bolb类型为string
+        if (results[0].Project_content) {
+            results[0].Project_content = decoder.write(results[0].Project_content)
+        }
+        res.send({
+            status: 0,
+            message: '获取方案列表数据成功',
+            data: results[0],
         })
     })
 }

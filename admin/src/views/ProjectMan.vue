@@ -34,7 +34,8 @@
           ref="table"
           @selection-change="(s) => (listSelection = s)"
           size="small"
-          height="calc(100vh - 272px)"
+          height="calc(100vh - 250px)"
+          :row-style="{ height: 'calc(10vh - 30px)' }"
           @row-click="
             (row) =>
               $refs.table.toggleRowSelection(row, !listSelection.includes(row))
@@ -96,6 +97,13 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          style="float: right"
+          :total="total"
+          :page="listQuery.page"
+          :limit="listQuery.size"
+          @current-change="getList"
+        />
       </el-col>
     </el-row>
     <el-dialog title="详情" width="800px" :visible.sync="formDialog">
@@ -133,7 +141,11 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="方案内容:">
-              <el-input type="textarea" v-model="form.Project_content" />
+              <quill-editor
+                :content="form.Project_content"
+                :disable="false"
+                @getContent="getGoodContent"
+              ></quill-editor>
             </el-form-item>
           </el-col>
         </el-row>
@@ -182,7 +194,11 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="方案内容:">
-              <el-input type="textarea" v-model="form.Project_content" />
+              <quill-editor
+                :content="form.Project_content"
+                :disable="true"
+                @getContent="getGoodContent"
+              ></quill-editor>
             </el-form-item>
           </el-col>
         </el-row>
@@ -211,13 +227,16 @@
 
 <script>
 import { mixin } from "@/mixin/mixin";
-
+import QuillEditor from "../components/quillEditor.vue";
 export default {
   mixins: [mixin],
+  components: {
+    QuillEditor,
+  },
   data() {
     return {
       entityName: "Project",
-      list: "",
+      list: [],
       form: {
         Project_id: null,
         Project_name: null,
@@ -245,7 +264,32 @@ export default {
     this.getList();
   },
   watch: {},
-  methods: {},
+  methods: {
+    getGoodContent(e) {
+      this.form.Project_content = e;
+    },
+    //提交表单
+    async submitHandle() {
+      let data = this.$qs.stringify(this.form, { arrayFormat: "indices" });
+      const res = await this.$http.put(`${this.entityName}/edit_form`, data);
+      if (res.data.status == 0) {
+        this.editFormDialog = false;
+        this.form.Project_content = "";
+        this.$notify({
+          title: "提示",
+          type: "success",
+          message: res.data.message,
+        });
+      } else {
+        this.$notify.error({
+          title: "提示",
+          message: res.data.message,
+          duration: 1500,
+        });
+      }
+      this.getList();
+    },
+  },
 };
 </script>
 

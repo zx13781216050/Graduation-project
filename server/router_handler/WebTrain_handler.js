@@ -1,5 +1,6 @@
 const db = require('../db/index')
-
+const { StringDecoder } = require('string_decoder');
+const decoder = new StringDecoder('utf8');
 exports.getList = (req, res) => {
     const sql = 'select * from train_item where Deleted = 0'
     db.query(sql, (err, results) => {
@@ -42,6 +43,23 @@ exports.deleteForm = async (req, res) => {
             status: 0,
             message: '删除课程数据成功',
             data: results,
+        })
+    })
+}
+
+exports.getDetail = async (req, res) => {
+    console.log(req.query)
+    const sql = 'select * from train_item where Train_id = ?'
+    db.query(sql, req.query.Train_id, (err, results) => {
+        if (err) return res.cc(err)
+        //解析bolb类型为string
+        if (results[0].Train_content) {
+            results[0].Train_content = decoder.write(results[0].Train_content)
+        }
+        res.send({
+            status: 0,
+            message: '获取课程列表数据成功',
+            data: results[0],
         })
     })
 }

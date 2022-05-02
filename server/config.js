@@ -1,4 +1,4 @@
 module.exports = {
     jwtSecretKey: 'No1. ^-^',
-    expiresIn: '10h'
+    expiresIn: '100h'
 }

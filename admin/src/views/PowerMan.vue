@@ -216,8 +216,8 @@
               <el-input v-model="form.username" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-show="!form.user_id">
-            <el-form-item label="密码:">
+          <el-col :span="12" v-if="!form.User_id">
+            <el-form-item label="初始密码:">
               <el-input v-model="form.password" />
             </el-form-item>
           </el-col>

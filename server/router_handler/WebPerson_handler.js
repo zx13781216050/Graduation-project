@@ -6,7 +6,6 @@ exports.getDetail = async (req, res) => {
     const sql = "select User_id from web_user_item where username = ?"
     db.query(sql, req.body.username, (err, results) => {
         if (err) return res.cc(err)
-        console.log(!results[0].User_id)
         if (!results[0].User_id) return res.cc('未查询到用户ID')
         //res.cc('获取用户ID成功', 0)
         const sql = 'select * from customer_item where User_id = ?'

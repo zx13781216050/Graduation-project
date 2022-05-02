@@ -38,10 +38,14 @@ export default {
   },
   methods: {
     ToPerson() {
-      this.$router.push({ path: "/person" });
+      if (!localStorage.token) {
+        this.FormDialog2();
+      } else {
+        this.$router.push({ path: "/person" });
+      }
     },
     ToInstitute() {
-      this.$router.push({ path: "/institute" });
+      this.$router.push({ path: "/institut" });
     },
     ToHome() {
       this.$router.push({ path: "/" });

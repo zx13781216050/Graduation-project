@@ -131,7 +131,11 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="公告内容:">
-              <el-input type="textarea" v-model="form.Notice_content" />
+              <quill-editor
+                :content="form.Notice_content"
+                :disable="false"
+                @getContent="getGoodContent"
+              ></quill-editor>
             </el-form-item>
           </el-col>
         </el-row>
@@ -170,6 +174,7 @@
             <el-form-item label="公告内容:">
               <quill-editor
                 :content="form.Notice_content"
+                :disable="true"
                 @getContent="getGoodContent"
               ></quill-editor>
             </el-form-item>
@@ -211,7 +216,7 @@ export default {
       content: null,
 
       entityName: "Notice",
-      list: "",
+      list: [],
       form: {
         Notice_id: null,
         Notice_title: null,

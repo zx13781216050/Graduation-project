@@ -5,9 +5,8 @@
       ref="myQuillEditor"
       :value="contentLocal"
       :options="editorOption"
-      @blur="onEditorBlur($event)"
-      @focus="onEditorFocus($event)"
       @change="onEditorChange($event)"
+      @focus="focus($event)"
     >
       {{ content }}
     </quill-editor>
@@ -24,6 +23,10 @@ export default {
     content: {
       type: String,
       default: "",
+    },
+    disable: {
+      type: Boolean,
+      default: true,
     },
   },
   components: {
@@ -63,14 +66,21 @@ export default {
   created() {
     this.test();
   },
+  watch: {
+    content() {
+      this.test();
+    },
+  },
   methods: {
     test() {
-      console.log(this.content);
       this.contentLocal = this.content;
     },
     onEditorChange(e) {
-      console.log(e);
       this.$emit("getContent", e.html);
+    },
+    //获取焦点事件
+    focus(event) {
+      event.enable(this.disable); //设置富文本编辑器不可编辑
     },
   },
 };

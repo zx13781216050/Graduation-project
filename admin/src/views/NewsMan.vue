@@ -131,7 +131,11 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="新闻内容:">
-              <el-input type="textarea" v-model="form.News_content" />
+              <quill-editor
+                :content="form.News_content"
+                :disable="false"
+                @getContent="getGoodContent"
+              ></quill-editor>
             </el-form-item>
           </el-col>
         </el-row>
@@ -170,6 +174,7 @@
             <el-form-item label="新闻内容:">
               <quill-editor
                 :content="form.News_content"
+                :disable="true"
                 @getContent="getGoodContent"
               ></quill-editor>
             </el-form-item>
@@ -209,9 +214,8 @@ export default {
   data() {
     return {
       content: null,
-
       entityName: "News",
-      list: "",
+      list: [],
       form: {
         News_id: null,
         News_title: null,
@@ -254,6 +258,7 @@ export default {
         return this.formatTime2(datetime);
       }
     },
+
     //提交表单
     async submitHandle() {
       this.form.News_time = this.formatTime2(this.form.News_time);

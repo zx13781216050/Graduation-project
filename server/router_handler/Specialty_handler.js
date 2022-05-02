@@ -9,7 +9,12 @@ exports.getList = (req, res) => {
             if (err) return res.cc(err)
             if (req.query.page) {
                 let total = results.length
-                let newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                let newarr
+                if (total > req.query.size) {
+                    newarr = results.splice((req.query.page - 1) * req.query.size, req.query.size)
+                } else {
+                    newarr = results
+                }
                 res.send({
                     status: 0,
                     message: '获取专业列表数据成功',

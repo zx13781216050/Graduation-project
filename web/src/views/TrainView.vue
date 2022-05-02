@@ -7,7 +7,7 @@
           <div class="title">课程选择</div>
           <div class="img"><img src="../assets/l-x.png" alt="" /></div>
           <div class="Train">
-            <ul v-for="data in list" :key="data.Traine_id">
+            <ul v-for="data in list" :key="data.Train_id">
               <li>
                 <div class="Train_name" style="width: 300px">
                   {{ data.Train_name }}
@@ -16,7 +16,7 @@
                   class="button"
                   type="danger"
                   plain
-                  @click="totrainedetail(data.Traine_id)"
+                  @click="totraindetail(data.Train_id)"
                 >
                   详情
                 </el-button>
@@ -41,7 +41,12 @@ export default {
   data() {
     return {
       entityName: "webtrain",
-      form: {},
+      form: {
+        Train_id: null,
+        Train_name: null,
+        Train_describe: null,
+        Train_content: null,
+      },
       list: [],
     };
   },
@@ -49,11 +54,11 @@ export default {
     this.getList();
   },
   methods: {
-    totrainedetail(id) {
+    totraindetail(id) {
       this.$router.push({
         path: "/traindetail",
         query: {
-          Traine_id: id,
+          Train_id: id,
         },
       });
     },

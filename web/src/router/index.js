@@ -5,8 +5,8 @@ import MainView from '../views/MainView.vue'
 import PersonView from '../views/PersonView.vue'
 import NewsView from '../views/NewsView.vue'
 import NewsDetailView from '../views/NewsDetailView.vue'
-import InstituteView from '../views/InstituteView.vue'
-import InstituteDetailView from '../views/InstituteDetailView'
+import InstitutView from '../views/InstitutView.vue'
+import InstitutDetailView from '../views/InstitutDetailView'
 import TrainView from '../views/TrainView'
 import ProjectView from '../views/ProjectView'
 import TrainDetailView from '../views/TrainDetailView'
@@ -37,14 +37,14 @@ const router = new VueRouter({
             component: NewsDetailView,
         },
         {
-            path: '/institute',
-            name: 'InstituteView',
-            component: InstituteView,
+            path: '/institut',
+            name: 'InstitutView',
+            component: InstitutView,
         },
         {
-            path: '/institutedetail',
-            name: 'InstituteDetailView',
-            component: InstituteDetailView,
+            path: '/institutdetail',
+            name: 'InstitutDetailView',
+            component: InstitutDetailView,
         },
         {
             path: '/train',

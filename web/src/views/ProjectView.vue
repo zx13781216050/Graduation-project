@@ -7,7 +7,7 @@
           <div class="title">课程选择</div>
           <div class="img"><img src="../assets/l-x.png" alt="" /></div>
           <div class="Project">
-            <ul v-for="data in list" :key="data.Projecte_id">
+            <ul v-for="data in list" :key="data.Project_id">
               <li>
                 <div class="Project_name" style="width: 300px">
                   {{ data.Project_name }}
@@ -16,7 +16,7 @@
                   class="button"
                   type="danger"
                   plain
-                  @click="toprojectedetail(data.Projecte_id)"
+                  @click="toprojectedetail(data.Project_id)"
                 >
                   详情
                 </el-button>
@@ -53,7 +53,7 @@ export default {
       this.$router.push({
         path: "/projectdetail",
         query: {
-          Projecte_id: id,
+          Project_id: id,
         },
       });
     },

@@ -17,4 +17,6 @@ router.put('/edit_form', userHandler.editForm)
 
 router.delete('/delete_form', userHandler.deleteForm)
 
+router.get('/user_info', userHandler.userInfo)
+
 module.exports = router

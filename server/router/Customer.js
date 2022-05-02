@@ -25,7 +25,7 @@ var upload = multer({ storage: storage })
 
 router.get('/get_list', customer_handler.getList)
 
-router.put('/edit_form', upload.single('Customer_file'), customer_handler.editForm)
+router.patch('/edit_form', upload.single('Customer_file'), customer_handler.editForm)
 
 router.delete('/delete_form', customer_handler.deleteForm)
 

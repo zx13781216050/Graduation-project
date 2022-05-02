@@ -9,4 +9,6 @@ router.put('/edit_form', Webtrain_handler.editForm)
 
 router.delete('/delete_form', Webtrain_handler.deleteForm)
 
+router.get('/get_detail', Webtrain_handler.getDetail)
+
 module.exports = router

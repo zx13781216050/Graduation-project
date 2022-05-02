@@ -5,10 +5,8 @@
       <div class="content">
         <el-card :body-style="{ padding: '0px' }">
           <div style="padding: 14px">
-            <h1 class="News_title">{{ form.News_title }}</h1>
-            <div class="News_author">{{ form.News_author }}</div>
-            <div class="News_time">{{ form.News_time }}</div>
-            <div class="News_content" v-html="form.News_content"></div>
+            <h1 class="Institut_name">{{ form.Institut_name }}</h1>
+            <div class="Introduce" v-html="form.Introduce"></div>
           </div>
         </el-card>
       </div>
@@ -18,33 +16,37 @@
 
 <script>
 import HeaderTitle from "../components/HeaderTitle.vue";
-
 export default {
   components: {
     HeaderTitle,
   },
+
   data() {
     return {
       form: {
-        News_id: null,
-        News_title: null,
-        News_content: null,
-        News_author: null,
-        News_time: null,
+        Institut_id: null,
+        Institut_name: null,
+        Nation_id: null,
+        Stage_id: null,
+        Toefl: null,
+        Sat: null,
+        Ielts: null,
+        Introduce: null,
       },
     };
   },
   created() {
     this.getDetail();
+    this.getSpecialty();
   },
   methods: {
     async getDetail() {
-      const res = await this.$http.get(`webnews/get_detail`, {
-        params: { News_id: this.$route.query.News_id },
+      console.log(this.$route.query.Institut_id);
+      const res = await this.$http.get(`webinstitut/get_detail`, {
+        params: { Institut_id: this.$route.query.Institut_id },
       });
       if (res.data.status == 0) {
         this.form = res.data.data;
-        this.form.News_time = this.formatTime2(this.form.News_time);
       } else {
         this.$message({
           type: "error",
@@ -53,6 +55,7 @@ export default {
         });
       }
     },
+    async getSpecialty() {},
   },
 };
 </script>
@@ -70,28 +73,14 @@ export default {
   color: #333;
   text-align: center;
   line-height: 160px;
+  .el-card {
+    width: 80%;
+    margin: 100px auto;
+  }
 }
-.content {
-  position: relative;
-  width: 60%;
-  top: 10%;
-  left: 20%;
-  .News_title {
-    height: 20px;
-    line-height: 20px;
-  }
-  .News_author {
-    height: 20px;
-    line-height: 20px;
-  }
-  .News_time {
-    font-size: 13px;
-    color: #999;
-    height: 20px;
-    line-height: 20px;
-  }
-  .News_content {
-    line-height: 40px;
-  }
+.Introduce {
+  width: 80%;
+  line-height: 40px;
+  margin: 0 auto;
 }
 </style>

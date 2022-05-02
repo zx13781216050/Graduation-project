@@ -7,7 +7,7 @@
           <div class="title">院校专业</div>
           <div class="img"><img src="../assets/l-x.png" alt="" /></div>
           <div class="Institut">
-            <ul v-for="data in list" :key="data.Institute_id">
+            <ul v-for="data in list" :key="data.Institut_id">
               <li>
                 <div class="Institut_name" style="width: 300px">
                   {{ data.Institut_name }}
@@ -16,7 +16,7 @@
                   class="button"
                   type="danger"
                   plain
-                  @click="toinstitutedetail(data.Institute_id)"
+                  @click="toinstitutdetail(data.Institut_id)"
                 >
                   详情
                 </el-button>
@@ -41,7 +41,16 @@ export default {
   data() {
     return {
       entityName: "webinstitut",
-      form: {},
+      form: {
+        Institut_id: null,
+        Institut_name: null,
+        Nation_id: null,
+        Stage_id: null,
+        Toefl: null,
+        Sat: null,
+        Ielts: null,
+        Introduce: null,
+      },
       list: [],
     };
   },
@@ -49,11 +58,12 @@ export default {
     this.getList();
   },
   methods: {
-    toinstitutedetail(id) {
+    toinstitutdetail(id) {
+      console.log(id);
       this.$router.push({
-        path: "/institutedetail",
+        path: "/institutdetail",
         query: {
-          Institute_id: id,
+          Institut_id: id,
         },
       });
     },

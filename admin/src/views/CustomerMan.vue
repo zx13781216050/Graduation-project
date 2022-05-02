@@ -473,7 +473,7 @@ export default {
   data() {
     return {
       entityName: "customer",
-      list: "",
+      list: [],
       formDialog: false,
       editFormDialog: false,
       form: {
@@ -537,7 +537,14 @@ export default {
       Object.keys(this.form).forEach((key) => {
         this.form[key] = row[key];
       });
+      console.log(this.form.Customer_file);
       this.filename = this.form.Customer_file;
+    },
+    //新增列表
+    addHandle() {
+      this.resetForm();
+      this.filename = "";
+      this.editFormDialog = true;
     },
     download() {
       console.log(typeof this.form.Customer_file);
@@ -599,14 +606,15 @@ export default {
       formFile.append("Customer_birthday", this.form.Customer_birthday);
       formFile.append("Customer_stage", this.form.Customer_stage);
       formFile.append("Target_institut", this.form.Target_institut);
+      formFile.append("Target_area", this.form.Target_area);
       formFile.append("Target_specialty", this.form.Target_specialty);
       formFile.append("Telephone", this.form.Telephone);
       formFile.append("Education", this.form.Education);
       formFile.append("Customer_file", this.form.Customer_file);
-      this.form.Customer_file = formFile;
+      //this.form.Customer_file = formFile;
       console.log(this.form);
       //let data = this.$qs.stringify(this.form);
-      const res = await this.$http.put(
+      const res = await this.$http.patch(
         `${this.entityName}/edit_form`,
         formFile,
         { headers: { "Content-Type": "multipart/form-data;charse=UTF-8" } }

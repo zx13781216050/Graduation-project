@@ -25,16 +25,25 @@ exports.getList = (req, res) => {
 }
 
 exports.editForm = async (req, res) => {
-    if (req.body.Customer_id) {
+    if (req.body.Customer_id != 'null') {
         if (!req.body.Target_specialty) {
             delete req.body.Target_specialty;
         }
-        console.log(req.file)
-        const customerInfo = {
-            // 标题、内容、状态、所属的分类Id
-            ...req.body,
-            // 文章封面在服务器端的存放路径
-            Customer_file: path.join('/uploads', req.file.filename),
+        let customerInfo
+        if (!req.file) {
+            customerInfo = {
+                // 标题、内容、状态、所属的分类Id
+                ...req.body,
+                // 文章封面在服务器端的存放路径
+                Customer_file: path.join('/uploads', req.body.Customer_file),
+            }
+        } else {
+            customerInfo = {
+                // 标题、内容、状态、所属的分类Id
+                ...req.body,
+                // 文章封面在服务器端的存放路径
+                Customer_file: path.join('/uploads', req.file.filename),
+            }
         }
         const sql = 'update customer_item set ? where Customer_id =?'
         db.query(sql, [customerInfo, req.body.Customer_id], (err, results) => {
@@ -47,8 +56,26 @@ exports.editForm = async (req, res) => {
         if (!req.body.Target_specialty) {
             delete req.body.Target_specialty;
         }
+        
+        let customerInfo
+        if (!req.file) {
+            customerInfo = {
+                // 标题、内容、状态、所属的分类Id
+                ...req.body,
+                // 文章封面在服务器端的存放路径
+                Customer_file: path.join('/uploads', req.body.Customer_file),
+            }
+        } else {
+            customerInfo = {
+                // 标题、内容、状态、所属的分类Id
+                ...req.body,
+                // 文章封面在服务器端的存放路径
+                Customer_file: path.join('/uploads', req.file.filename),
+            }
+        }
+        console.log(customerInfo)
         const sql = 'insert into customer_item set ?'
-        db.query(sql, req.body, (err, results) => {
+        db.query(sql, customerInfo, (err, results) => {
             if (err) return res.cc(err)
             if (results.affectedRows !== 1) return res.cc('添加客户信息失败')
             res.cc('添加成功', 0)

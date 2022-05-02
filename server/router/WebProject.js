@@ -9,4 +9,6 @@ router.put('/edit_form', webproject_handler.editForm)
 
 router.delete('/delete_form', webproject_handler.deleteForm)
 
+router.get('/get_detail', webproject_handler.getDetail)
+
 module.exports = router

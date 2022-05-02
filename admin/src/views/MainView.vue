@@ -1,7 +1,7 @@
 <template>
-  <el-container style="height: 100vh; border: 1px solid #eee">
+  <el-container style="height: 100vh">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu router default-active="$route.path">
+      <!-- <el-menu router default-active="$route.path">   
         <el-menu-item index="/index_view">首页</el-menu-item>
         <el-submenu index="1">
           <template slot="title"
@@ -73,7 +73,8 @@
             <el-menu-item index="/institut/specialty_man">专业</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-      </el-menu>
+      </el-menu> -->
+      <side-bar />
     </el-aside>
 
     <el-container>
@@ -97,7 +98,10 @@
 </template>
 
 <script>
+import SideBar from "../components/SideBar.vue";
 export default {
+  components: { SideBar },
+
   data() {
     return {
       username: localStorage.username,
@@ -107,13 +111,18 @@ export default {
     loginout() {
       window.localStorage.removeItem("username");
       window.localStorage.removeItem("token");
-      this.$router.push({ path: "/login" });
+      window.localStorage.removeItem("roles");
+      window.history.go(0);
     },
   },
 };
 </script>
 
 <style scoped>
+* {
+  padding: 0;
+  margin: 0;
+}
 .el-header {
   background-color: #b3c0d1;
   color: #333;
@@ -121,6 +130,6 @@ export default {
 }
 
 .el-aside {
-  color: #333;
+  background-color: #304156 !important;
 }
 </style>

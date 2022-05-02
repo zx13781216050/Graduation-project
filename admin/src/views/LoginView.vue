@@ -27,13 +27,15 @@ export default {
     async login() {
       let data = this.$qs.stringify(this.model);
       const res = await this.$http.post("user/login", data);
-      localStorage.token = res.data.token;
 
       if (res.data.status == 0) {
-        this.$router.push("/");
         localStorage.username = res.data.username;
+        localStorage.token = res.data.token;
         this.$store.commit("setusername", res.data.username);
         this.$store.commit("settoken", res.data.token);
+        this.$nextTick(() => {
+          this.$router.push("/home");
+        });
 
         this.$notify({
           title: "提示",
