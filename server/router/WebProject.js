@@ -11,4 +11,6 @@ router.delete('/delete_form', webproject_handler.deleteForm)
 
 router.get('/get_detail', webproject_handler.getDetail)
 
+router.patch('/sign_up', webproject_handler.signUp)
+
 module.exports = router

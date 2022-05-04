@@ -4,6 +4,7 @@ const decoder = new StringDecoder('utf8');
 // 导入处理路径的核心模块
 const path = require('path')
 exports.getList = (req, res) => {
+
     if (!req.query.id && !req.query.name) {
         const sql = 'select * from customer_item where Deleted = 0'
         db.query(sql, (err, results) => {
@@ -37,9 +38,16 @@ exports.getList = (req, res) => {
             }
         })
     } else {
+        if (!req.query.id) {
+            req.query.id = ''
+        }
+        if (!req.query.name) {
+            req.query.name = ''
+        }
         const sql = 'select * from customer_item where Deleted = 0 and Customer_id like ' + '"%' + req.query.id + '%" and Customer_name like ' + '"%' + req.query.name + '%"'
         db.query(sql, (err, results) => {
             if (err) return res.cc(err)
+            console.log(results)
             //解析bolb类型为string
             for (var i = 0; i < results.length; i++) {
                 if (results[i].Customer_file) {

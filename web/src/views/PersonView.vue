@@ -151,6 +151,43 @@
                   <el-input v-model="form.Telephone"></el-input>
                 </el-form-item>
               </el-col>
+              <el-col :span="24" style="">
+                <el-form-item label="已报名方案:">
+                  <el-select
+                    v-model="form.Project_id"
+                    placeholder="无"
+                    style="width: 600px"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in projectOptions"
+                      :key="item.Project_id"
+                      :label="item.Project_name"
+                      :value="item.Project_id"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24" style="">
+                <el-form-item label="已报名课程:">
+                  <el-select
+                    v-model="form.Train_id"
+                    multiple
+                    placeholder="无"
+                    style="width: 600px"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in trainOptions"
+                      :key="item.Train_id"
+                      :label="item.Train_name"
+                      :value="item.Train_id"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
             </el-row>
           </el-form>
           <span slot="footer" class="dialog-footer">
@@ -384,6 +421,8 @@ export default {
         { value: 2, label: "女" },
       ],
       specialtyOptions: [],
+      projectOptions: [],
+      trainOptions: [],
       filename: "",
     };
   },
@@ -392,6 +431,8 @@ export default {
     this.getAreaList();
     this.getInstitutList();
     this.getSpecialtyList();
+    this.getProjectList();
+    this.getTrainList();
   },
   methods: {
     //获取文件数据
@@ -502,6 +543,17 @@ export default {
       const res = await this.$http.post(`${this.entityName}/get_detail`, data);
       if (res.data.status == 0) {
         this.form = res.data.data;
+        if (this.form.Train_id) {
+          this.form.Train_id = this.form.Train_id.split(",");
+          //转为数字
+          this.form.Train_id = this.form.Train_id.map(function (
+            val,
+            index,
+            arr
+          ) {
+            return val - 0;
+          });
+        }
       }
     },
 
@@ -566,6 +618,33 @@ export default {
         this.$message({
           type: "error",
           message: "获取专业数据失败",
+          duration: 1500,
+        });
+      }
+    },
+    //获取方案列表
+    async getProjectList() {
+      let res = await this.$http.get(`webproject/get_list`);
+      if (res.data.status == 0) {
+        this.projectOptions = res.data.data;
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取方案数据失败",
+          duration: 1500,
+        });
+      }
+    },
+    //获取课程列表
+    async getTrainList() {
+      let res = await this.$http.get(`webtrain/get_list`);
+      if (res.data.status == 0) {
+        this.trainOptions = res.data.data;
+        console.log(this.trainOptions);
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取方案数据失败",
           duration: 1500,
         });
       }

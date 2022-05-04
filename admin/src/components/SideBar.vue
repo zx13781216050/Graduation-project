@@ -5,7 +5,6 @@
     theme="dark"
     router
     :collapse="false"
-    :default-active="$route.path"
     :default-openeds="arrroute"
     background-color="#304156"
     text-color="#bfcbd9"

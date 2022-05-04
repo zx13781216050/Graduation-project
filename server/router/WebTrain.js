@@ -11,4 +11,6 @@ router.delete('/delete_form', Webtrain_handler.deleteForm)
 
 router.get('/get_detail', Webtrain_handler.getDetail)
 
+router.patch('/sign_up', Webtrain_handler.signUp)
+
 module.exports = router

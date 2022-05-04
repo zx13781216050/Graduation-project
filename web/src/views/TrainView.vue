@@ -12,14 +12,24 @@
                 <div class="Train_name" style="width: 300px">
                   {{ data.Train_name }}
                 </div>
-                <el-button
-                  class="button"
-                  type="danger"
-                  plain
-                  @click="totraindetail(data.Train_id)"
-                >
-                  详情
-                </el-button>
+                <div class="dbutton">
+                  <el-button
+                    class="button"
+                    type="primary"
+                    plain
+                    @click="signup(data.Train_id)"
+                  >
+                    报名
+                  </el-button>
+                  <el-button
+                    class="button"
+                    type="danger"
+                    plain
+                    @click="toprojectedetail(data.Train_id)"
+                  >
+                    详情
+                  </el-button>
+                </div>
               </li>
             </ul>
           </div>
@@ -57,6 +67,38 @@ export default {
     this.getList();
   },
   methods: {
+    async signup(id) {
+      let data = this.$qs.stringify({
+        Train_id: id,
+        User_id: localStorage.User_id,
+      });
+      const res = await this.$http.patch(`webtrain/sign_up`, data);
+      if (res.data.status == 0) {
+        this.$message({
+          type: "success",
+          message: "报名成功",
+          duration: 1500,
+        });
+      } else if (res.data.status == 1) {
+        this.$message({
+          type: "error",
+          message: "请先完善个人资料",
+          duration: 1500,
+        });
+      } else if (res.data.status == 2) {
+        this.$message({
+          type: "error",
+          message: "不能重复报名",
+          duration: 1500,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: "报名失败",
+          duration: 1500,
+        });
+      }
+    },
     totraindetail(id) {
       this.$router.push({
         path: "/traindetail",
@@ -109,7 +151,14 @@ export default {
         border-bottom: 1px #e0e0e0 solid;
         .button {
           float: right;
+          position: absolute;
           margin-top: -55px;
+        }
+        .el-button + .el-button {
+          margin-left: 100px;
+        }
+        .dbutton {
+          margin-left: 300px;
         }
       }
       li:hover {

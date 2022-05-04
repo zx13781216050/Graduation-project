@@ -3,7 +3,7 @@ const { StringDecoder } = require('string_decoder');
 const decoder = new StringDecoder('utf8');
 exports.getList = (req, res) => {
     let sql
-    if (req.params.Nation_id == 'undefined') {
+    if (req.params.Nation_id == undefined) {
         if (!req.query.id && !req.query.name) {
             sql = 'select * from institut_item where Deleted = 0'
             db.query(sql, (err, results) => {

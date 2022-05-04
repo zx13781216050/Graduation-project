@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     async getDetail() {
-      console.log(this.$route.query.Project_id);
       const res = await this.$http.get(`webproject/get_detail`, {
         params: { Project_id: this.$route.query.Project_id },
       });

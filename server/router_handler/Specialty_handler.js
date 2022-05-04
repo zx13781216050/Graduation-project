@@ -1,8 +1,9 @@
 const db = require('../db/index')
 
 exports.getList = (req, res) => {
+    console.log(req.params)
     let sql
-    if (req.params.institut_id == 'undefined') {
+    if (!req.params.institut_id) {
         if (!req.query.id && !req.query.name) {
             const sql = 'select * from specialty_item where Deleted = 0'
             db.query(sql, (err, results) => {

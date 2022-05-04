@@ -48,7 +48,6 @@ exports.deleteForm = async (req, res) => {
 }
 
 exports.getDetail = async (req, res) => {
-    console.log(req.query.Project_id)
     const sql = 'select * from project_item where Project_id = ?'
     db.query(sql, req.query.Project_id, (err, results) => {
         if (err) return res.cc(err)
@@ -60,6 +59,21 @@ exports.getDetail = async (req, res) => {
             status: 0,
             message: '获取方案列表数据成功',
             data: results[0],
+        })
+    })
+}
+
+exports.signUp = async (req, res) => {
+    const sql = 'select * from customer_item where User_id = ?'
+    db.query(sql, req.body.User_id, (err, results) => {
+        if (results == []) return res.send({ status: 1, message: '未查询到客户信息', })
+        if (results[0].Project_id) return res.send({ status: 2, message: '重复报名', })
+        const sql = 'update customer_item set Project_id = ? where User_id = ?'
+        db.query(sql, [req.body.Project_id, req.body.User_id], (err, results) => {
+            res.send({
+                status: 0,
+                message: '报名成功',
+            })
         })
     })
 }
