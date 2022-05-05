@@ -264,6 +264,40 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12" style="">
+            <el-form-item label="客户级别:">
+              <el-select
+                v-model="form.Customer_level"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in levelOptions"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" style="">
+            <el-form-item label="客户来源:">
+              <el-select
+                v-model="form.Tourist_source"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in sourceOptions"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
             <el-form-item label="个人资料:">
               <el-input :value="filename"></el-input>
@@ -453,6 +487,40 @@
               <el-input v-model="form.Telephone"></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="12" style="">
+            <el-form-item label="客户级别:">
+              <el-select
+                v-model="form.Customer_level"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in levelOptions"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" style="">
+            <el-form-item label="客户来源:">
+              <el-select
+                v-model="form.Tourist_source"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in sourceOptions"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
             <el-form-item label="个人资料:">
               <el-button
@@ -526,6 +594,8 @@ export default {
         Customer_file: null,
         Project_id: null,
         Train_id: null,
+        Customer_level: null,
+        Tourist_source: null,
       },
       stageOptions: [
         { id: 1, value: "小学" },
@@ -539,6 +609,17 @@ export default {
         { id: 3, value: "高中" },
         { id: 4, value: "本科" },
         { id: 5, value: "硕士" },
+      ],
+      levelOptions: [
+        { id: 1, value: "一级客户" },
+        { id: 2, value: "二级客户" },
+        { id: 3, value: "三级客户" },
+      ],
+      sourceOptions: [
+        { id: 1, value: "来访" },
+        { id: 2, value: "浏览网站" },
+        { id: 3, value: "朋友介绍" },
+        { id: 4, value: "其他" },
       ],
       areaOptions: [],
       institutOptions: [],
@@ -659,6 +740,8 @@ export default {
       formFile.append("Train_id", this.form.Train_id);
       formFile.append("Telephone", this.form.Telephone);
       formFile.append("Education", this.form.Education);
+      formFile.append("Customer_level", this.form.Customer_level);
+      formFile.append("Tourist_source", this.form.Tourist_source);
       formFile.append("Customer_file", this.form.Customer_file);
       //this.form.Customer_file = formFile;
       console.log(this.form);

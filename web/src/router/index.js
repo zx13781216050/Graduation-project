@@ -11,6 +11,7 @@ import TrainView from '../views/TrainView'
 import ProjectView from '../views/ProjectView'
 import TrainDetailView from '../views/TrainDetailView'
 import ProjectDetailView from '../views/ProjectDetailView'
+import QuestionView from '../views/QuestionView'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -66,7 +67,11 @@ const router = new VueRouter({
             name: 'ProjectDetailView',
             component: ProjectDetailView,
         },
-
+        {
+            path: '/question',
+            name: 'QuestionView',
+            component: QuestionView,
+        },
     ]
 })
 

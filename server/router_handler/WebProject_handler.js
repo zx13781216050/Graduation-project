@@ -52,8 +52,10 @@ exports.getDetail = async (req, res) => {
     db.query(sql, req.query.Project_id, (err, results) => {
         if (err) return res.cc(err)
         //解析bolb类型为string
-        if (results[0].Project_content) {
-            results[0].Project_content = decoder.write(results[0].Project_content)
+        for (var i = 0; i < results.length; i++) {
+            if (results[i].Project_content) {
+                results[i].Project_content = decoder.write(results[i].Project_content)
+            }
         }
         res.send({
             status: 0,
@@ -64,16 +66,21 @@ exports.getDetail = async (req, res) => {
 }
 
 exports.signUp = async (req, res) => {
-    const sql = 'select * from customer_item where User_id = ?'
-    db.query(sql, req.body.User_id, (err, results) => {
-        if (results == []) return res.send({ status: 1, message: '未查询到客户信息', })
-        if (results[0].Project_id) return res.send({ status: 2, message: '重复报名', })
-        const sql = 'update customer_item set Project_id = ? where User_id = ?'
-        db.query(sql, [req.body.Project_id, req.body.User_id], (err, results) => {
-            res.send({
-                status: 0,
-                message: '报名成功',
+    if (req.body.User_id == undefined) {
+        return res.send({ status: 1, message: '请先登录', })
+    } else {
+        const sql = 'select * from customer_item where User_id = ?'
+        db.query(sql, req.body.User_id, (err, results) => {
+            if (results == []) return res.send({ status: 1, message: '请先完善个人信息', })
+            if (results[0].Project_id) return res.send({ status: 2, message: '重复报名', })
+            const sql = 'update customer_item set Project_id = ? where User_id = ?'
+            db.query(sql, [req.body.Project_id, req.body.User_id], (err, results) => {
+                res.send({
+                    status: 0,
+                    message: '报名成功',
+                })
             })
         })
-    })
+    }
+
 }

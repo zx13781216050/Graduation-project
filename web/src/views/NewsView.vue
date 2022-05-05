@@ -10,14 +10,11 @@
             <el-col
               :span="5"
               v-for="o in newsOption"
-              :key="o"
+              :key="o.News_id"
               style="margin: 10px"
             >
               <el-card :body-style="{ padding: '0px' }">
-                <img
-                  src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                  class="image"
-                />
+                <img class="image" :src="o.image" />
                 <div style="padding: 14px">
                   <div class="news_title">
                     {{ o.News_title }}
@@ -74,6 +71,10 @@ export default {
           element.News_time = this.formatTime(element.News_time);
           return element;
         });
+        res.data.data.forEach((item) => {
+          item.image = this.imgUrlFun(item.News_content);
+        });
+        console.log(this.imgUrlFun(res.data.data[2].News_content));
         this.newsOption = this.newsOption.reverse();
         // this.$message({
         //   type: "success",
@@ -94,6 +95,15 @@ export default {
           News_id: id,
         },
       });
+    },
+    imgUrlFun(str) {
+      var data = "";
+      str
+        .toString()
+        .replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/, function (match, capture) {
+          data = capture;
+        });
+      return data;
     },
   },
 };
@@ -160,6 +170,7 @@ export default {
     }
 
     .image {
+      height: 200px;
       width: 100%;
       display: block;
     }

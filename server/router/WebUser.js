@@ -11,4 +11,6 @@ router.post('/reguser', expressJoi(reg_login_schema), userHandler.regUser)
 //登录
 router.post('/login', expressJoi(reg_login_schema), userHandler.login)
 
+router.post('/quest', userHandler.quest)
+
 module.exports = router

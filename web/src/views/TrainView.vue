@@ -25,7 +25,7 @@
                     class="button"
                     type="danger"
                     plain
-                    @click="toprojectedetail(data.Train_id)"
+                    @click="totraindetail(data.Train_id)"
                   >
                     详情
                   </el-button>
@@ -76,25 +76,13 @@ export default {
       if (res.data.status == 0) {
         this.$message({
           type: "success",
-          message: "报名成功",
-          duration: 1500,
-        });
-      } else if (res.data.status == 1) {
-        this.$message({
-          type: "error",
-          message: "请先完善个人资料",
-          duration: 1500,
-        });
-      } else if (res.data.status == 2) {
-        this.$message({
-          type: "error",
-          message: "不能重复报名",
+          message: res.data.message,
           duration: 1500,
         });
       } else {
         this.$message({
           type: "error",
-          message: "报名失败",
+          message: res.data.message,
           duration: 1500,
         });
       }

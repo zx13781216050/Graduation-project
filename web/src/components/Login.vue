@@ -94,6 +94,7 @@ export default {
         if (e) {
           this.showDialog = false;
           this.regShowDialog = false;
+          console.log(res.data);
           localStorage.webtoken = res.data.token;
           localStorage.webusername = res.data.username;
           localStorage.User_id = res.data.User_id;

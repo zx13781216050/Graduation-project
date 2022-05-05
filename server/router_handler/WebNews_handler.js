@@ -8,8 +8,10 @@ exports.getList = (req, res) => {
         if (err) return res.cc(err)
 
         //解析bolb类型为string
-        if (results[0].News_content) {
-            results[0].News_content = decoder.write(results[0].News_content)
+        for (var i = 0; i < results.length; i++) {
+            if (results[i].News_content) {
+                results[i].News_content = decoder.write(results[i].News_content)
+            }
         }
         res.send({
             status: 0,
@@ -26,8 +28,10 @@ exports.getDetail = async (req, res) => {
         if (err) return res.cc(err)
 
         //解析bolb类型为string
-        if (results[0].News_content) {
-            results[0].News_content = decoder.write(results[0].News_content)
+        for (var i = 0; i < results.length; i++) {
+            if (results[i].News_content) {
+                results[i].News_content = decoder.write(results[i].News_content)
+            }
         }
         res.send({
             status: 0,

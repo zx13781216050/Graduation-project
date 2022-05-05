@@ -65,27 +65,31 @@ exports.getDetail = async (req, res) => {
 }
 
 exports.signUp = async (req, res) => {
-
-    const sql = 'select * from customer_item where User_id = ?'
-    db.query(sql, req.body.User_id, (err, results) => {
-        if (results == []) return res.send({ status: 1, message: '未查询到客户信息', })
-        if (results[0].Train_id) {
-            results[0].Train_id = results[0].Train_id.split(",");
-            //转为数字
-            results[0].Train_id = results[0].Train_id.map(function (val, index, arr) {
-                return val - 0;
-            });
-            if (results[0].Train_id.includes(Number(req.body.Train_id))) return res.send({ status: 2, message: '重复报名', })
-            req.body.Train_id = results[0].Train_id + ',' + req.body.Train_id
-        }
-        console.log(req.body.Train_id)
-        const sql = 'update customer_item set Train_id = ? where User_id = ?'
-        db.query(sql, [req.body.Train_id, req.body.User_id], (err, results) => {
-            res.send({
-                status: 0,
-                message: '报名成功',
+    if (req.body.User_id == undefined) {
+        return res.send({ status: 1, message: '请先登录', })
+    } else {
+        const sql = 'select * from customer_item where User_id = ?'
+        db.query(sql, req.body.User_id, (err, results) => {
+            if (results == []) return res.send({ status: 1, message: '请先完善个人信息', })
+            if (results[0].Train_id) {
+                results[0].Train_id = results[0].Train_id.split(",");
+                //转为数字
+                results[0].Train_id = results[0].Train_id.map(function (val, index, arr) {
+                    return val - 0;
+                });
+                if (results[0].Train_id.includes(Number(req.body.Train_id))) return res.send({ status: 1, message: '重复报名', })
+                req.body.Train_id = results[0].Train_id + ',' + req.body.Train_id
+            }
+            console.log(req.body.Train_id)
+            const sql = 'update customer_item set Train_id = ? where User_id = ?'
+            db.query(sql, [req.body.Train_id, req.body.User_id], (err, results) => {
+                res.send({
+                    status: 0,
+                    message: '报名成功',
+                })
             })
         })
-    })
+    }
+
 
 }

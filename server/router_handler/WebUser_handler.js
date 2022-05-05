@@ -63,3 +63,18 @@ exports.login = async (req, res) => {
     })
 
 }
+
+//登录的处理函数
+exports.quest = async (req, res) => {
+    console.log(req.body)
+    const sql = 'insert into question_item set ?'
+    db.query(sql, req.body, (err, results) => {
+        if (err) return res.cc(err)
+        res.send({
+            status: 0,
+            message: '提交成功',
+
+        })
+    })
+
+}
