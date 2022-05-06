@@ -115,11 +115,11 @@
         <el-row :gutter="10">
           <el-col :span="24">
             <el-form-item label="问题描述:">
-              <el-input v-model="form.Question_describe" />
+              <el-input type="textarea" v-model="form.Question_describe" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="对应阶段:">
+            <el-form-item label="状态:">
               <el-select
                 v-model="form.Question_status"
                 placeholder="请选择"
@@ -163,11 +163,11 @@
         <el-row :gutter="10">
           <el-col :span="24">
             <el-form-item label="问题描述:">
-              <el-input v-model="form.Question_describe" />
+              <el-input type="textarea" v-model="form.Question_describe" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="对应阶段:">
+            <el-form-item label="状态:">
               <el-select
                 v-model="form.Question_status"
                 placeholder="请选择"
@@ -225,6 +225,7 @@ export default {
         Question_status: null,
         Question_describe: null,
         Feedback: null,
+        User_id: null,
       },
       formDialog: false,
       editFormDialog: false,

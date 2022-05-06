@@ -39,15 +39,15 @@ const router = new VueRouter({
       meta: {
         role: ['admin', 'super_editor', 'manager']
       },
-      children: [{ path: 'customer_man', name: '客户管理', component: CustomerMan },]
+      children: [{ path: 'customer_man', name: '客户信息管理', component: CustomerMan },]
 
     },
-    { path: '/project', component: MainView, name: '留学方案', meta: { role: ['admin', 'super_editor', 'project_editor'] }, children: [{ path: 'project_man', name: '方案管理', component: ProjectMan },] },
-    { path: '/train', component: MainView, name: '课程培训', meta: { role: ['admin', 'super_editor', 'train_editor'] }, children: [{ path: 'train_man', name: '课程培训', component: TrainMan },] },
+    { path: '/project', component: MainView, name: '留学方案', meta: { role: ['admin', 'super_editor', 'project_editor'] }, children: [{ path: 'project_man', name: '方案信息管理', component: ProjectMan },] },
+    { path: '/train', component: MainView, name: '课程培训', meta: { role: ['admin', 'super_editor', 'train_editor'] }, children: [{ path: 'train_man', name: '课程培训信息管理', component: TrainMan },] },
     { path: '/quest', component: MainView, name: '问题反馈', meta: { role: ['admin', 'super_editor', 'quest_editor'] }, children: [{ path: 'quest_man', name: '问题反馈', component: QuestMan },] },
-    // { path: '/journal', component: MainView, name: '日志', meta: { role: ['admin', 'super_editor','journal_editor'] }, children: [{ path: 'journal_man', name: '日志', component: JournalMan },] },
-    { path: '/notice', component: MainView, name: '新闻公告', meta: { role: ['admin', 'super_editor', 'notice_editor'] }, children: [{ path: 'notice_man', name: '公告', component: NoticeMan }, { path: 'news_man', name: '新闻', component: NewsMan },] },
-    { path: '/institut', component: MainView, name: '学院专业', meta: { role: ['admin', 'super_editor', 'institut_editor'] }, children: [{ path: 'institut_man', name: '学院', component: Institut }, { path: 'specialty_man', name: '专业', component: Specialty }] },
+    // { path: '/journal', component: MainView, name: '日志', meta: { role: ['admin', 'super_editor','journal_editor'] }, children: [{ path: 'journal_man', name: '日志', component: JournalMan },] },{ path: 'notice_man', name: '公告', component: NoticeMan },
+    { path: '/notice', component: MainView, name: '新闻公告', meta: { role: ['admin', 'super_editor', 'notice_editor'] }, children: [{ path: 'news_man', name: '新闻信息管理', component: NewsMan },] },
+    { path: '/institut', component: MainView, name: '学院专业', meta: { role: ['admin', 'super_editor', 'institut_editor'] }, children: [{ path: 'institut_man', name: '学院信息管理', component: Institut }, { path: 'specialty_man', name: '专业信息管理', component: Specialty }] },
     { path: '/power', component: MainView, name: '权限管理', meta: { role: ['admin'] }, children: [{ path: 'power_man', name: '权限管理', component: Power },] },
   ],
 

@@ -43,7 +43,6 @@ exports.regUser = (req, res) => {
 //登录的处理函数
 exports.login = async (req, res) => {
     const userinfo = req.body
-
     const sql = 'select * from Web_user_item where username=?'
     db.query(sql, userinfo.username, (err, results) => {
         if (err) return res.cc(err)
@@ -64,9 +63,13 @@ exports.login = async (req, res) => {
 
 }
 
-//登录的处理函数
+//添加问题
 exports.quest = async (req, res) => {
-    console.log(req.body)
+    Object.keys(req.body).forEach((key) => {
+        if (!req.body[key] || req.body[key] == 'null') {
+            delete req.body[key]
+        }
+    });
     const sql = 'insert into question_item set ?'
     db.query(sql, req.body, (err, results) => {
         if (err) return res.cc(err)
@@ -76,5 +79,28 @@ exports.quest = async (req, res) => {
 
         })
     })
+
+}
+
+
+//获取问题列表
+exports.getList = async (req, res) => {
+    if (req.query.User_id) {
+        const sql = 'select * from question_item where Deleted = 0 and User_id = ?'
+        db.query(sql, req.query.User_id, (err, results) => {
+            if (err) return res.cc(err)
+            res.send({
+                status: 0,
+                message: '获取方案列表数据成功',
+                data: results,
+            })
+        })
+    } else {
+        res.send({
+            status: 0,
+            message: '获取方案列表数据成功',
+            data: [],
+        })
+    }
 
 }
