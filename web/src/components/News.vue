@@ -7,7 +7,7 @@
     <div class="content">
       <div class="leftul">
         <ul v-for="data in newsOption" :key="data.News_id">
-          <li>
+          <li @click="toNewsDetail(data.News_id)">
             <a>
               <div>《&nbsp;</div>
               <div class="news_title" style="width: 300px">
@@ -53,6 +53,14 @@ export default {
     this.getList();
   },
   methods: {
+    toNewsDetail(id) {
+      this.$router.push({
+        path: "/newsdetail",
+        query: {
+          News_id: id,
+        },
+      });
+    },
     async getList() {
       const res = await this.$http.get(`webnews/get_list`);
       if (res.data.status == 0) {

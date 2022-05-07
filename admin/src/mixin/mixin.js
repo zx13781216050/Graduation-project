@@ -12,6 +12,7 @@ const mixin = {
                     name: null,
                 }
             },
+            formName: 'form',
         }
     },
     methods: {
@@ -100,10 +101,18 @@ const mixin = {
             this.getList();
         },
         //提交列表
-        async submitHandle() {
+        submitHandle() {
+            this.$refs[this.formName].validate((valid) => {
+                if (valid) {
+                    this.createForm()
+                }
+            })
+
+        },
+        //编辑form表单
+        async createForm() {
             let data = this.$qs.stringify(this.form);
             const res = await this.$http.put(`${this.entityName}/edit_form`, data);
-
             if (res.data.status == 0) {
                 this.editFormDialog = false;
                 this.$notify({

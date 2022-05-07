@@ -9,6 +9,16 @@
             <div class="Introduce" v-html="form.Introduce"></div>
           </div>
         </el-card>
+        <el-card>
+          <h1 class="title">学院专业</h1>
+          <div>
+            <ul v-for="data in specialtys" :key="data.Specialty_id">
+              <li>
+                <div>{{ data.Specialty_name }}</div>
+              </li>
+            </ul>
+          </div>
+        </el-card>
       </div>
     </el-main>
     <login-form />
@@ -36,6 +46,7 @@ export default {
         Ielts: null,
         Introduce: null,
       },
+      specialtys: [],
     };
   },
   created() {
@@ -58,7 +69,21 @@ export default {
         });
       }
     },
-    async getSpecialty() {},
+    async getSpecialty() {
+      const res = await this.$http.get(`webspecialty/get_list`, {
+        params: { Institut_id: this.$route.query.Institut_id },
+      });
+      if (res.data.status == 0) {
+        this.specialtys = res.data.data;
+        console.log(this.specialtys);
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取数据失败",
+          duration: 1500,
+        });
+      }
+    },
   },
 };
 </script>
@@ -79,6 +104,22 @@ export default {
   .el-card {
     width: 80%;
     margin: 100px auto;
+  }
+}
+.title {
+  text-align: left;
+}
+ul {
+  li {
+    list-style: none;
+    height: 30px;
+    line-height: 30px;
+    div {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 }
 .Introduce {

@@ -196,6 +196,7 @@
       <el-form
         ref="form"
         :model="form"
+        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -203,12 +204,12 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="学院名字:">
+            <el-form-item label="学院名字:" prop="Institut_name">
               <el-input v-model="form.Institut_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="所属国家:">
+            <el-form-item label="所属国家:" prop="Nation_id">
               <el-select
                 v-model="form.Nation_id"
                 placeholder="请选择"
@@ -224,7 +225,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性质:">
+            <el-form-item label="性质:" prop="Stage_id">
               <el-select v-model="form.Stage_id" placeholder="请选择" clearable>
                 <el-option
                   v-for="item in stageOptions"
@@ -236,22 +237,22 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="托福:">
+            <el-form-item label="托福:" prop="Toefl">
               <el-input v-model="form.Toefl" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="SAT:">
+            <el-form-item label="SAT:" prop="Sat">
               <el-input v-model="form.Sat" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="雅思:">
+            <el-form-item label="雅思:" prop="Ielts">
               <el-input v-model="form.Ielts" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="院校介绍:">
+            <el-form-item label="院校介绍:" prop="Introduce">
               <quill-editor
                 :content="form.Introduce"
                 :disable="true"
@@ -319,6 +320,23 @@ export default {
           id: null,
         },
       },
+      rules: {
+        Institut_name: {
+          required: true,
+          message: "学院名不能为空",
+          trigger: "blur",
+        },
+        Nation_id: {
+          required: true,
+          message: "所属国家不能为空",
+          trigger: "blur",
+        },
+        Stage_id: {
+          required: true,
+          message: "类型不能为空",
+          trigger: "blur",
+        },
+      },
     };
   },
   created() {
@@ -332,7 +350,7 @@ export default {
       this.form.Introduce = e;
     },
     //提交表单
-    async submitHandle() {
+    async createForm() {
       let data = this.$qs.stringify(this.form, { arrayFormat: "indices" });
       const res = await this.$http.put(`${this.entityName}/edit_form`, data);
       if (res.data.status == 0) {

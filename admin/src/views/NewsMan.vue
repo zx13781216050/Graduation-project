@@ -162,6 +162,7 @@
       <el-form
         ref="form"
         :model="form"
+        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -169,17 +170,17 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="新闻标题:">
+            <el-form-item label="新闻标题:" prop="News_title">
               <el-input v-model="form.News_title" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="发布人:">
+            <el-form-item label="发布人:" prop="News_author">
               <el-input v-model="form.News_author" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="新闻内容:">
+            <el-form-item label="新闻内容:" prop="News_content">
               <quill-editor
                 :content="form.News_content"
                 :disable="true"
@@ -245,6 +246,18 @@ export default {
           id: null,
         },
       },
+      rules: {
+        News_title: {
+          required: true,
+          message: "新闻标题不能为空",
+          trigger: "blur",
+        },
+        News_author: {
+          required: true,
+          message: "发布人不能为空",
+          trigger: "blur",
+        },
+      },
     };
   },
   created() {
@@ -268,7 +281,7 @@ export default {
     },
 
     //提交表单
-    async submitHandle() {
+    async createForm() {
       this.form.News_time = this.formatTime2(this.form.News_time);
       let data = this.$qs.stringify(this.form, { arrayFormat: "indices" });
       const res = await this.$http.put(`${this.entityName}/edit_form`, data);

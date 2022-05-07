@@ -172,6 +172,7 @@
       <el-form
         ref="form"
         :model="form"
+        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -179,12 +180,12 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="方案名称:">
+            <el-form-item label="方案名称:" prop="Project_name">
               <el-input v-model="form.Project_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="对应阶段:">
+            <el-form-item label="对应阶段:" prop="Stage_id">
               <el-select v-model="form.Stage_id" placeholder="请选择" clearable>
                 <el-option
                   v-for="item in educateOptions"
@@ -196,12 +197,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="方案描述:">
+            <el-form-item label="方案描述:" prop="Project_describe">
               <el-input v-model="form.Project_describe" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="方案内容:">
+            <el-form-item label="方案内容:" prop="Project_content">
               <quill-editor
                 :content="form.Project_content"
                 :disable="true"
@@ -266,6 +267,28 @@ export default {
           id: null,
         },
       },
+      rules: {
+        Project_name: {
+          required: true,
+          message: "方案名称不能为空",
+          trigger: "blur",
+        },
+        Project_describe: {
+          required: true,
+          message: "简介不能为空",
+          trigger: "blur",
+        },
+        Stage_id: {
+          required: true,
+          message: "对应阶段不能为空",
+          trigger: "blur",
+        },
+        Project_content: {
+          required: true,
+          message: "方案内容不能为空",
+          trigger: "blur",
+        },
+      },
     };
   },
   created() {
@@ -275,27 +298,6 @@ export default {
   methods: {
     getGoodContent(e) {
       this.form.Project_content = e;
-    },
-    //提交表单
-    async submitHandle() {
-      let data = this.$qs.stringify(this.form, { arrayFormat: "indices" });
-      const res = await this.$http.put(`${this.entityName}/edit_form`, data);
-      if (res.data.status == 0) {
-        this.editFormDialog = false;
-        this.form.Project_content = "";
-        this.$notify({
-          title: "提示",
-          type: "success",
-          message: res.data.message,
-        });
-      } else {
-        this.$notify.error({
-          title: "提示",
-          message: res.data.message,
-          duration: 1500,
-        });
-      }
-      this.getList();
     },
   },
 };

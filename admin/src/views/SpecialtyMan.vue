@@ -156,6 +156,7 @@
       <el-form
         ref="form"
         :model="form"
+        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -163,12 +164,12 @@
       >
         <el-row :gutter="10">
           <el-col :span="24">
-            <el-form-item label="专业名称:">
+            <el-form-item label="专业名称:" prop="Specialty_name">
               <el-input v-model="form.Specialty_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="学院:">
+            <el-form-item label="学院:" prop="Institut_id">
               <el-select
                 v-model="form.Institut_id"
                 placeholder="请选择"
@@ -227,6 +228,18 @@ export default {
       listQuery: {
         search: {
           id: null,
+        },
+      },
+      rules: {
+        Specialty_name: {
+          required: true,
+          message: "专业名称不能为空",
+          trigger: "blur",
+        },
+        Institut_id: {
+          required: true,
+          message: "学院不能为空",
+          trigger: "blur",
         },
       },
     };

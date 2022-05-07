@@ -161,6 +161,7 @@
       <el-form
         ref="form"
         :model="form"
+        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -168,18 +169,18 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="课程名称:">
+            <el-form-item label="课程名称:" prop="Train_name">
               <el-input v-model="form.Train_name" />
             </el-form-item>
           </el-col>
 
           <el-col :span="24">
-            <el-form-item label="课程简介:">
+            <el-form-item label="课程简介:" prop="Train_describe">
               <el-input v-model="form.Train_describe" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="课程内容:">
+            <el-form-item label="课程内容:" prop="Train_content">
               <quill-editor
                 :content="form.Train_content"
                 :disable="true"
@@ -237,6 +238,23 @@ export default {
           id: null,
         },
       },
+      rules: {
+        Train_name: {
+          required: true,
+          message: "课程名称不能为空",
+          trigger: "blur",
+        },
+        Train_describe: {
+          required: true,
+          message: "课程简介不能为空",
+          trigger: "blur",
+        },
+        Train_content: {
+          required: true,
+          message: "课程内容不能为空",
+          trigger: "blur",
+        },
+      },
     };
   },
   created() {
@@ -248,26 +266,26 @@ export default {
       this.form.Train_content = e;
     },
     //提交表单
-    async submitHandle() {
-      let data = this.$qs.stringify(this.form, { arrayFormat: "indices" });
-      const res = await this.$http.put(`${this.entityName}/edit_form`, data);
-      if (res.data.status == 0) {
-        this.editFormDialog = false;
-        this.form.Train_content = "";
-        this.$notify({
-          title: "提示",
-          type: "success",
-          message: res.data.message,
-        });
-      } else {
-        this.$notify.error({
-          title: "提示",
-          message: res.data.message,
-          duration: 1500,
-        });
-      }
-      this.getList();
-    },
+    // async submitHandle() {
+    //   let data = this.$qs.stringify(this.form, { arrayFormat: "indices" });
+    //   const res = await this.$http.put(`${this.entityName}/edit_form`, data);
+    //   if (res.data.status == 0) {
+    //     this.editFormDialog = false;
+    //     this.form.Train_content = "";
+    //     this.$notify({
+    //       title: "提示",
+    //       type: "success",
+    //       message: res.data.message,
+    //     });
+    //   } else {
+    //     this.$notify.error({
+    //       title: "提示",
+    //       message: res.data.message,
+    //       duration: 1500,
+    //     });
+    //   }
+    //   this.getList();
+    // },
   },
 };
 </script>

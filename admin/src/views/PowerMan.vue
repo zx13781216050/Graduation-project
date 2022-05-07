@@ -191,6 +191,7 @@
       <el-form
         ref="form"
         :model="form"
+        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -198,12 +199,12 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="姓名:">
+            <el-form-item label="姓名:" prop="Real_name">
               <el-input v-model="form.Real_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性别:">
+            <el-form-item label="性别:" prop="User_sex">
               <el-select v-model="form.User_sex" placeholder="请选择" clearable>
                 <el-option
                   v-for="item in sexOptions"
@@ -215,22 +216,22 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系方式:">
+            <el-form-item label="联系方式:" prop="User_sex">
               <el-input v-model="form.Telephone" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="用户名:">
+            <el-form-item label="用户名:" prop="username">
               <el-input v-model="form.username" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="!form.User_id">
-            <el-form-item label="初始密码:">
+            <el-form-item label="初始密码:" prop="password">
               <el-input v-model="form.password" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="角色:">
+            <el-form-item label="角色:" prop="Role_id">
               <el-select v-model="form.Role_id" placeholder="请选择" clearable>
                 <el-option
                   v-for="item in roleOptions"
@@ -294,6 +295,38 @@ export default {
       listQuery: {
         search: {
           id: null,
+        },
+      },
+      rules: {
+        Real_name: {
+          required: true,
+          message: "姓名不能为空",
+          trigger: "blur",
+        },
+        User_sex: {
+          required: true,
+          message: "性别不能为空",
+          trigger: "blur",
+        },
+        Telephone: {
+          required: true,
+          message: "联系方式不能为空",
+          trigger: "blur",
+        },
+        username: {
+          required: true,
+          message: "用户名不能为空",
+          trigger: "blur",
+        },
+        password: {
+          required: true,
+          message: "初始密码不能为空",
+          trigger: "blur",
+        },
+        Role_id: {
+          required: true,
+          message: "角色不能为空",
+          trigger: "blur",
         },
       },
     };

@@ -157,6 +157,7 @@
         :model="form"
         label-position="left"
         label-width="120px"
+        :rules="rules"
         style="padding: 0 20px"
         size="mini"
       >
@@ -167,7 +168,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态:">
+            <el-form-item label="状态:" prop="Question_status">
               <el-select
                 v-model="form.Question_status"
                 placeholder="请选择"
@@ -183,7 +184,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="问题反馈:">
+            <el-form-item label="问题反馈:" prop="Feedback">
               <el-input type="textarea" v-model="form.Feedback" />
             </el-form-item>
           </el-col>
@@ -236,6 +237,18 @@ export default {
       listQuery: {
         search: {
           id: null,
+        },
+      },
+      rules: {
+        Question_status: {
+          required: true,
+          message: "状态不能为空",
+          trigger: "blur",
+        },
+        Feedback: {
+          required: true,
+          message: "反馈不能为空",
+          trigger: "blur",
         },
       },
     };

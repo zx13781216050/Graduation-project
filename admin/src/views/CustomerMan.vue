@@ -319,6 +319,7 @@
       <el-form
         ref="form"
         :model="form"
+        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -326,12 +327,12 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="姓名:">
+            <el-form-item label="姓名:" prop="Customer_name">
               <el-input v-model="form.Customer_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性别:">
+            <el-form-item label="性别:" prop="Customer_sex">
               <el-select
                 v-model="form.Customer_sex"
                 placeholder="请选择"
@@ -347,7 +348,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="出生时间:">
+            <el-form-item label="出生时间:" prop="Customer_birthday">
               <el-date-picker
                 v-model="form.Customer_birthday"
                 type="datetime"
@@ -358,7 +359,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="留学阶段:">
+            <el-form-item label="留学阶段:" prop="Customer_stage">
               <el-select
                 v-model="form.Customer_stage"
                 placeholder="请选择"
@@ -377,7 +378,7 @@
           </el-col>
 
           <el-col :span="12" style="">
-            <el-form-item label="目标区域:">
+            <el-form-item label="目标区域:" prop="Target_area">
               <el-select
                 v-model="form.Target_area"
                 placeholder="请选择"
@@ -396,7 +397,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="目标学院:">
+            <el-form-item label="目标学院:" prop="Target_institut">
               <el-select
                 v-model="form.Target_institut"
                 placeholder="请选择"
@@ -416,7 +417,7 @@
           </el-col>
 
           <el-col :span="12" style="" v-show="form.Customer_stage == 4">
-            <el-form-item label="目标专业:">
+            <el-form-item label="目标专业:" prop="Target_specialty">
               <el-select
                 v-model="form.Target_specialty"
                 placeholder="请选择"
@@ -435,7 +436,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="当前学历:">
+            <el-form-item label="当前学历:" prop="Education">
               <el-select
                 v-model="form.Education"
                 placeholder="请选择"
@@ -452,7 +453,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="已报名方案:">
+            <el-form-item label="已报名方案:" prop="Project_id">
               <el-select v-model="form.Project_id" placeholder="无" clearable>
                 <el-option
                   v-for="item in projectOptions"
@@ -465,7 +466,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="已报名课程:">
+            <el-form-item label="已报名课程:" prop="Train_id">
               <el-select
                 v-model="form.Train_id"
                 multiple
@@ -483,12 +484,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="联系方式:">
+            <el-form-item label="联系方式:" prop="Telephone">
               <el-input v-model="form.Telephone"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="客户级别:">
+            <el-form-item label="客户级别:" prop="Customer_level">
               <el-select
                 v-model="form.Customer_level"
                 placeholder="请选择"
@@ -505,7 +506,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="客户来源:">
+            <el-form-item label="客户来源:" prop="Tourist_source">
               <el-select
                 v-model="form.Tourist_source"
                 placeholder="请选择"
@@ -541,26 +542,31 @@
               <el-button @click="download" v-show="filename">下载</el-button>
             </el-form-item>
           </el-col>
+          <el-col>
+            <el-form-item style="position: relation">
+              <el-button
+                type="primary"
+                @click="submitHandle"
+                size="mini"
+                v-if="form.Customer_id"
+                style="position: absolute; left: 80%"
+              >
+                修改</el-button
+              >
+              <el-button
+                type="primary"
+                @click="submitHandle"
+                size="mini"
+                v-if="!form.Customer_id"
+                style="position: absolute; left: 80%"
+              >
+                保存</el-button
+              >
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button
-          type="primary"
-          @click="submitHandle"
-          size="mini"
-          v-if="form.Customer_id"
-        >
-          修改</el-button
-        >
-        <el-button
-          type="primary"
-          @click="submitHandle"
-          size="mini"
-          v-if="!form.Customer_id"
-        >
-          保存</el-button
-        >
-      </span>
+      <!-- <span slot="footer" class="dialog-footer"> </span> -->
     </el-dialog>
   </div>
 </template>
@@ -601,7 +607,7 @@ export default {
         { id: 1, value: "小学" },
         { id: 2, value: "中学" },
         { id: 3, value: "高中" },
-        { id: 4, value: "大学" },
+        { id: 4, value: "本科" },
       ],
       educateOptions: [
         { id: 1, value: "小学" },
@@ -635,6 +641,48 @@ export default {
       listQuery: {
         search: {
           id: null,
+        },
+      },
+      rules: {
+        Customer_name: {
+          required: true,
+          message: "姓名不能为空",
+          trigger: "blur",
+        },
+        Customer_sex: {
+          required: true,
+          message: "性别不能为空",
+          trigger: "blur",
+        },
+        Customer_birthday: {
+          required: true,
+          message: "出生日期不能为空",
+          trigger: "blur",
+        },
+        Customer_stage: {
+          required: true,
+          message: "留学阶段不能为空",
+          trigger: "blur",
+        },
+        Target_area: {
+          required: true,
+          message: "意向国家不能为空",
+          trigger: "blur",
+        },
+        Target_institut: {
+          required: true,
+          message: "意向学院不能为空",
+          trigger: "blur",
+        },
+        Target_specialty: {
+          required: true,
+          message: "意向专业不能为空",
+          trigger: "blur",
+        },
+        Education: {
+          required: true,
+          message: "当前学历不能为空",
+          trigger: "blur",
         },
       },
     };
@@ -723,7 +771,7 @@ export default {
       }
     },
     //提交表单
-    async submitHandle() {
+    async createForm() {
       this.form.Customer_birthday = this.formatTime(
         this.form.Customer_birthday
       );
@@ -751,7 +799,6 @@ export default {
         formFile,
         { headers: { "Content-Type": "multipart/form-data;charse=UTF-8" } }
       );
-
       if (res.data.status == 0) {
         this.editFormDialog = false;
         this.$notify({
