@@ -15,7 +15,7 @@
         >
         <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
-      <el-row :gutter="10" class="mb8">
+      <!-- <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
           <el-button
             type="primary"
@@ -25,7 +25,7 @@
             >新增</el-button
           >
         </el-col>
-      </el-row>
+      </el-row> -->
     </el-form>
     <el-row :gutter="10" type="flex">
       <el-col :span="24">
@@ -83,13 +83,13 @@
                 @click.stop="editHandle(scope.row)"
                 >编辑
               </el-button>
-              <el-button
+              <!-- <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click.stop="deleteHandle(scope.row.Question_id)"
                 >删除
-              </el-button>
+              </el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -164,7 +164,11 @@
         <el-row :gutter="10">
           <el-col :span="24">
             <el-form-item label="问题描述:">
-              <el-input type="textarea" v-model="form.Question_describe" />
+              <el-input
+                type="textarea"
+                :disabled="true"
+                v-model="form.Question_describe"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">

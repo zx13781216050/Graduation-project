@@ -11,7 +11,10 @@
               提出问题</el-button
             >
           </span>
-          <div>问题反馈</div>
+          <div style="line-height: 30px">
+            <h1>问题反馈</h1>
+          </div>
+
           <div>
             <el-table
               :data="list"

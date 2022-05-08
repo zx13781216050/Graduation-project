@@ -77,28 +77,30 @@ const mixin = {
             });
         },
         async deleteHandle(id) {
-            const res = await this.$http.delete(
-                `${this.entityName}/delete_form`, {
-                params: {
-                    id: id
-                }
-            }
-            );
-            if (res.data.status == 0) {
-                this.editFormDialog = false;
-                this.$notify({
-                    title: "提示",
-                    type: "success",
-                    message: res.data.message,
-                });
-            } else {
-                this.$notify.error({
-                    title: "提示",
-                    message: res.data.message,
-                    duration: 1500,
-                });
-            }
-            this.getList();
+            this.$confirm(`删除后无法撤销，确定删除当前选中的数据?`, '提示', { type: 'warning' })
+                .then(() => {
+                    this.$http.delete(
+                        `${this.entityName}/delete_form`, {
+                        params: {
+                            id: id
+                        }
+                    }).then(() => {
+                        this.editFormDialog = false;
+                        this.$notify({
+                            title: "提示",
+                            type: "success",
+                            message: '删除成功',
+                        });
+                        this.getList();
+                    }).catch(() => {
+                        this.$notify({
+                            title: "提示",
+                            type: "success",
+                            message: '删除失败',
+                        });
+                    })
+
+                })
         },
         //提交列表
         submitHandle() {

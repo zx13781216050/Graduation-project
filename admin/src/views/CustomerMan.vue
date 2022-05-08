@@ -542,31 +542,26 @@
               <el-button @click="download" v-show="filename">下载</el-button>
             </el-form-item>
           </el-col>
-          <el-col>
-            <el-form-item style="position: relation">
-              <el-button
-                type="primary"
-                @click="submitHandle"
-                size="mini"
-                v-if="form.Customer_id"
-                style="position: absolute; left: 80%"
-              >
-                修改</el-button
-              >
-              <el-button
-                type="primary"
-                @click="submitHandle"
-                size="mini"
-                v-if="!form.Customer_id"
-                style="position: absolute; left: 80%"
-              >
-                保存</el-button
-              >
-            </el-form-item>
-          </el-col>
         </el-row>
       </el-form>
-      <!-- <span slot="footer" class="dialog-footer"> </span> -->
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="submitHandle"
+          size="mini"
+          v-if="form.Customer_id"
+        >
+          修改</el-button
+        >
+        <el-button
+          type="primary"
+          @click="submitHandle"
+          size="mini"
+          v-if="!form.Customer_id"
+        >
+          保存</el-button
+        >
+      </span>
     </el-dialog>
   </div>
 </template>
