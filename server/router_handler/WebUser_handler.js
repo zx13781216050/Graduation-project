@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
             message: '登陆成功',
             username: userinfo.username,
             User_id: results[0].User_id,
-            token: 'Bearer' + tokenStr
+            token: 'Bearer ' + tokenStr
         })
     })
 
@@ -103,4 +103,8 @@ exports.getList = async (req, res) => {
         })
     }
 
+}
+
+exports.getChoice = async (req, res) => {
+    console.log(req.query)
 }

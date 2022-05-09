@@ -85,6 +85,25 @@
             min-width="260"
           />
           <el-table-column
+            prop="Disabled"
+            label="启用"
+            align="center"
+            :show-overflow-tooltip="true"
+            min-width="260"
+          >
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.Disabled"
+                :active-value="0"
+                :inactive-value="1"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                @change="disabled(scope.row)"
+              >
+              </el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column
             label="操作"
             align="center"
             class-name="small-padding fixed-width"
@@ -283,6 +302,7 @@ export default {
         username: null,
         password: null,
         Role_id: null,
+        Disabled: null,
       },
       formDialog: false,
       editFormDialog: false,
@@ -343,6 +363,9 @@ export default {
         return item.Role_id == row.Role_id;
       });
       return newarr[0].Role_name;
+    },
+    async disabled(row) {
+      this.createForm(row);
     },
     //获取区域列表
     async getRole() {

@@ -31,7 +31,6 @@ export default new Vuex.Store({
             return http({
                 method: "get",
                 url: `/user/user_info`,
-                headers: { Authorization: window.localStorage.getItem('token') },
             }).then(
                 response => {
                     commit('setusername', response.data.data.username)

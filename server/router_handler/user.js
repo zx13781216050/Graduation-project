@@ -48,20 +48,18 @@ exports.login = async (req, res) => {
     db.query(sql, userinfo.username, (err, results) => {
         if (err) return res.cc(err)
         if (results.length !== 1) return res.cc('登录失败')
-        console.log(results[0].password)
+
         const compareResult = bcrypt.compareSync(userinfo.password, results[0].password)
-
         if (!compareResult) return res.cc('登录失败')
-
+        if (results[0].Disabled == 1) return res.cc('账号已被禁用')
         //const user = { ...results[0], password: '', user_pic: '' }
         const user = { ...results[0], password: '' }
         const tokenStr = jwt.sign(user, config.jwtSecretKey, { expiresIn: config.expiresIn })
-
         res.send({
             status: 0,
             message: '登陆成功',
             username: userinfo.username,
-            token: 'Bearer' + tokenStr
+            token: 'Bearer ' + tokenStr
         })
     })
 
@@ -177,7 +175,7 @@ exports.deleteForm = async (req, res) => {
 }
 
 exports.userInfo = (req, res) => {
-    let token = req.headers.authorization.replace('Bearer', '')
+    let token = req.headers.authorization.replace('Bearer ', '')
     let verifyToken = jwt.verify(token, config.jwtSecretKey)
     console.log(verifyToken)
     let sql = "select Role_name from role_item where Role_id = ?"

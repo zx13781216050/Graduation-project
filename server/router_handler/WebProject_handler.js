@@ -15,7 +15,6 @@ exports.getList = (req, res) => {
 
 exports.editForm = async (req, res) => {
     if (req.body.Project_id) {
-        console.log('11')
         const sql = 'update project_item set ? where Project_id =?'
         db.query(sql, [req.body, req.body.Project_id], (err, results) => {
             if (err) return res.cc(err)

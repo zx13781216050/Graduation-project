@@ -1,7 +1,6 @@
 const db = require('../db/index')
 
 exports.getList = (req, res) => {
-
     let sql
     if (!req.query.Institut_id) {
         sql = 'select * from specialty_item where Deleted = 0'

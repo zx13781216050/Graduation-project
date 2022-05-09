@@ -361,6 +361,7 @@
           </el-col>
         </el-row>
       </el-form>
+
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitHandle" size="mini">
           保存</el-button
@@ -400,6 +401,13 @@ export default {
         Customer_file: null,
         Project_id: null,
         Train_id: null,
+      },
+      choiceform: {
+        Customer_id: null,
+        Choice_type: null,
+        Nation_id: null,
+        Institut_id: null,
+        Specialty_id: null,
       },
       stageOptions: [
         { id: 1, value: "小学" },

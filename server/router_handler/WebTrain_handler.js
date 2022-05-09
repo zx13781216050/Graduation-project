@@ -15,7 +15,6 @@ exports.getList = (req, res) => {
 
 exports.editForm = async (req, res) => {
     if (req.body.Train_id) {
-        console.log('11')
         const sql = 'update train_item set ? where Train_id =?'
         db.query(sql, [req.body, req.body.Train_id], (err, results) => {
             if (err) return res.cc(err)
@@ -35,7 +34,6 @@ exports.editForm = async (req, res) => {
 }
 
 exports.deleteForm = async (req, res) => {
-    console.log(req)
     const sql = 'update train_item set Deleted = 1 where train_id =?'
     db.query(sql, req.query.id, (err, results) => {
         if (err) return res.cc(err)
@@ -48,7 +46,6 @@ exports.deleteForm = async (req, res) => {
 }
 
 exports.getDetail = async (req, res) => {
-    console.log(req.query)
     const sql = 'select * from train_item where Train_id = ?'
     db.query(sql, req.query.Train_id, (err, results) => {
         if (err) return res.cc(err)

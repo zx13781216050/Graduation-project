@@ -112,8 +112,13 @@ const mixin = {
 
         },
         //编辑form表单
-        async createForm() {
-            let data = this.$qs.stringify(this.form);
+        async createForm(e) {
+            let data
+            if (e) {
+                data = this.$qs.stringify(e);
+            } else {
+                data = this.$qs.stringify(this.form);
+            }
             const res = await this.$http.put(`${this.entityName}/edit_form`, data);
             if (res.data.status == 0) {
                 this.editFormDialog = false;
@@ -183,6 +188,7 @@ const mixin = {
             // 返回
             return result;
         },
+
     },
 
 }

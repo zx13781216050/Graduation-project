@@ -19,8 +19,6 @@ router.afterEach((to, from) => {
   localStorage.setItem("new", to.path)
 })
 router.beforeEach((to, from, next) => {
-  console.log(store.state.routes)
-  console.log(to.path)
   if (localStorage.token) { // 判断是否有token
     if (to.path === '/login_view') {
       next({ path: '/home' });

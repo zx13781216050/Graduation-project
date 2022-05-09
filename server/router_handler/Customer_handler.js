@@ -81,11 +81,12 @@ exports.getList = (req, res) => {
 }
 
 exports.editForm = async (req, res) => {
-    console.log(req.body)
     if (req.body.Customer_id != 'null') {
-        if (!req.body.Target_specialty) {
-            delete req.body.Target_specialty;
-        }
+        Object.keys(req.body).forEach((key) => {
+            if (!req.body[key] || req.body[key] == 'null') {
+                delete req.body[key]
+            }
+        });
         let customerInfo
         if (!req.file) {
             customerInfo = {
@@ -109,7 +110,11 @@ exports.editForm = async (req, res) => {
             res.cc('更新成功', 0)
         })
     } else {
-        delete req.body.Customer_id;
+        Object.keys(req.body).forEach((key) => {
+            if (!req.body[key] || req.body[key] == 'null') {
+                delete req.body[key]
+            }
+        });
         if (!req.body.Target_specialty) {
             delete req.body.Target_specialty;
         }
@@ -152,4 +157,8 @@ exports.deleteForm = async (req, res) => {
             data: results,
         })
     })
+}
+
+exports.choice = async (req, res) => {
+    const sql = 'select * from institut_item '
 }

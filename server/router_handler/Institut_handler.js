@@ -35,7 +35,6 @@ exports.getList = (req, res) => {
                         data: results,
                     })
                 }
-
             })
         } else {
             if (!req.query.id) {

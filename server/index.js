@@ -19,12 +19,12 @@ app.use((req, res, next) => {
     next()
 })
 
-
 //配置解析token的中间件
 const expressJWT = require('express-jwt')
 const config = require('./config')
-app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api/] }))
-
+app.use(expressJWT({ credentialsRequired: true, secret: config.jwtSecretKey }).unless({
+    path: ["/api/admin/user/login"]//添加不需要token验证的路由 
+}))
 
 // 错误中间件 
 const Joi = require('joi')
@@ -120,7 +120,6 @@ app.use('/api/web', WebDownloadRouter)
 
 // 托管静态资源文件
 app.use('/uploads', express.static('./uploads'))
-
 
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')

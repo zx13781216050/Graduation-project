@@ -265,6 +265,37 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
+            <el-form-item label="已报名方案:" prop="Project_id">
+              <el-select v-model="form.Project_id" placeholder="无" clearable>
+                <el-option
+                  v-for="item in projectOptions"
+                  :key="item.Project_id"
+                  :label="item.Project_name"
+                  :value="item.Project_id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" style="">
+            <el-form-item label="已报名课程:" prop="Train_id">
+              <el-select
+                v-model="form.Train_id"
+                multiple
+                placeholder="无"
+                clearable
+              >
+                <el-option
+                  v-for="item in trainOptions"
+                  :key="item.Train_id"
+                  :label="item.Train_name"
+                  :value="item.Train_id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" style="">
             <el-form-item label="客户级别:">
               <el-select
                 v-model="form.Customer_level"
