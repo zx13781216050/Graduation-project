@@ -362,7 +362,9 @@ export default {
       let newarr = this.roleOptions.filter((item) => {
         return item.Role_id == row.Role_id;
       });
-      return newarr[0].Role_name;
+      if (newarr[0]) {
+        return newarr[0].Role_name;
+      }
     },
     async disabled(row) {
       this.createForm(row);

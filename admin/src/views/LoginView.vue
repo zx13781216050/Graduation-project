@@ -62,7 +62,7 @@ export default {
       } else {
         this.$notify.error({
           title: "提示",
-          message: "账号或密码错误",
+          message: res.data.message,
           duration: 1500,
         });
       }

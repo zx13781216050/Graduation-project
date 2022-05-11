@@ -15,6 +15,8 @@ router.post('/quest', userHandler.quest)
 
 router.get('/get_list', userHandler.getList)
 
-router.get('get_choice', userHandler.getChoice)
+router.get('/get_choice', userHandler.getChoice)
+
+router.post('/edit_choice', userHandler.editChoice)
 
 module.exports = router

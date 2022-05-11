@@ -18,7 +18,7 @@
             <el-row :gutter="10">
               <el-col :span="12">
                 <el-form-item label="姓名:">
-                  <el-input v-model="form.Customer_name" />
+                  <el-input v-model="form.Customer_name" style="width: 50%" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -41,6 +41,7 @@
                 <el-form-item label="出生时间:">
                   <el-date-picker
                     v-model="form.Customer_birthday"
+                    style="width: 50%"
                     type="datetime"
                     format="yyyy-MM-dd"
                     value-format="yyyy-MM-dd"
@@ -48,92 +49,12 @@
                   </el-date-picker>
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
-                <el-form-item label="留学阶段:">
-                  <el-select
-                    v-model="form.Customer_stage"
-                    placeholder="请选择"
-                    @change="areaChange"
-                    clearable
-                  >
-                    <el-option
-                      v-for="item in stageOptions"
-                      :key="item.id"
-                      :label="item.value"
-                      :value="item.id"
-                    >
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
 
-              <el-col :span="12" style="">
-                <el-form-item label="目标区域:">
-                  <el-select
-                    v-model="form.Target_area"
-                    placeholder="请选择"
-                    @visible-change="getAreaList"
-                    @change="areaChange"
-                    clearable
-                  >
-                    <el-option
-                      v-for="item in areaOptions"
-                      :key="item.Nation_id"
-                      :label="item.Nation_name"
-                      :value="item.Nation_id"
-                    >
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12" style="">
-                <el-form-item label="目标学院:">
-                  <el-select
-                    v-model="form.Target_institut"
-                    placeholder="请选择"
-                    @visible-change="getInstitutList"
-                    :no-data-text="
-                      form.Target_area ? '无学院' : '请先选择目标区域'
-                    "
-                    clearable
-                  >
-                    <el-option
-                      v-for="item in institutOptions"
-                      :key="item.Institut_id"
-                      :label="item.Institut_name"
-                      :value="item.Institut_id"
-                    >
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-
-              <el-col :span="12" style="" v-show="form.Customer_stage == 4">
-                <el-form-item label="目标专业:">
-                  <el-select
-                    v-model="form.Target_specialty"
-                    placeholder="请选择"
-                    @visible-change="getSpecialtyList"
-                    :no-data-text="
-                      form.Target_area ? '无专业' : '请先选择目标学院'
-                    "
-                    clearable
-                  >
-                    <el-option
-                      v-for="item in specialtyOptions"
-                      :key="item.Specialty_id"
-                      :label="item.Specialty_name"
-                      :value="item.Specialty_id"
-                    >
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
               <el-col :span="12" style="">
                 <el-form-item label="当前学历:">
                   <el-select
                     v-model="form.Education"
-                    placeholder="请选择"
+                    placeholder="无"
                     clearable
                   >
                     <el-option
@@ -148,15 +69,17 @@
               </el-col>
               <el-col :span="12" style="">
                 <el-form-item label="联系方式:">
-                  <el-input v-model="form.Telephone"></el-input>
+                  <el-input
+                    v-model="form.Telephone"
+                    style="width: 50%"
+                  ></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="24" style="">
+              <el-col :span="12" style="">
                 <el-form-item label="已报名方案:">
                   <el-select
                     v-model="form.Project_id"
                     placeholder="无"
-                    style="width: 600px"
                     clearable
                   >
                     <el-option
@@ -175,7 +98,7 @@
                     v-model="form.Train_id"
                     multiple
                     placeholder="无"
-                    style="width: 600px"
+                    style="width: 80%"
                     clearable
                   >
                     <el-option
@@ -195,6 +118,59 @@
               修改</el-button
             >
           </span>
+          <div style="line-height: 30px">
+            <h1>个人志愿</h1>
+          </div>
+          <div>
+            <el-table
+              :data="choiceList"
+              size="small"
+              height="calc(100vh - 250px)"
+              :row-style="{ height: 'calc(10vh - 30px)' }"
+            >
+              <el-table-column
+                prop="Nation_id"
+                label="国家"
+                align="center"
+                :formatter="areaFormatter"
+                :show-overflow-tooltip="true"
+                min-width="260"
+              />
+              <el-table-column
+                prop="Institut_id"
+                label="学院"
+                align="center"
+                :formatter="InstitutFormatter"
+                :show-overflow-tooltip="true"
+                min-width="260"
+              />
+              <el-table-column
+                prop="Specialty_id"
+                label="专业"
+                align="center"
+                :formatter="SpecialtyFormatter"
+                :show-overflow-tooltip="true"
+                min-width="260"
+              />
+              <el-table-column
+                label="操作"
+                align="center"
+                class-name="small-padding fixed-width"
+                width="300px"
+                fixed="right"
+              >
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="text"
+                    icon="el-icon-document"
+                    @click.stop="lookChoice(scope.row)"
+                    >查看志愿
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
         </div>
       </div>
     </el-main>
@@ -240,6 +216,23 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
+          <el-col :span="12" style="">
+            <el-form-item label="当前学历:">
+              <el-select
+                v-model="form.Education"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="item in educateOptions"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
             <el-form-item label="留学阶段:">
               <el-select
@@ -250,82 +243,6 @@
               >
                 <el-option
                   v-for="item in stageOptions"
-                  :key="item.id"
-                  :label="item.value"
-                  :value="item.id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="12" style="">
-            <el-form-item label="目标区域:">
-              <el-select
-                v-model="form.Target_area"
-                placeholder="请选择"
-                @visible-change="getAreaList"
-                @change="areaChange"
-                clearable
-              >
-                <el-option
-                  v-for="item in areaOptions"
-                  :key="item.Nation_id"
-                  :label="item.Nation_name"
-                  :value="item.Nation_id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" style="">
-            <el-form-item label="目标学院:">
-              <el-select
-                v-model="form.Target_institut"
-                placeholder="请选择"
-                @visible-change="getInstitutList"
-                :no-data-text="form.Target_area ? '无学院' : '请先选择目标区域'"
-                clearable
-              >
-                <el-option
-                  v-for="item in institutOptions"
-                  :key="item.Institut_id"
-                  :label="item.Institut_name"
-                  :value="item.Institut_id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="12" style="" v-show="form.Customer_stage == 4">
-            <el-form-item label="目标专业:">
-              <el-select
-                v-model="form.Target_specialty"
-                placeholder="请选择"
-                @visible-change="getSpecialtyList"
-                :no-data-text="form.Target_area ? '无专业' : '请先选择目标学院'"
-                clearable
-              >
-                <el-option
-                  v-for="item in specialtyOptions"
-                  :key="item.Specialty_id"
-                  :label="item.Specialty_name"
-                  :value="item.Specialty_id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" style="">
-            <el-form-item label="当前学历:">
-              <el-select
-                v-model="form.Education"
-                placeholder="请选择"
-                clearable
-              >
-                <el-option
-                  v-for="item in educateOptions"
                   :key="item.id"
                   :label="item.value"
                   :value="item.id"
@@ -368,6 +285,96 @@
         >
       </span>
     </el-dialog>
+    <el-dialog
+      title="志愿修改"
+      width="600px"
+      :visible.sync="editChoiceDialog"
+      @close="closeDialog"
+    >
+      <el-form
+        ref="choiceForm"
+        :model="choiceForm"
+        label-position="left"
+        label-width="120px"
+        style="padding: 0 20px"
+        size="mini"
+      >
+        <el-row :gutter="10">
+          <el-col :span="12">
+            <el-form-item label="目标区域:">
+              <el-select
+                v-model="choiceForm.Nation_id"
+                placeholder="请选择"
+                @visible-change="getAreaList"
+                @change="areaChange()"
+                clearable
+              >
+                <el-option
+                  v-for="data in areaOptions"
+                  :key="data.Nation_id"
+                  :label="data.Nation_name"
+                  :value="data.Nation_id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="目标学院:">
+              <el-select
+                v-model="choiceForm.Institut_id"
+                placeholder="请选择"
+                @visible-change="getInstitutList"
+                @change="institutChange()"
+                :no-data-text="
+                  choiceForm.Nation_id ? '无学院' : '请先选择目标区域'
+                "
+                clearable
+              >
+                <el-option
+                  v-for="data in institutOptions2"
+                  :key="data.Institut_id"
+                  :label="data.Institut_name"
+                  :value="data.Institut_id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="目标专业:">
+              <el-select
+                v-model="choiceForm.Specialty_id"
+                placeholder="请选择"
+                @visible-change="getSpecialtyList"
+                :no-data-text="
+                  choiceForm.Institut_id ? '无专业' : '请先选择目标学院'
+                "
+                clearable
+              >
+                <el-option
+                  v-for="data in specialtyOptions2"
+                  :key="data.Specialty_id"
+                  :label="data.Specialty_name"
+                  :value="data.Specialty_id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12"
+            ><el-form-item>
+              <el-button
+                type="primary"
+                @click="saveChoice(choiceForm)"
+                size="mini"
+                >保存</el-button
+              >
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </el-dialog>
     <login-form />
   </el-container>
 </template>
@@ -387,6 +394,7 @@ export default {
     return {
       entityName: "webperson",
       editFormDialog: false,
+      editChoiceDialog: false,
       form: {
         Customer_id: null,
         Customer_name: null,
@@ -402,18 +410,28 @@ export default {
         Project_id: null,
         Train_id: null,
       },
-      choiceform: {
+      choiceList: [
+        {
+          Customer_id: null,
+          Nation_id: null,
+          Institut_id: null,
+          Specialty_id: null,
+          Choice_type: null,
+        },
+      ],
+      choiceForm: {
         Customer_id: null,
-        Choice_type: null,
         Nation_id: null,
         Institut_id: null,
         Specialty_id: null,
+        Choice_type: null,
       },
       stageOptions: [
         { id: 1, value: "小学" },
         { id: 2, value: "中学" },
         { id: 3, value: "高中" },
-        { id: 4, value: "大学" },
+        { id: 4, value: "本科" },
+        { id: 5, value: "研究生" },
       ],
       educateOptions: [
         { id: 1, value: "小学" },
@@ -424,11 +442,13 @@ export default {
       ],
       areaOptions: [],
       institutOptions: [],
+      institutOptions2: [],
       sexOptions: [
         { value: 1, label: "男" },
         { value: 2, label: "女" },
       ],
       specialtyOptions: [],
+      specialtyOptions2: [],
       projectOptions: [],
       trainOptions: [],
       filename: "",
@@ -436,6 +456,7 @@ export default {
   },
   created() {
     this.getDetail();
+    this.getChoiceList();
     this.getAreaList();
     this.getInstitutList();
     this.getSpecialtyList();
@@ -443,6 +464,52 @@ export default {
     this.getTrainList();
   },
   methods: {
+    closeDialog() {
+      this.choiceForm = "";
+      this.getChoiceList();
+      this.getInstitutList();
+      this.getSpecialtyList();
+    },
+    lookChoice(row) {
+      this.choiceForm = row;
+      this.editChoiceDialog = true;
+    },
+    async saveChoice() {
+      let data = this.$qs.stringify(this.choiceForm);
+      const res = await this.$http.post(`webuser/edit_choice`, data);
+      if (res.data.status == 0) {
+        this.$notify({
+          title: "提示",
+          type: "success",
+          message: res.data.message,
+        });
+        this.editChoiceDialog = false;
+      } else {
+        this.$notify.error({
+          title: "提示",
+          message: res.data.message,
+          duration: 1500,
+        });
+      }
+      this.getChoiceList();
+      this.getInstitutList();
+      this.getSpecialtyList();
+    },
+    //编辑列表
+    async getChoiceList() {
+      const res = await this.$http.get(`webuser/get_choice`, {
+        params: { id: localStorage.User_id },
+      });
+      if (res.data.status == 0) {
+        this.choiceList = res.data.data;
+      } else {
+        this.$message({
+          type: "error",
+          message: res.data.message,
+          duration: 1500,
+        });
+      }
+    },
     //获取文件数据
     getFile(event) {
       this.filename = event.target.files[0].name;
@@ -500,6 +567,30 @@ export default {
         return this.formatTime(datetime);
       }
     },
+    areaFormatter: function (row) {
+      let newarr = this.areaOptions.filter((item) => {
+        return item.Nation_id == row.Nation_id;
+      });
+      if (newarr[0]) {
+        return newarr[0].Nation_name;
+      }
+    },
+    InstitutFormatter: function (row) {
+      let newarr = this.institutOptions.filter((item) => {
+        return item.Institut_id == row.Institut_id;
+      });
+      if (newarr[0]) {
+        return newarr[0].Institut_name;
+      }
+    },
+    SpecialtyFormatter: function (row) {
+      let newarr = this.specialtyOptions.filter((item) => {
+        return item.Specialty_id == row.Specialty_id;
+      });
+      if (newarr[0]) {
+        return newarr[0].Specialty_name;
+      }
+    },
     //提交表单
     async submitHandle() {
       this.form.Customer_birthday = this.formatTime(
@@ -545,6 +636,7 @@ export default {
         });
       }
       this.getDetail();
+      this.getChoiceList();
     },
     async getDetail() {
       let data = this.$qs.stringify({ username: localStorage.webusername });
@@ -562,72 +654,6 @@ export default {
             return val - 0;
           });
         }
-      }
-    },
-
-    //获取区域列表
-    async getAreaList() {
-      if (!this.areaOptions.length) {
-        const res = await this.$http.get(`webnation/get_list`);
-        if (res.data.status == 0) {
-          this.areaOptions = res.data.data;
-          console.log(this.areaOptions);
-        } else {
-          this.$message({
-            type: "error",
-            message: "获取地区数据失败",
-            duration: 1500,
-          });
-        }
-      }
-    },
-    areaChange() {
-      this.form.Target_institut = "";
-      this.form.Target_specialty = "";
-      this.getInstitutList();
-    },
-    //获取学院列表
-    async getInstitutList() {
-      let res;
-      if (this.form.Target_area && this.form.Customer_stage) {
-        res = await this.$http.get(
-          `webinstitut/get_list/${this.form.Target_area}/${this.form.Customer_stage}`
-        );
-      } else {
-        res = await this.$http.get(`webinstitut/get_list`);
-      }
-
-      if (res.data.status == 0) {
-        this.institutOptions = res.data.data;
-        console.log(this.areaOptions);
-      } else {
-        this.$message({
-          type: "error",
-          message: "获取学院数据失败",
-          duration: 1500,
-        });
-      }
-    },
-    //获取专业列表
-    async getSpecialtyList() {
-      let res;
-      if (this.form.Target_area && this.form.Customer_stage) {
-        res = await this.$http.get(
-          `webspecialty/get_list/${this.form.Target_institut}`
-        );
-      } else {
-        res = await this.$http.get(`webspecialty/get_list`);
-      }
-
-      if (res.data.status == 0) {
-        this.specialtyOptions = res.data.data;
-        console.log(this.areaOptions);
-      } else {
-        this.$message({
-          type: "error",
-          message: "获取专业数据失败",
-          duration: 1500,
-        });
       }
     },
     //获取方案列表
@@ -655,6 +681,91 @@ export default {
           message: "获取方案数据失败",
           duration: 1500,
         });
+      }
+    },
+    //获取区域列表
+    async getAreaList() {
+      if (!this.areaOptions.length) {
+        const res = await this.$http.get(`webnation/get_list`);
+        if (res.data.status == 0) {
+          this.areaOptions = res.data.data;
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取地区数据失败",
+            duration: 1500,
+          });
+        }
+      }
+    },
+    areaChange() {
+      this.choiceForm.Institut_id = "";
+      this.choiceForm.Specialty_id = "";
+      this.getInstitutList();
+    },
+    institutChange() {
+      this.choiceForm.Specialty_id = "";
+      this.getSpecialtyList();
+    },
+    //获取学院列表
+    async getInstitutList() {
+      let res;
+      if (this.choiceForm.Nation_id) {
+        res = await this.$http.get(
+          `webinstitut/get_list/${this.choiceForm.Nation_id}`,
+          { params: { Nation_id: this.choiceForm.Nation_id } }
+        );
+        if (res.data.status == 0) {
+          this.institutOptions2 = res.data.data;
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取学院数据失败",
+            duration: 1500,
+          });
+        }
+      } else {
+        res = await this.$http.get(`webinstitut/get_list`);
+        if (res.data.status == 0) {
+          this.institutOptions = res.data.data;
+          this.institutOptions2 = res.data.data;
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取学院数据失败",
+            duration: 1500,
+          });
+        }
+      }
+    },
+    //获取专业列表
+    async getSpecialtyList() {
+      let res;
+      if (this.choiceForm.Nation_id) {
+        res = await this.$http.get(`webspecialty/get_list`, {
+          params: { Institut_id: this.choiceForm.Institut_id },
+        });
+        if (res.data.status == 0) {
+          this.specialtyOptions2 = res.data.data;
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取专业数据失败",
+            duration: 1500,
+          });
+        }
+      } else {
+        res = await this.$http.get(`webspecialty/get_list`);
+        if (res.data.status == 0) {
+          this.specialtyOptions = res.data.data;
+          this.specialtyOptions2 = res.data.data;
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取专业数据失败",
+            duration: 1500,
+          });
+        }
       }
     },
   },
@@ -692,8 +803,8 @@ export default {
     background-color: #fff;
     padding-top: 5vh;
     position: absolute;
-    width: 40%;
-    left: 30%;
+    width: 60%;
+    left: 20%;
     top: 20vh;
   }
 }

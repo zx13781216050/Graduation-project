@@ -51,11 +51,10 @@ exports.editForm = async (req, res) => {
         })
     } else {
         Object.keys(req.body).forEach((key) => {
-            if (!req.body[key]) {
+            if (!req.body[key] || req.body[key] == 'null') {
                 delete req.body[key]
             }
         });
-
         let customerInfo
         if (!req.file) {
             customerInfo = {
@@ -77,6 +76,8 @@ exports.editForm = async (req, res) => {
         db.query(sql, customerInfo, (err, results) => {
             if (err) return res.cc(err)
             if (results.affectedRows !== 1) return res.cc('添加客户信息失败')
+            const sql = 'insert into choice_item(Customer_id,Choice_type) values (' + results.insertId + ',1),(' + results.insertId + ',2),(' + results.insertId + ',3)'
+            db.query(sql)
             res.cc('添加成功', 0)
         })
     }

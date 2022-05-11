@@ -24,7 +24,8 @@ router.beforeEach((to, from, next) => {
       next({ path: '/home' });
     } else {
       if (router.options.routes.length < 3 || !store.state.routes.length) {
-        store.dispatch('getInfo').then(() => {
+        store.dispatch('getInfo').then((res) => {
+          console.log(res)
           store.dispatch('generateRoutes', router.options.asyncRoutes).then((res) => {
             res.forEach(item => {
               router.addRoute(item)

@@ -66,7 +66,7 @@ exports.login = async (req, res) => {
 //添加问题
 exports.quest = async (req, res) => {
     Object.keys(req.body).forEach((key) => {
-        if (!req.body[key] || req.body[key] == 'null') {
+        if (!req.body[key]) {
             delete req.body[key]
         }
     });
@@ -97,14 +97,57 @@ exports.getList = async (req, res) => {
         })
     } else {
         res.send({
+            status: 1,
+            message: '用户未登录',
+        })
+    }
+}
+
+exports.getChoice = async (req, res) => {
+    if (req.query.id) {
+        const sql = 'select * from customer_item where User_id = ?'
+        db.query(sql, req.query.id, (err, results) => {
+            if (err) return res.cc(err)
+            if (results.length == 0) return res.send({ status: 1, message: '请先完善个人信息', })
+            const sql = 'select * from choice_item where Customer_id = ?'
+            db.query(sql, results[0].Customer_id, (err, results) => {
+                if (err) return res.cc(err)
+                res.send({
+                    status: 0,
+                    message: '获取方案列表数据成功',
+                    data: results,
+                })
+            })
+        })
+    } else {
+        res.send({
             status: 0,
-            message: '获取方案列表数据成功',
-            data: [],
+            message: '无用户信息',
         })
     }
 
 }
 
-exports.getChoice = async (req, res) => {
-    console.log(req.query)
+exports.editChoice = async (req, res) => {
+    Object.keys(req.body).forEach((key) => {
+        if (!req.body[key]) {
+            req.body[key] = null
+        }
+    });
+    if (req.body.Customer_id) {
+        const sql = 'update choice_item set ? where Customer_id = ? and Choice_type = ?'
+        db.query(sql, [req.body, req.body.Customer_id, req.body.Choice_type], (err, results) => {
+            if (err) return res.cc(err)
+            res.send({
+                status: 0,
+                message: '更新志愿成功',
+            })
+        })
+    } else {
+        res.send({
+            status: 0,
+            message: '无用户信息',
+        })
+    }
+
 }

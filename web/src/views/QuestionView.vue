@@ -14,7 +14,6 @@
           <div style="line-height: 30px">
             <h1>问题反馈</h1>
           </div>
-
           <div>
             <el-table
               :data="list"
@@ -216,6 +215,7 @@ export default {
           duration: 1500,
         });
       }
+      this.getList();
     },
   },
 };

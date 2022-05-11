@@ -255,7 +255,9 @@ export default {
       let newarr = this.institutOptions.filter((item) => {
         return item.Institut_id == row.Institut_id;
       });
-      return newarr[0].Institut_name;
+      if (newarr[0]) {
+        return newarr[0].Institut_name;
+      }
     },
     //获取区域列表
     async getInstitutList() {

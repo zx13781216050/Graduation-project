@@ -29,8 +29,8 @@ app.use(expressJWT({ credentialsRequired: true, secret: config.jwtSecretKey }).u
 // 错误中间件 
 const Joi = require('joi')
 app.use((err, req, res, next) => {
-    if (err instanceof Joi.ValidationError) return res.cc(err)
-    if (err.name === 'UnauthorizedError') return res.cc('身份认证失败')
+    if (err instanceof Joi.ValidationError) return res.send({ message: '身份认证失败', status: 401 })
+    if (err.name === 'UnauthorizedError') return res.send({ message: '身份认证失败', status: 401 })
     res.cc(err)
 })
 

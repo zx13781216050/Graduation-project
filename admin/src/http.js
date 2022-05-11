@@ -20,7 +20,7 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(response => {
     //当token过期或者不存在时，后台返回状态码401，此时页面跳转到登录页面
     if (response.status === 401) {
-        router.push({ path: "/login" });
+        router.push({ path: "/login_view" });
         Notification({
             message: "登录信息已过期,请重新登录",
             type: "error",
@@ -28,7 +28,6 @@ http.interceptors.response.use(response => {
         return;
     }
     return response
-
 }, error => {
     return Promise.reject(error);
 });

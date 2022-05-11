@@ -70,7 +70,7 @@ exports.signUp = async (req, res) => {
     } else {
         const sql = 'select * from customer_item where User_id = ?'
         db.query(sql, req.body.User_id, (err, results) => {
-            if (results == []) return res.send({ status: 1, message: '请先完善个人信息', })
+            if (results.length == 0) return res.send({ status: 1, message: '请先完善个人信息', })
             if (results[0].Project_id) return res.send({ status: 2, message: '重复报名', })
             const sql = 'update customer_item set Project_id = ? where User_id = ?'
             db.query(sql, [req.body.Project_id, req.body.User_id], (err, results) => {

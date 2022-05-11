@@ -57,8 +57,10 @@
             min-width="100"
           >
             <template slot-scope="scope">
-              <span v-if="scope.row.Question_status == 0">未反馈</span>
-              <span v-else>已反馈</span>
+              <el-tag :type="scope.row.Question_status ? 'success' : ''">
+                <span v-if="scope.row.Question_status">已反馈</span>
+                <span v-else>未反馈</span></el-tag
+              >
             </template>
           </el-table-column>
           <el-table-column

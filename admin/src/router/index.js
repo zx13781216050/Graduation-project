@@ -13,6 +13,7 @@ import NewsMan from '../views/NewsMan.vue'
 import Institut from '../views/InstitutMan.vue'
 import Specialty from '../views/SpecialtyMan.vue'
 import Power from '../views/PowerMan.vue'
+import ChoiceMan from '../views/ChoiceMan.vue'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -39,7 +40,7 @@ const router = new VueRouter({
       meta: {
         role: ['admin', 'super_editor', 'manager']
       },
-      children: [{ path: 'customer_man', name: '客户信息管理', component: CustomerMan },]
+      children: [{ path: 'customer_man', name: '客户信息管理', component: CustomerMan }, { path: 'choice', name: '客户志愿管理', component: ChoiceMan }]
 
     },
     { path: '/project', component: MainView, name: '留学方案', meta: { role: ['admin', 'super_editor', 'project_editor'] }, children: [{ path: 'project_man', name: '方案信息管理', component: ProjectMan },] },

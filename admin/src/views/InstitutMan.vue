@@ -73,8 +73,8 @@
             :formatter="stageFormatter"
             :show-overflow-tooltip="true"
             min-width="260"
-          />
-
+          >
+          </el-table-column>
           <el-table-column
             label="操作"
             align="center"
@@ -386,7 +386,9 @@ export default {
       let newarr = this.areaOptions.filter((item) => {
         return item.Nation_id == row.Nation_id;
       });
-      return newarr[0].Nation_name;
+      if (newarr[0]) {
+        return newarr[0].Nation_name;
+      }
     },
     //获取区域列表
     async getAreaList() {

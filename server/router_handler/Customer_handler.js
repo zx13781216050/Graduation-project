@@ -4,7 +4,6 @@ const decoder = new StringDecoder('utf8');
 // 导入处理路径的核心模块
 const path = require('path')
 exports.getList = (req, res) => {
-
     if (!req.query.id && !req.query.name) {
         const sql = 'select * from customer_item where Deleted = 0'
         db.query(sql, (err, results) => {
@@ -140,6 +139,8 @@ exports.editForm = async (req, res) => {
         db.query(sql, customerInfo, (err, results) => {
             if (err) return res.cc(err)
             if (results.affectedRows !== 1) return res.cc('添加客户信息失败')
+            const sql = 'insert into choice_item(Customer_id,Choice_type) values (' + results.insertId + ',1),(' + results.insertId + ',2),(' + results.insertId + ',3)'
+            db.query(sql)
             res.cc('添加成功', 0)
         })
     }
@@ -160,5 +161,51 @@ exports.deleteForm = async (req, res) => {
 }
 
 exports.choice = async (req, res) => {
-    const sql = 'select * from institut_item '
+    const sql = 'select Customer_id,Customer_name from customer_item where Deleted = 0'
+    db.query(sql, (err, results) => {
+        if (err) return res.cc(err)
+        res.send({
+            status: 0,
+            message: '获取数据成功',
+            data: results,
+        })
+    })
+}
+
+exports.getChoice = async (req, res) => {
+    const sql = 'select * from choice_item where Customer_id = ?'
+    db.query(sql, req.query.id, (err, results) => {
+        if (err) return res.cc(err)
+        res.send({
+            status: 0,
+            message: '获取数据成功',
+            data: results,
+        })
+    })
+}
+
+exports.editChoice = async (req, res) => {
+
+    let choiceList = {}
+    choiceList[0] = req.body['choiceList[Customer_id]']
+    choiceList[1] = req.body['choiceList[Nation_id]']
+    choiceList[2] = req.body['choiceList[Institut_id]']
+    choiceList[3] = req.body['choiceList[Specialty_id]']
+    choiceList[4] = req.body['choiceList[Choice_type]']
+    for (let j = 0; j < 4; j++) {
+        for (let i = 0; i < 3; i++) {
+            if (!choiceList[j][i] || choiceList[j][i] == 'null') {
+                delete choiceList[j][i]
+            }
+        }
+    }
+    const sql = 'update choice_item set Nation_id = ? ,Institut_id = ?,Specialty_id = ?  where Customer_id = ? and Choice_type = ?'
+    for (let i = 0; i < 3; i++) {
+        db.query(sql, [choiceList[1][i], choiceList[2][i], choiceList[3][i], choiceList[0][i], choiceList[4][i]])
+    }
+    res.send({
+        status: 0,
+        message: '数据更新成功',
+    })
+
 }

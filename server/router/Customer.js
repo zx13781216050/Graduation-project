@@ -29,4 +29,10 @@ router.patch('/edit_form', upload.single('Customer_file'), customer_handler.edit
 
 router.delete('/delete_form', customer_handler.deleteForm)
 
+router.get('/choice', customer_handler.choice)
+
+router.get('/get_choice', customer_handler.getChoice)
+
+router.post('/edit_choice', customer_handler.editChoice)
+
 module.exports = router

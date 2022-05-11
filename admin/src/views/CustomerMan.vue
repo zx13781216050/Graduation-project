@@ -188,8 +188,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-
-          <el-col :span="12" style="">
+          <!-- <el-col :span="12" style="">
             <el-form-item label="目标区域:">
               <el-select
                 v-model="form.Target_area"
@@ -227,7 +226,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-
           <el-col :span="12" style="" v-show="form.Customer_stage == 4">
             <el-form-item label="目标专业:">
               <el-select
@@ -246,7 +244,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :span="12" style="">
             <el-form-item label="当前学历:">
               <el-select
@@ -408,7 +406,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="12" style="">
+          <!-- <el-col :span="12" style="">
             <el-form-item label="目标区域:" prop="Target_area">
               <el-select
                 v-model="form.Target_area"
@@ -465,7 +463,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :span="12" style="">
             <el-form-item label="当前学历:" prop="Education">
               <el-select
@@ -618,9 +616,9 @@ export default {
         Customer_sex: null,
         Customer_birthday: null,
         Customer_stage: null,
-        Target_area: null,
-        Target_institut: null,
-        Target_specialty: null,
+        // Target_area: null,
+        // Target_institut: null,
+        // Target_specialty: null,
         Telephone: null,
         Education: null,
         Customer_file: null,
@@ -653,13 +651,13 @@ export default {
         { id: 3, value: "朋友介绍" },
         { id: 4, value: "其他" },
       ],
-      areaOptions: [],
-      institutOptions: [],
+      // areaOptions: [],
+      // institutOptions: [],
       sexOptions: [
         { value: 1, label: "男" },
         { value: 2, label: "女" },
       ],
-      specialtyOptions: [],
+      //specialtyOptions: [],
       projectOptions: [],
       trainOptions: [],
       Nation_id: "",
@@ -715,9 +713,9 @@ export default {
   },
   created() {
     this.getList();
-    this.getAreaList();
-    this.getInstitutList();
-    this.getSpecialtyList();
+    // this.getAreaList();
+    // this.getInstitutList();
+    // this.getSpecialtyList();
     this.getProjectList();
     this.getTrainList();
   },
@@ -807,9 +805,9 @@ export default {
       formFile.append("Customer_sex", this.form.Customer_sex);
       formFile.append("Customer_birthday", this.form.Customer_birthday);
       formFile.append("Customer_stage", this.form.Customer_stage);
-      formFile.append("Target_institut", this.form.Target_institut);
-      formFile.append("Target_area", this.form.Target_area);
-      formFile.append("Target_specialty", this.form.Target_specialty);
+      // formFile.append("Target_institut", this.form.Target_institut);
+      // formFile.append("Target_area", this.form.Target_area);
+      // formFile.append("Target_specialty", this.form.Target_specialty);
       formFile.append("Project_id", this.form.Project_id);
       formFile.append("Train_id", this.form.Train_id);
       formFile.append("Telephone", this.form.Telephone);
@@ -842,66 +840,66 @@ export default {
       this.getList();
     },
     //获取区域列表
-    async getAreaList() {
-      if (!this.areaOptions.length) {
-        const res = await this.$http.get(`nation/get_list`);
-        if (res.data.status == 0) {
-          this.areaOptions = res.data.data;
-        } else {
-          this.$message({
-            type: "error",
-            message: "获取地区数据失败",
-            duration: 1500,
-          });
-        }
-      }
-    },
-    areaChange() {
-      this.form.Target_institut = "";
-      this.form.Target_specialty = "";
-      this.getInstitutList();
-    },
-    //获取学院列表
-    async getInstitutList() {
-      let res;
-      if (this.form.Target_area && this.form.Customer_stage) {
-        res = await this.$http.get(
-          `institut/get_list/${this.form.Target_area}/${this.form.Customer_stage}`
-        );
-      } else {
-        res = await this.$http.get(`institut/get_list`);
-      }
-      if (res.data.status == 0) {
-        this.institutOptions = res.data.data;
-      } else {
-        this.$message({
-          type: "error",
-          message: "获取学院数据失败",
-          duration: 1500,
-        });
-      }
-    },
-    //获取专业列表
-    async getSpecialtyList() {
-      let res;
-      if (this.form.Target_area && this.form.Customer_stage) {
-        res = await this.$http.get(
-          `specialty/get_list/${this.form.Target_institut}`
-        );
-      } else {
-        res = await this.$http.get(`specialty/get_list`);
-      }
+    // async getAreaList() {
+    //   if (!this.areaOptions.length) {
+    //     const res = await this.$http.get(`nation/get_list`);
+    //     if (res.data.status == 0) {
+    //       this.areaOptions = res.data.data;
+    //     } else {
+    //       this.$message({
+    //         type: "error",
+    //         message: "获取地区数据失败",
+    //         duration: 1500,
+    //       });
+    //     }
+    //   }
+    // },
+    // areaChange() {
+    //   this.form.Target_institut = "";
+    //   this.form.Target_specialty = "";
+    //   this.getInstitutList();
+    // },
+    // //获取学院列表
+    // async getInstitutList() {
+    //   let res;
+    //   if (this.form.Target_area && this.form.Customer_stage) {
+    //     res = await this.$http.get(
+    //       `institut/get_list/${this.form.Target_area}/${this.form.Customer_stage}`
+    //     );
+    //   } else {
+    //     res = await this.$http.get(`institut/get_list`);
+    //   }
+    //   if (res.data.status == 0) {
+    //     this.institutOptions = res.data.data;
+    //   } else {
+    //     this.$message({
+    //       type: "error",
+    //       message: "获取学院数据失败",
+    //       duration: 1500,
+    //     });
+    //   }
+    // },
+    // //获取专业列表
+    // async getSpecialtyList() {
+    //   let res;
+    //   if (this.form.Target_area && this.form.Customer_stage) {
+    //     res = await this.$http.get(
+    //       `specialty/get_list/${this.form.Target_institut}`
+    //     );
+    //   } else {
+    //     res = await this.$http.get(`specialty/get_list`);
+    //   }
 
-      if (res.data.status == 0) {
-        this.specialtyOptions = res.data.data;
-      } else {
-        this.$message({
-          type: "error",
-          message: "获取专业数据失败",
-          duration: 1500,
-        });
-      }
-    },
+    //   if (res.data.status == 0) {
+    //     this.specialtyOptions = res.data.data;
+    //   } else {
+    //     this.$message({
+    //       type: "error",
+    //       message: "获取专业数据失败",
+    //       duration: 1500,
+    //     });
+    //   }
+    // },
     //获取方案列表
     async getProjectList() {
       let res = await this.$http.get(`project/get_list`);
@@ -932,7 +930,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
 .el-button--primary {
   .el-input__inner {

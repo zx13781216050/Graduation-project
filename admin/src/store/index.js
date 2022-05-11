@@ -33,12 +33,11 @@ export default new Vuex.Store({
                 url: `/user/user_info`,
             }).then(
                 response => {
-                    commit('setusername', response.data.data.username)
-                    commit('setroles', response.data.data.Role_name)
-                    window.localStorage.setItem('roles', response.data.data.Role_name)
-                    console.log(window.localStorage.getItem('roles'))
-                    // commit('setroles', 'admin')
-                    // window.localStorage.setItem('roles', 'admin')
+                    if (response.data.status == 0) {
+                        commit('setusername', response.data.data.username)
+                        commit('setroles', response.data.data.Role_name)
+                        window.localStorage.setItem('roles', response.data.data.Role_name)
+                    }
                 },
                 error => {
                     alert(error.message)
@@ -48,8 +47,6 @@ export default new Vuex.Store({
             let newroutes = routes.filter(item => {
                 if (item.meta) {
                     return item.meta.role.includes(window.localStorage.getItem('roles'))
-                    // console.log(item.meta.role.includes(window.localStorage.getItem('roles')))
-                    // return item.meta.role.includes('admin')
                 }
                 return item
             })

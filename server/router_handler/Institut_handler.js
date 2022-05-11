@@ -77,8 +77,8 @@ exports.getList = (req, res) => {
             })
         }
     } else {
-        sql = 'select * from institut_item where Nation_id = ? and Stage_id = ?'
-        db.query(sql, [req.params.Nation_id, req.params.Customer_stage], (err, results) => {
+        sql = 'select * from institut_item where Nation_id = ?'
+        db.query(sql, req.params.Nation_id, (err, results) => {
             if (err) return res.cc(err)
             res.send({
                 status: 0,
