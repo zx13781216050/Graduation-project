@@ -178,6 +178,7 @@
       <el-form
         ref="form"
         :model="form"
+        :rules="rules"
         label-position="left"
         label-width="120px"
         style="padding: 0 20px"
@@ -185,12 +186,12 @@
       >
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="姓名:">
+            <el-form-item label="姓名:" prop="Customer_name">
               <el-input v-model="form.Customer_name" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性别:">
+            <el-form-item label="性别:" prop="Customer_name">
               <el-select
                 v-model="form.Customer_sex"
                 placeholder="请选择"
@@ -206,7 +207,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="出生时间:">
+            <el-form-item label="出生时间:" prop="Customer_birthday">
               <el-date-picker
                 v-model="form.Customer_birthday"
                 type="datetime"
@@ -217,7 +218,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="当前学历:">
+            <el-form-item label="当前学历:" prop="Education">
               <el-select
                 v-model="form.Education"
                 placeholder="请选择"
@@ -234,7 +235,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="留学阶段:">
+            <el-form-item label="留学阶段:" prop="Customer_stage">
               <el-select
                 v-model="form.Customer_stage"
                 placeholder="请选择"
@@ -252,7 +253,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" style="">
-            <el-form-item label="联系方式:">
+            <el-form-item label="联系方式:" prop="Telephone">
               <el-input v-model="form.Telephone"></el-input>
             </el-form-item>
           </el-col>
@@ -401,9 +402,6 @@ export default {
         Customer_sex: null,
         Customer_birthday: null,
         Customer_stage: null,
-        Target_area: null,
-        Target_institut: null,
-        Target_specialty: null,
         Telephone: null,
         Education: null,
         Customer_file: null,
@@ -452,6 +450,33 @@ export default {
       projectOptions: [],
       trainOptions: [],
       filename: "",
+      rules: {
+        Customer_name: {
+          required: true,
+          message: "姓名不能为空",
+          trigger: "blur",
+        },
+        Customer_sex: {
+          required: true,
+          message: "性别不能为空",
+          trigger: "blur",
+        },
+        Customer_birthday: {
+          required: true,
+          message: "出生日期不能为空",
+          trigger: "blur",
+        },
+        Customer_stage: {
+          required: true,
+          message: "留学阶段不能为空",
+          trigger: "blur",
+        },
+        Education: {
+          required: true,
+          message: "当前学历不能为空",
+          trigger: "blur",
+        },
+      },
     };
   },
   created() {
@@ -603,9 +628,6 @@ export default {
       formFile.append("Customer_sex", this.form.Customer_sex);
       formFile.append("Customer_birthday", this.form.Customer_birthday);
       formFile.append("Customer_stage", this.form.Customer_stage);
-      formFile.append("Target_institut", this.form.Target_institut);
-      formFile.append("Target_area", this.form.Target_area);
-      formFile.append("Target_specialty", this.form.Target_specialty);
       formFile.append("Project_id", this.form.Project_id);
       formFile.append("Train_id", this.form.Train_id);
       formFile.append("User_id", this.form.User_id);

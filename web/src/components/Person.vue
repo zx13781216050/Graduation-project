@@ -59,65 +59,6 @@
             </el-select>
           </el-form-item>
         </el-col>
-
-        <el-col :span="12" style="">
-          <el-form-item label="目标区域:">
-            <el-select
-              v-model="form.Target_area"
-              placeholder="请选择"
-              @visible-change="getAreaList"
-              @change="areaChange"
-              clearable
-            >
-              <el-option
-                v-for="item in areaOptions"
-                :key="item.Nation_id"
-                :label="item.Nation_name"
-                :value="item.Nation_id"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12" style="">
-          <el-form-item label="目标学院:">
-            <el-select
-              v-model="form.Target_institut"
-              placeholder="请选择"
-              @visible-change="getInstitutList"
-              :no-data-text="form.Target_area ? '无学院' : '请先选择目标区域'"
-              clearable
-            >
-              <el-option
-                v-for="item in institutOptions"
-                :key="item.Institut_id"
-                :label="item.Institut_name"
-                :value="item.Institut_id"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-
-        <el-col :span="12" style="" v-show="form.Customer_stage == 4">
-          <el-form-item label="目标专业:">
-            <el-select
-              v-model="form.Target_specialty"
-              placeholder="请选择"
-              @visible-change="getSpecialtyList"
-              :no-data-text="form.Target_area ? '无专业' : '请先选择目标学院'"
-              clearable
-            >
-              <el-option
-                v-for="item in specialtyOptions"
-                :key="item.Specialty_id"
-                :label="item.Specialty_name"
-                :value="item.Specialty_id"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
         <el-col :span="12" style="">
           <el-form-item label="当前学历:">
             <el-select v-model="form.Education" placeholder="请选择" clearable>
@@ -156,9 +97,6 @@ export default {
         Customer_sex: null,
         Customer_birthday: null,
         Customer_stage: null,
-        Target_area: null,
-        Target_institut: null,
-        Target_specialty: null,
         Telephone: null,
         Education: null,
       },

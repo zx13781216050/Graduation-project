@@ -632,6 +632,7 @@ export default {
         { id: 2, value: "中学" },
         { id: 3, value: "高中" },
         { id: 4, value: "本科" },
+        { id: 5, value: "研究生" },
       ],
       educateOptions: [
         { id: 1, value: "小学" },
